@@ -27,8 +27,8 @@ export function Header() {
     setActiveSection(href);
   };
 
-  const onClose = () => setDrawerOpened(false)
-  const onToogle = () => setDrawerOpened((o) => !o)
+  const onClose = () => setDrawerOpened(false);
+  const onToogle = () => setDrawerOpened((o) => !o);
 
   useEffect(() => {
     const onScroll = () => {
@@ -52,10 +52,9 @@ export function Header() {
   return (
     <Container size="lg" py={10}>
       <Flex h="100%" align="center" justify="space-between">
-
         <Group>
           <IconPuzzle size={28} />
-          <Title order={4}>TestBuilder</Title>
+          <Title order={4}>QuizBuilder</Title>
         </Group>
 
         <Group gap="xl" className="hidden lg:flex">
