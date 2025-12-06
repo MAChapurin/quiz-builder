@@ -1,0 +1,1 @@
+export { ColorSchemesSwitcher } from './ui/theme-switcher'

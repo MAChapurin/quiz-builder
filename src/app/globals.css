@@ -1,0 +1,6 @@
+@import "tailwind-preset-mantine";
+@import "./theme.css";
+
+html {
+    scroll-behavior: smooth;
+}
