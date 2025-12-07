@@ -1,5 +1,5 @@
 import { prisma } from "@/shared/lib/db";
-import type { UserEntity } from "../domain";
+import { UserEntity } from "../domain";
 
 export function getUser(where: { email?: string; id?: string }) {
   return prisma.user.findFirst({ where });
@@ -12,3 +12,8 @@ export async function saveUser(user: UserEntity): Promise<UserEntity> {
     create: user,
   }) as unknown as UserEntity;
 }
+
+export const userRepository = {
+  saveUser,
+  getUser,
+};
