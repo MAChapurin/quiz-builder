@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  salt         String  @default("")
+  quizzes      Quiz[]   @relation("AuthorQuizzes")
+  answers      Answer[]
+  createdAt    DateTime @default(now())
+}
+
+model Quiz {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  author      User       @relation("AuthorQuizzes", fields: [authorId], references: [id])
+  authorId    String
+  questions   Question[]
+  answers     Answer[]
+  createdAt   DateTime   @default(now())
+}
+
+model Question {
+  id        String       @id @default(cuid())
+  quiz      Quiz         @relation(fields: [quizId], references: [id])
+  quizId    String
+  type      QuestionType
+  text      String
+  options   Option[]     // варианты ответа для SINGLE/MULTIPLE
+  answers   Answer[]
+}
+
+model Option {
+  id         String   @id @default(cuid())
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  text       String
+  isCorrect  Boolean  @default(false)
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  quiz       Quiz     @relation(fields: [quizId], references: [id])
+  quizId     String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  value      String   // текст ответа или выбранные варианты в JSON
+  createdAt  DateTime @default(now())
+}
+
+enum QuestionType {
+  SINGLE
+  MULTIPLE
+  TEXT
+}

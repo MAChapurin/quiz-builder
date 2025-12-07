@@ -2,7 +2,8 @@
 
 import { Drawer, Stack, Anchor, Button } from "@mantine/core";
 import { ColorSchemesSwitcher } from "@/features";
-import { headerLinks } from "@/shared/config";
+import { headerLinks, routes } from "@/shared/config";
+import Link from "next/link";
 
 export function MobileMenu({
   opened,
@@ -41,10 +42,17 @@ export function MobileMenu({
 
         <ColorSchemesSwitcher />
 
-        <Button variant="outline" fullWidth>
+        <Button
+          component={Link}
+          href={routes.LOGIN}
+          variant="outline"
+          fullWidth
+        >
           Войти
         </Button>
-        <Button fullWidth>Регистрация</Button>
+        <Button component={Link} href={routes.REGISTER} fullWidth>
+          Регистрация
+        </Button>
       </Stack>
     </Drawer>
   );

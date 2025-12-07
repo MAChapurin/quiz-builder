@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { IconPuzzle } from "@tabler/icons-react";
 import {
   Container,
@@ -12,7 +13,7 @@ import {
   Button,
 } from "@mantine/core";
 
-import { headerLinks, LINKS_ID } from "@/shared/config";
+import { headerLinks, LINKS_ID, routes } from "@/shared/config";
 import { ColorSchemesSwitcher } from "@/features";
 import { MobileMenu } from "./mobile-menu";
 
@@ -75,8 +76,12 @@ export function Header() {
 
         <Group className="hidden lg:flex">
           <ColorSchemesSwitcher />
-          <Button variant="outline">Войти</Button>
-          <Button>Регистрация</Button>
+          <Button component={Link} href={routes.LOGIN} variant="outline">
+            Войти
+          </Button>
+          <Button component={Link} href={routes.REGISTER}>
+            Регистрация
+          </Button>
         </Group>
 
         <Burger

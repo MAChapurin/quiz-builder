@@ -14,4 +14,8 @@ export const headerLinks = [
 
 export const routes = {
   HOME: "/",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  DASHBOARD: "/dashboard",
+  NOT_FOUND: "/not-found",
 } as const;
