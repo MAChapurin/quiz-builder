@@ -1,6 +1,6 @@
 import { prisma } from "@/shared/lib/db";
 import { UserEntity } from "../domain";
-import { Prisma } from "@prisma/client";
+import { User } from "@prisma/client";
 
 export function saveUser(user: UserEntity): Promise<UserEntity> {
   return prisma.user.upsert({
@@ -12,7 +12,11 @@ export function saveUser(user: UserEntity): Promise<UserEntity> {
   });
 }
 
-export function getUser(where: Prisma.UserWhereInput) {
+// export function getUser(where: Prisma.UserWhereInput) {
+//   return prisma.user.findFirst({ where });
+// }
+
+export function getUser(where: Partial<Pick<User, "email" | "id">>) {
   return prisma.user.findFirst({ where });
 }
 
