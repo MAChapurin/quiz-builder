@@ -1,26 +1,14 @@
 import { prisma } from "@/shared/lib/db";
-import { UserEntity } from "../domain";
-import { User } from "@prisma/client";
+import type { UserEntity } from "../domain";
 
-export function saveUser(user: UserEntity): Promise<UserEntity> {
-  return prisma.user.upsert({
-    where: {
-      id: user.id,
-    },
-    create: user,
-    update: user,
-  });
-}
-
-// export function getUser(where: Prisma.UserWhereInput) {
-//   return prisma.user.findFirst({ where });
-// }
-
-export function getUser(where: Partial<Pick<User, "email" | "id">>) {
+export function getUser(where: { email?: string; id?: string }) {
   return prisma.user.findFirst({ where });
 }
 
-export const userRepository = {
-  saveUser,
-  getUser,
-};
+export async function saveUser(user: UserEntity): Promise<UserEntity> {
+  return prisma.user.upsert({
+    where: { email: user.email },
+    update: user,
+    create: user,
+  }) as unknown as UserEntity;
+}
