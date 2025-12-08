@@ -40,6 +40,7 @@ export function EditQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
 
   return (
     <Modal
+      centered
       key={quiz.id}
       opened={opened}
       onClose={() => {

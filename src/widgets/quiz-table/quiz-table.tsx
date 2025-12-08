@@ -77,15 +77,11 @@ export function QuizTable({
                     Открыть
                   </Menu.Item>
                   <Menu.Item
+                    onClick={() => {
+                      emitter.emit("quiz-deleted-click", { id: quiz.id });
+                    }}
                     color="red"
-                    leftSection={
-                      <IconTrash
-                        size={16}
-                        onClick={() => {
-                          emitter.emit("quiz-deleted-click", { id: quiz.id });
-                        }}
-                      />
-                    }
+                    leftSection={<IconTrash size={16} />}
                   >
                     Удалить
                   </Menu.Item>

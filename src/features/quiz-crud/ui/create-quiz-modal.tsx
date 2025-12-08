@@ -30,6 +30,7 @@ export function CreateQuizButton() {
       </Button>
 
       <Modal
+        centered
         opened={opened}
         onClose={() => setOpened(false)}
         title="Создать новый квиз"

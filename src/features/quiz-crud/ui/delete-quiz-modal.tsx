@@ -41,6 +41,7 @@ export function DeleteQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
 
   return (
     <Modal
+      centered
       opened={opened}
       onClose={() => setOpened(false)}
       title="Удалить квиз"
