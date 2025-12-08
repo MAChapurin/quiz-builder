@@ -27,7 +27,7 @@ export function SignInForm() {
 
   useEffect(() => {
     if (formState.success && !isPending) {
-      router.push(routes.DASHBOARD);
+      router.push(routes.QUIZZES);
     }
   }, [formState.success, isPending, router]);
 

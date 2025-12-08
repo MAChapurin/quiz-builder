@@ -21,7 +21,7 @@ import {
 } from "@tabler/icons-react";
 
 import { QuizEntity } from "@/entities/quiz/domain";
-import { DeleteQuizModal, EditQuizModal } from "@/features";
+import { DeleteQuizModal, EditQuizModal, useOpenQuiz } from "@/features";
 import { emitter, formatDateRu } from "@/shared/lib";
 
 export function QuizTable({
@@ -29,6 +29,7 @@ export function QuizTable({
 }: {
   quizzes: (QuizEntity & { createdAtFormatted: string })[];
 }) {
+  useOpenQuiz();
   return (
     <div>
       <EditQuizModal quizzes={quizzes} />
@@ -73,7 +74,12 @@ export function QuizTable({
                   >
                     Редактировать
                   </Menu.Item>
-                  <Menu.Item leftSection={<IconLineHeight size={16} />}>
+                  <Menu.Item
+                    onClick={() => {
+                      emitter.emit("quiz-open-click", { id: quiz.id });
+                    }}
+                    leftSection={<IconLineHeight size={16} />}
+                  >
                     Открыть
                   </Menu.Item>
                   <Menu.Item
@@ -134,7 +140,13 @@ export function QuizTable({
                   >
                     <IconTrash size={16} />
                   </ActionIcon>
-                  <ActionIcon size="md" variant="outline">
+                  <ActionIcon
+                    size="md"
+                    variant="outline"
+                    onClick={() => {
+                      emitter.emit("quiz-open-click", { id: quiz.id });
+                    }}
+                  >
                     <IconLineHeight size={16} />
                   </ActionIcon>
                 </Flex>
