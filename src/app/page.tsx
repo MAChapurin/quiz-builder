@@ -4,14 +4,14 @@ import {
   FeaturesBox,
   Hero,
   HowItWorksBox,
-  Header,
+  HeaderMarketing,
   Footer,
 } from "@/widgets";
 import { Layout } from "@/shared/ui";
 
 export default function HomePage() {
   return (
-    <Layout headerSlot={<Header />} footerSlot={<Footer />}>
+    <Layout headerSlot={<HeaderMarketing />} footerSlot={<Footer />}>
       <Hero />
       <FeaturesBox />
       <HowItWorksBox />

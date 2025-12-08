@@ -1,6 +1,6 @@
 import { routes } from "@/shared/config";
 import { Layout } from "@/shared/ui";
-import { Footer, Header } from "@/widgets";
+import { Footer, HeaderAuth } from "@/widgets";
 import { Button, Container, Group, Text, Title } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import Link from "next/link";
@@ -19,7 +19,7 @@ function Illustration(props: ComponentPropsWithoutRef<"svg">) {
 
 export default function NothingFoundPage() {
   return (
-    <Layout headerSlot={<Header />} footerSlot={<Footer />}>
+    <Layout headerSlot={<HeaderAuth />} footerSlot={<Footer />}>
       <Container size={"lg"}>
         <div className="relative">
           <Illustration className="absolute inset-0 top-1/2 -translate-y-1/2 opacity-15" />

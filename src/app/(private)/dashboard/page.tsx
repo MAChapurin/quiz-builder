@@ -28,7 +28,7 @@ export default async function QuizzesPage() {
 
   return (
     <Container size={"lg"}>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center my-10">
         <h1 className="text-xl font-bold">Мои квизы</h1>
         <CreateQuizButton />
       </div>

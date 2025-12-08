@@ -2,22 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { IconPuzzle } from "@tabler/icons-react";
-import {
-  Container,
-  Title,
-  Group,
-  Flex,
-  Anchor,
-  Burger,
-  Button,
-} from "@mantine/core";
+import { Container, Group, Flex, Anchor, Burger, Button } from "@mantine/core";
 
 import { headerLinks, LINKS_ID, routes } from "@/shared/config";
 import { ColorSchemesSwitcher } from "@/features";
 import { MobileMenu } from "./mobile-menu";
+import { Logo } from "@/shared/ui";
 
-export function Header() {
+export function HeaderMarketing() {
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [activeSection, setActiveSection] = useState(`#${LINKS_ID.HOME}`);
 
@@ -53,11 +45,7 @@ export function Header() {
   return (
     <Container size="lg" py={10}>
       <Flex h="100%" align="center" justify="space-between">
-        <Group>
-          <IconPuzzle size={28} />
-          <Title order={4}>QuizBuilder</Title>
-        </Group>
-
+        <Logo />
         <Group gap="xl" className="hidden lg:flex">
           {headerLinks.map((link) => (
             <Anchor
@@ -82,6 +70,9 @@ export function Header() {
           <Button component={Link} href={routes.REGISTER}>
             Регистрация
           </Button>
+        </Group>
+        <Group className="lg:hidden ml-auto" mr={"md"}>
+          <ColorSchemesSwitcher />
         </Group>
 
         <Burger

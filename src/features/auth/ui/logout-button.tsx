@@ -5,8 +5,8 @@ import { IconLogout } from "@tabler/icons-react";
 export const LogOutButton = () => {
   return (
     <form action={logout}>
-      <Button variant={"outline"} type="submit">
-        <IconLogout />
+      <Button rightSection={<IconLogout />} type="submit">
+        Выйти
       </Button>
     </form>
   );
