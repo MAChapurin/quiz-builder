@@ -65,7 +65,7 @@ export const signUpAction = async (
   }
 
   const errors = {
-    "user-login-exists": "Пользователь с таким email(?) существует",
+    "user-login-exists": "Пользователь с таким email уже существует",
   }[createUserResult.error];
 
   return {

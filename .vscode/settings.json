@@ -10,5 +10,8 @@
     "**/*.sass",
     "**/*.less",
     "node_modules/@mantine/core/styles.layer.css"
-  ]
+  ],
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }
