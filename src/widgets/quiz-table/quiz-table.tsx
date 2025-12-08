@@ -10,49 +10,50 @@ import {
   Stack,
   Tooltip,
   Chip,
+  ActionIcon,
 } from "@mantine/core";
-import { QuizEntity } from "@/entities/quiz/domain";
 import {
   IconLineHeight,
-  IconPencil,
   IconShare,
   IconTrash,
   IconDotsVertical,
+  IconEdit,
 } from "@tabler/icons-react";
-import { formatDateRu } from "@/shared/lib";
-import { useMediaQuery } from "@mantine/hooks";
+
+import { QuizEntity } from "@/entities/quiz/domain";
+import { DeleteQuizModal, EditQuizModal } from "@/features";
+import { emitter, formatDateRu } from "@/shared/lib";
 
 export function QuizTable({
   quizzes,
 }: {
   quizzes: (QuizEntity & { createdAtFormatted: string })[];
 }) {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  if (isMobile) {
-    return (
-      <Stack gap={"sm"}>
+  return (
+    <div>
+      <EditQuizModal quizzes={quizzes} />
+      <DeleteQuizModal quizzes={quizzes} />
+      <Stack className="block md:hidden" gap="sm">
         {quizzes.map((quiz) => (
-          <Box
-            key={quiz.id}
-            p="md"
-            bd="1px solid var(--mantine-color-gray-3)"
-            className="rounded"
-          >
-            <Flex justify="space-between" align="start" gap="sm">
-              <Stack gap={4}>
-                <Text fw={600} className="flex items-center gap-4">
+          <Box key={quiz.id} className="p-4 border border-gray-300 rounded-md">
+            <Flex className="justify-between items-start gap-2">
+              <Stack gap={1}>
+                <Text
+                  component="span"
+                  className="font-semibold flex items-center gap-2"
+                >
                   <Tooltip label="Количество прохождений" refProp="rootRef">
                     <Chip size="xs" defaultChecked>
                       0
                     </Chip>
                   </Tooltip>
-                  {quiz.title}{" "}
+                  {quiz.title}
                 </Text>
-                <Text size="xs" c="dimmed">
+                <Text className="text-xs text-gray-500">
                   {formatDateRu(quiz.createdAtFormatted)}
                 </Text>
               </Stack>
+
               <Menu shadow="md" width={200}>
                 <Menu.Target>
                   <Button size="xs" variant="light">
@@ -64,13 +65,28 @@ export function QuizTable({
                   <Menu.Item leftSection={<IconShare size={16} />}>
                     Поделиться
                   </Menu.Item>
-                  <Menu.Item leftSection={<IconPencil size={16} />}>
+                  <Menu.Item
+                    onClick={() => {
+                      emitter.emit("quiz-edit-click", { id: quiz.id });
+                    }}
+                    leftSection={<IconEdit size={16} />}
+                  >
                     Редактировать
                   </Menu.Item>
                   <Menu.Item leftSection={<IconLineHeight size={16} />}>
                     Открыть
                   </Menu.Item>
-                  <Menu.Item color="red" leftSection={<IconTrash size={16} />}>
+                  <Menu.Item
+                    color="red"
+                    leftSection={
+                      <IconTrash
+                        size={16}
+                        onClick={() => {
+                          emitter.emit("quiz-deleted-click", { id: quiz.id });
+                        }}
+                      />
+                    }
+                  >
                     Удалить
                   </Menu.Item>
                 </Menu.Dropdown>
@@ -79,47 +95,58 @@ export function QuizTable({
           </Box>
         ))}
       </Stack>
-    );
-  }
 
-  return (
-    <Table striped highlightOnHover>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>Название</Table.Th>
-          <Table.Th ta="center">Дата создания</Table.Th>
-          <Table.Th ta="center">Прохождения</Table.Th>
-          <Table.Th ta="right">Действия</Table.Th>
-        </Table.Tr>
-      </Table.Thead>
-
-      <Table.Tbody>
-        {quizzes.map((quiz) => (
-          <Table.Tr key={quiz.id}>
-            <Table.Td>{quiz.title}</Table.Td>
-            <Table.Td ta="center">
-              {formatDateRu(quiz.createdAtFormatted)}
-            </Table.Td>
-            <Table.Td ta="center">0</Table.Td>
-            <Table.Td>
-              <Flex justify="end" gap="xs">
-                <Button size="xs" variant="outline">
-                  <IconShare size={16} />
-                </Button>
-                <Button size="xs" variant="outline">
-                  <IconPencil size={16} />
-                </Button>
-                <Button size="xs" color="red" variant="outline">
-                  <IconTrash size={16} />
-                </Button>
-                <Button size="xs" variant="filled">
-                  <IconLineHeight size={16} />
-                </Button>
-              </Flex>
-            </Table.Td>
+      <Table className="hidden md:table" striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Название</Table.Th>
+            <Table.Th className="text-center">Дата создания</Table.Th>
+            <Table.Th className="text-center">Прохождения</Table.Th>
+            <Table.Th className="text-right">Действия</Table.Th>
           </Table.Tr>
-        ))}
-      </Table.Tbody>
-    </Table>
+        </Table.Thead>
+
+        <Table.Tbody>
+          {quizzes.map((quiz) => (
+            <Table.Tr key={quiz.id}>
+              <Table.Td>{quiz.title}</Table.Td>
+              <Table.Td className="text-center">
+                {formatDateRu(quiz.createdAtFormatted)}
+              </Table.Td>
+              <Table.Td className="text-center">0</Table.Td>
+              <Table.Td>
+                <Flex className="justify-end gap-2">
+                  <ActionIcon size={"md"} variant="outline">
+                    <IconShare size={16} />
+                  </ActionIcon>
+                  <ActionIcon
+                    variant="outline"
+                    size={"md"}
+                    onClick={() => {
+                      emitter.emit("quiz-edit-click", { id: quiz.id });
+                    }}
+                  >
+                    <IconEdit size={16} />
+                  </ActionIcon>
+                  <ActionIcon
+                    size="md"
+                    color="red"
+                    variant="outline"
+                    onClick={() => {
+                      emitter.emit("quiz-deleted-click", { id: quiz.id });
+                    }}
+                  >
+                    <IconTrash size={16} />
+                  </ActionIcon>
+                  <ActionIcon size="md" variant="outline">
+                    <IconLineHeight size={16} />
+                  </ActionIcon>
+                </Flex>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+    </div>
   );
 }
