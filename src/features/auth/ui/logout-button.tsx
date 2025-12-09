@@ -1,13 +1,13 @@
-import { Button } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import { logout } from "../actions/logout";
 import { IconLogout } from "@tabler/icons-react";
 
 export const LogOutButton = () => {
   return (
     <form action={logout}>
-      <Button rightSection={<IconLogout />} type="submit">
-        Выйти
-      </Button>
+      <ActionIcon variant="outline" size="lg" type="submit" aria-label="Выйти">
+        <IconLogout />
+      </ActionIcon>
     </form>
   );
 };

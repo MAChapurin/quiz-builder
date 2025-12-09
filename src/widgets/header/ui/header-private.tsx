@@ -1,7 +1,7 @@
 "use client";
 
 import { Container, Group, Flex } from "@mantine/core";
-import { ColorSchemesSwitcher, LogOutButton } from "@/features";
+import { ColorSchemesSwitcher, LogOutButton, Profile } from "@/features";
 import { Logo } from "@/shared/ui";
 import { routes } from "@/shared/config";
 
@@ -12,6 +12,7 @@ export function HeaderPrivate() {
         <Logo href={routes.QUIZZES} />
         <Group>
           <ColorSchemesSwitcher />
+          <Profile />
           <LogOutButton />
         </Group>
       </Flex>
