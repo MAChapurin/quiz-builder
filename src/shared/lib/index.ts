@@ -4,3 +4,4 @@ export { prisma } from "./db";
 export * from "./either";
 export * from "./react";
 export * from "./emitter";
+export * from "./pluralize";

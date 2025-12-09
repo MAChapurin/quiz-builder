@@ -14,12 +14,15 @@ import {
 import { QuizEntity } from "@/entities/quiz/domain";
 import { QuestionEntity } from "@/entities/question/domain";
 
-import { AddQuestionModal } from "@/features/question-crud/ui/add-question-modal";
-import { EditQuestionModal } from "@/features/question-crud/ui/edit-question-modal";
-import { DeleteQuestionModal } from "@/features/question-crud/ui/delete-question-modal";
 import { useRef } from "react";
-import { emitter } from "@/shared/lib";
+import { emitter, pluralize } from "@/shared/lib";
 import { IconCirclePlus, IconPencil, IconTrash } from "@tabler/icons-react";
+import {
+  EditQuizModal,
+  AddQuestionModal,
+  DeleteQuestionModal,
+  EditQuestionModal,
+} from "@/features";
 
 type Props = {
   quiz: QuizEntity;
@@ -30,18 +33,42 @@ export function QuizDetail({ quiz, questions }: Props) {
   const lastQuestionRef = useRef<HTMLDivElement>(null);
   return (
     <Container size="lg" py="lg">
-      <Title order={1}>{quiz.title}</Title>
-      <Text mt="md" c="dimmed">
-        {quiz.description}
-      </Text>
-      <Button
-        leftSection={<IconCirclePlus size={20} />}
-        onClick={() => emitter.emit("add-question-click", { id: quiz.id })}
-        mb="md"
-      >
-        Добавить вопрос
-      </Button>
+      <Card withBorder p="lg" radius="md" mb="md">
+        <Group align="flex-start">
+          <Stack style={{ flex: 1 }}>
+            <Title order={1}>{quiz.title}</Title>
+            {quiz.description && (
+              <Text color="dimmed" size="sm">
+                {quiz.description}
+              </Text>
+            )}
+            <Badge>
+              {questions.length}{" "}
+              {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
+            </Badge>
+          </Stack>
+          <Stack>
+            <Button
+              variant="outline"
+              leftSection={<IconPencil size={16} />}
+              onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
+            >
+              Редактировать квиз
+            </Button>
+            <Button
+              leftSection={<IconCirclePlus size={20} />}
+              onClick={() =>
+                emitter.emit("add-question-click", { id: quiz.id })
+              }
+              mb="md"
+            >
+              Добавить вопрос
+            </Button>
+          </Stack>
+        </Group>
+      </Card>
 
+      <EditQuizModal quizzes={[quiz]} />
       <AddQuestionModal scrollToRef={lastQuestionRef} />
       <EditQuestionModal questions={questions} />
       <DeleteQuestionModal questions={questions} />
@@ -73,7 +100,6 @@ export function QuizDetail({ quiz, questions }: Props) {
 
                 <Group>
                   <Button
-                    fullWidth
                     variant="outline"
                     size="sm"
                     leftSection={<IconPencil size={16} />}
@@ -83,9 +109,7 @@ export function QuizDetail({ quiz, questions }: Props) {
                   >
                     Редактировать
                   </Button>
-
                   <Button
-                    fullWidth
                     color="red"
                     variant="outline"
                     size="sm"
