@@ -1,4 +1,4 @@
-import { ActionIcon, Button } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { logout } from "../actions/logout";
 import { IconLogout } from "@tabler/icons-react";
 
