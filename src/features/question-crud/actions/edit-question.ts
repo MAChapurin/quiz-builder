@@ -1,40 +1,72 @@
-// // features/question/actions/edit-question.ts
+"use server";
 
-// import { questionService } from "@/entities/question/server";
-// import { CreateQuestionDTO } from "@/entities/question/dto";
-// import { Either } from "@/shared/lib/either";
+import { z } from "zod";
+import { questionService } from "@/entities/question/server";
+import { QuestionType } from "@/entities/question/domain";
+import { matchEither } from "@/shared/lib/either";
 
-// export type EditQuestionFormState = FormActionState<CreateQuestionDTO>;
+export type EditQuestionFormState = {
+  formData?: FormData;
+  errors?: {
+    text?: string;
+    type?: string;
+    options?: string;
+    _errors?: string;
+  };
+};
 
-// export const editQuestionAction = async (
-//   formData: FormData,
-// ): Promise<Either<"question-update-failed" | "question-not-found", true>> => {
-//   const questionId = formData.get("questionId") as string;
-//   const quizId = formData.get("quizId") as string;
+const editQuestionSchema = z.object({
+  id: z.string().min(1),
+  text: z.string().min(3, "Текст вопроса должен быть не менее 3 символов"),
+  type: z.nativeEnum(QuestionType),
+  options: z
+    .array(
+      z.object({
+        id: z.string().optional(),
+        text: z.string().min(1, "Текст варианта обязателен"),
+        isCorrect: z.boolean(),
+      }),
+    )
+    .min(1, "Должен быть хотя бы один вариант"),
+});
 
-//   if (!questionId || !quizId) {
-//     return { type: "left", error: "question-update-failed" };
-//   }
+export const editQuestionAction = async (
+  _state: EditQuestionFormState,
+  formData: FormData,
+): Promise<EditQuestionFormState & { success?: boolean }> => {
+  const data = Object.fromEntries(formData.entries());
 
-//   const text = formData.get("text") as string;
-//   const type = formData.get("type") as "SINGLE" | "MULTIPLE";
-//   const optionsRaw = formData.get("options") as string;
+  const options = data.options ? JSON.parse(data.options as string) : [];
 
-//   let options: { id?: string; text: string; isCorrect: boolean }[] = [];
-//   try {
-//     options = JSON.parse(optionsRaw);
-//   } catch {
-//     // options остаются пустыми
-//   }
+  const parsed = editQuestionSchema.safeParse({ ...data, options });
 
-//   const result = await questionService.updateQuestion(questionId, {
-//     quizId,
-//     text,
-//     type,
-//     options,
-//   });
+  if (!parsed.success) {
+    const f = parsed.error.format();
+    return {
+      formData,
+      errors: {
+        text: f.text?._errors?.join(", "),
+        type: f.type?._errors?.join(", "),
+        options: f.options?._errors?.join(", "),
+        _errors: f._errors?.join(", "),
+      },
+    };
+  }
 
-//   if (result.type === "left") return { type: "left", error: result.error };
+  const result = await questionService.updateQuestion(parsed.data.id, {
+    text: parsed.data.text,
+    type: parsed.data.type,
+    options: parsed.data.options,
+  });
 
-//   return { type: "right", value: true };
-// };
+  const question = matchEither(result, {
+    left: () => undefined,
+    right: (q) => q[0],
+  });
+
+  if (!question) {
+    return { formData, errors: { _errors: "Не удалось обновить вопрос" } };
+  }
+
+  return { formData, errors: undefined, success: true };
+};

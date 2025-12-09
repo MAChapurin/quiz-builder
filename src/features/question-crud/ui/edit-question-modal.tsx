@@ -1,162 +1,188 @@
-// "use client";
+"use client";
 
-// import { useState, useEffect } from "react";
-// import {
-//   Modal,
-//   Stack,
-//   TextInput,
-//   Button,
-//   Select,
-//   Checkbox,
-//   Group,
-// } from "@mantine/core";
-// import { useActionState } from "@/shared/lib/react";
-// import {
-//   editQuestionAction,
-//   EditQuestionFormState,
-// } from "../actions/edit-question";
-// import { QuizEntity } from "@/entities/quiz/domain";
-// import { emitter } from "@/shared/lib";
+import { useState, useEffect } from "react";
+import {
+  Modal,
+  Stack,
+  Textarea,
+  TextInput,
+  Button,
+  Checkbox,
+  Radio,
+  CloseButton,
+  Group,
+} from "@mantine/core";
+import { useActionState } from "@/shared/lib/react";
+import { emitter } from "@/shared/lib";
+import {
+  editQuestionAction,
+  EditQuestionFormState,
+} from "../actions/edit-question";
+import { QuestionType } from "@/entities/question/domain";
+import { IconPlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
-// type OptionInput = { id?: string; text: string; isCorrect: boolean };
+type OptionInput = { id?: string; text: string; isCorrect: boolean };
 
-// export function EditQuestionModal({ quizzes }: { quizzes: QuizEntity[] }) {
-//   const [opened, setOpened] = useState(false);
-//   const [quizId, setQuizId] = useState<string | null>(null);
-//   const [questionId, setQuestionId] = useState<string | null>(null);
-//   const [options, setOptions] = useState<OptionInput[]>([]);
+export function EditQuestionModal({ questions }: { questions: any[] }) {
+  const router = useRouter();
 
-//   const [formState, action, isPending] = useActionState(
-//     editQuestionAction,
-//     {} as EditQuestionFormState,
-//   );
+  const [opened, setOpened] = useState(false);
+  const [questionId, setQuestionId] = useState<string | null>(null);
+  const [text, setText] = useState("");
+  const [type, setType] = useState<QuestionType>(QuestionType.SINGLE);
+  const [options, setOptions] = useState<OptionInput[]>([]);
 
-//   // Подписка на клик "Редактировать вопрос"
-//   useEffect(() => {
-//     return emitter.subscribe(
-//       "edit-question-click",
-//       ({ quizId, questionId, questionOptions }) => {
-//         setQuizId(quizId);
-//         setQuestionId(questionId);
-//         setOptions(questionOptions);
-//         setOpened(true);
-//       },
-//     );
-//   }, []);
+  const [formState, action, isPending] = useActionState(
+    editQuestionAction,
+    {} as EditQuestionFormState,
+  );
 
-//   const handleOptionChange = (
-//     index: number,
-//     key: keyof OptionInput,
-//     value: string | boolean,
-//   ) => {
-//     setOptions((prev) =>
-//       prev.map((opt, i) => {
-//         if (i !== index) return opt;
+  useEffect(() => {
+    return emitter.subscribe("edit-question-click", ({ id }) => {
+      const found = questions.find((q) => q.id === id);
+      if (!found) return;
+      setQuestionId(found.id);
+      setText(found.text);
+      setType(found.type);
+      setOptions(found.options.map((o: any) => ({ ...o })));
+      setOpened(true);
+    });
+  }, [questions]);
 
-//         if (key === "text" && typeof value === "string") {
-//           return { ...opt, text: value };
-//         }
-//         if (key === "isCorrect" && typeof value === "boolean") {
-//           return { ...opt, isCorrect: value };
-//         }
+  const addOption = () =>
+    setOptions([...options, { text: "", isCorrect: false }]);
+  const removeOption = (index: number) =>
+    setOptions(options.filter((_, i) => i !== index));
+  const handleTextChange = (index: number, value: string) =>
+    setOptions((prev) =>
+      prev.map((opt, i) => (i === index ? { ...opt, text: value } : opt)),
+    );
+  const setCorrectSingle = (index: number) =>
+    setOptions((prev) =>
+      prev.map((opt, i) => ({ ...opt, isCorrect: i === index })),
+    );
+  const toggleCorrectMultiple = (index: number, checked: boolean) =>
+    setOptions((prev) =>
+      prev.map((opt, i) =>
+        i === index ? { ...opt, isCorrect: checked } : opt,
+      ),
+    );
 
-//         return opt;
-//       }),
-//     );
-//   };
+  const hasAtLeastOneOption = options.some((opt) => opt.text.trim() !== "");
+  const hasAtLeastOneCorrect = options.some((opt) => opt.isCorrect);
+  const canSubmit = hasAtLeastOneOption && hasAtLeastOneCorrect;
 
-//   const addOption = () =>
-//     setOptions([...options, { text: "", isCorrect: false }]);
-//   const removeOption = (index: number) =>
-//     setOptions(options.filter((_, i) => i !== index));
+  useEffect(() => {
+    if (formState.success && !isPending) {
+      setOpened(false);
+      setQuestionId(null);
+      setText("");
+      setType(QuestionType.SINGLE);
+      setOptions([]);
+      router.refresh();
+    }
+  }, [formState.success, isPending, router]);
 
-//   // Сброс формы после успешного редактирования
-//   useEffect(() => {
-//     if (formState.success && !isPending) {
-//       setOpened(false);
-//       setOptions([]);
-//       setQuestionId(null);
-//     }
-//   }, [formState.success, isPending]);
+  if (!questionId) return null;
 
-//   if (!quizId || !questionId) return null;
+  return (
+    <Modal
+      opened={opened}
+      onClose={() => setOpened(false)}
+      title="Редактирование вопроса"
+    >
+      <form action={action}>
+        <input type="hidden" name="id" value={questionId} />
+        <input type="hidden" name="options" value={JSON.stringify(options)} />
 
-//   return (
-//     <Modal
-//       opened={opened}
-//       onClose={() => setOpened(false)}
-//       title="Редактировать вопрос"
-//     >
-//       <form action={action}>
-//         <input type="hidden" name="quizId" value={quizId} />
-//         <input type="hidden" name="questionId" value={questionId} />
+        <Stack>
+          <Textarea
+            label="Текст вопроса"
+            name="text"
+            required
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            error={formState.errors?.text}
+            disabled={isPending}
+          />
 
-//         <Stack>
-//           <TextInput
-//             label="Текст вопроса"
-//             name="text"
-//             required
-//             defaultValue={formState.formData?.get("text") as string}
-//             error={formState.errors?.text}
-//           />
+          <Radio.Group
+            value={type}
+            onChange={(val) => setType(val as QuestionType)}
+            label="Тип вопроса"
+            name="type"
+          >
+            <Group mt="xs">
+              <Radio
+                value={QuestionType.SINGLE}
+                label="Один вариант"
+                disabled={isPending}
+              />
+              <Radio
+                value={QuestionType.MULTIPLE}
+                label="Несколько вариантов"
+                disabled={isPending}
+              />
+            </Group>
+          </Radio.Group>
 
-//           <Select
-//             label="Тип вопроса"
-//             name="type"
-//             data={[
-//               { value: "SINGLE", label: "Один вариант" },
-//               { value: "MULTIPLE", label: "Несколько вариантов" },
-//             ]}
-//             defaultValue={formState.formData?.get("type") as string}
-//             error={formState.errors?.type}
-//             required
-//           />
+          <Stack gap="xs">
+            {options.map((opt, idx) => (
+              <Group key={idx} align="center" gap="xs">
+                <TextInput
+                  placeholder={`Вариант ${idx + 1}`}
+                  value={opt.text}
+                  onChange={(e) => handleTextChange(idx, e.target.value)}
+                  required
+                  style={{ flex: 1 }}
+                  disabled={isPending}
+                />
+                {type === QuestionType.SINGLE ? (
+                  <Radio
+                    checked={opt.isCorrect}
+                    onChange={() => setCorrectSingle(idx)}
+                    disabled={isPending}
+                    label="Верный"
+                  />
+                ) : (
+                  <Checkbox
+                    checked={opt.isCorrect}
+                    onChange={(e) =>
+                      toggleCorrectMultiple(idx, e.currentTarget.checked)
+                    }
+                    disabled={isPending}
+                    label="Верный"
+                  />
+                )}
+                <CloseButton
+                  mt={4}
+                  onClick={() => removeOption(idx)}
+                  disabled={isPending}
+                />
+              </Group>
+            ))}
 
-//           <Stack gap="xs">
-//             {options.map((opt, idx) => (
-//               <Group key={idx} gap="xs">
-//                 <TextInput
-//                   placeholder="Вариант ответа"
-//                   value={opt.text}
-//                   onChange={(e) =>
-//                     handleOptionChange(idx, "text", e.target.value)
-//                   }
-//                   required
-//                   style={{ flex: 1 }}
-//                 />
-//                 <Checkbox
-//                   label="Верный"
-//                   checked={opt.isCorrect}
-//                   onChange={(e) =>
-//                     handleOptionChange(
-//                       idx,
-//                       "isCorrect",
-//                       e.currentTarget.checked,
-//                     )
-//                   }
-//                 />
-//                 <Button
-//                   type="button"
-//                   variant="outline"
-//                   color="red"
-//                   onClick={() => removeOption(idx)}
-//                 >
-//                   ×
-//                 </Button>
-//               </Group>
-//             ))}
-//             <Button type="button" variant="outline" onClick={addOption}>
-//               Добавить вариант
-//             </Button>
-//           </Stack>
+            <Button
+              leftSection={<IconPlus />}
+              type="button"
+              variant="subtle"
+              onClick={addOption}
+              disabled={isPending}
+            >
+              Добавить вариант
+            </Button>
+          </Stack>
 
-//           <Button type="submit" loading={isPending}>
-//             Сохранить изменения
-//           </Button>
-//         </Stack>
-
-//         <input type="hidden" name="options" value={JSON.stringify(options)} />
-//       </form>
-//     </Modal>
-//   );
-// }
+          <Button
+            type="submit"
+            loading={isPending}
+            disabled={isPending || !canSubmit}
+          >
+            Сохранить
+          </Button>
+        </Stack>
+      </form>
+    </Modal>
+  );
+}

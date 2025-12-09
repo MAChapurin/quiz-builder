@@ -15,9 +15,10 @@ import { QuizEntity } from "@/entities/quiz/domain";
 import { QuestionEntity } from "@/entities/question/domain";
 
 import { AddQuestionModal } from "@/features/question-crud/ui/add-question-modal";
+import { EditQuestionModal } from "@/features/question-crud/ui/edit-question-modal";
 import { useRef } from "react";
 import { emitter } from "@/shared/lib";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil } from "@tabler/icons-react";
 
 type Props = {
   quiz: QuizEntity;
@@ -33,7 +34,6 @@ export function QuizDetail({ quiz, questions }: Props) {
       <Text mt="md" c="dimmed">
         {quiz.description}
       </Text>
-
       <Button
         leftSection={<IconCirclePlus size={20} />}
         onClick={() => emitter.emit("add-question-click", { id: quiz.id })}
@@ -43,26 +43,44 @@ export function QuizDetail({ quiz, questions }: Props) {
       </Button>
 
       <AddQuestionModal scrollToRef={lastQuestionRef} />
+      <EditQuestionModal questions={questions} />
 
       <Stack mt="lg" gap="md">
         {questions.map((q, index) => (
-          <Card key={q.id} withBorder>
-            <Group justify="space-between">
-              <Text fw={600}>
-                {index + 1}. {q.text}
-              </Text>
-              <Badge size="sm">
-                {q.type === "SINGLE" ? "Один вариант" : "Несколько"}
-              </Badge>
+          <Card key={q.id} withBorder p="md">
+            <Group align="flex-start">
+              <div>
+                <Text fw={600}>
+                  {index + 1}. {q.text}
+                </Text>
+                <Stack mt="xs" gap={4}>
+                  {q.options.map((o) => (
+                    <Text
+                      key={o.id}
+                      size="sm"
+                      c={o.isCorrect ? "green" : "dimmed"}
+                    >
+                      • {o.text}
+                    </Text>
+                  ))}
+                </Stack>
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                leftSection={<IconPencil size={16} />}
+                onClick={() =>
+                  emitter.emit("edit-question-click", { id: q.id })
+                }
+              >
+                Редактировать
+              </Button>
             </Group>
 
-            <Stack mt="xs" gap={4}>
-              {q.options.map((o) => (
-                <Text key={o.id} size="sm" c={o.isCorrect ? "green" : "dimmed"}>
-                  • {o.text}
-                </Text>
-              ))}
-            </Stack>
+            <Badge mt="sm" size="sm">
+              {q.type === "SINGLE" ? "Один вариант" : "Несколько"}
+            </Badge>
           </Card>
         ))}
 
@@ -78,6 +96,7 @@ export function QuizDetail({ quiz, questions }: Props) {
             Добавить вопрос
           </Button>
         </Card>
+
         <div ref={lastQuestionRef} />
       </Stack>
       <div className="h-10" />

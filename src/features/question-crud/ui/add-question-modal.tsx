@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 import {
   Modal,
   Stack,
@@ -85,10 +85,12 @@ export function AddQuestionModal({
       setOptions([{ text: "", isCorrect: false }]);
       setText("");
       setType("SINGLE");
-      router.refresh();
+      startTransition(() => {
+        router.refresh();
+      });
       setTimeout(
         () => scrollToRef?.current?.scrollIntoView({ behavior: "smooth" }),
-        500,
+        100,
       );
     }
   }, [formState.success, isPending]);
