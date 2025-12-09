@@ -16,9 +16,10 @@ import { QuestionEntity } from "@/entities/question/domain";
 
 import { AddQuestionModal } from "@/features/question-crud/ui/add-question-modal";
 import { EditQuestionModal } from "@/features/question-crud/ui/edit-question-modal";
+import { DeleteQuestionModal } from "@/features/question-crud/ui/delete-question-modal";
 import { useRef } from "react";
 import { emitter } from "@/shared/lib";
-import { IconCirclePlus, IconPencil } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil, IconTrash } from "@tabler/icons-react";
 
 type Props = {
   quiz: QuizEntity;
@@ -43,12 +44,13 @@ export function QuizDetail({ quiz, questions }: Props) {
 
       <AddQuestionModal scrollToRef={lastQuestionRef} />
       <EditQuestionModal questions={questions} />
+      <DeleteQuestionModal questions={questions} />
 
       <Stack mt="lg" gap="md">
         {questions.map((q, index) => (
           <Card key={q.id} withBorder p="md">
-            <Group align="flex-start">
-              <div>
+            <Group align="stretch" justify="space-between" h="100%">
+              <Stack>
                 <Text fw={600}>
                   {index + 1}. {q.text}
                 </Text>
@@ -63,23 +65,40 @@ export function QuizDetail({ quiz, questions }: Props) {
                     </Text>
                   ))}
                 </Stack>
-              </div>
+              </Stack>
+              <Stack justify="space-between" align="flex-end" ml={"auto"}>
+                <Badge size="sm">
+                  {q.type === "SINGLE" ? "Один вариант" : "Несколько"}
+                </Badge>
 
-              <Button
-                variant="outline"
-                size="sm"
-                leftSection={<IconPencil size={16} />}
-                onClick={() =>
-                  emitter.emit("edit-question-click", { id: q.id })
-                }
-              >
-                Редактировать
-              </Button>
+                <Group>
+                  <Button
+                    fullWidth
+                    variant="outline"
+                    size="sm"
+                    leftSection={<IconPencil size={16} />}
+                    onClick={() =>
+                      emitter.emit("edit-question-click", { id: q.id })
+                    }
+                  >
+                    Редактировать
+                  </Button>
+
+                  <Button
+                    fullWidth
+                    color="red"
+                    variant="outline"
+                    size="sm"
+                    leftSection={<IconTrash size={16} />}
+                    onClick={() =>
+                      emitter.emit("delete-question-click", { id: q.id })
+                    }
+                  >
+                    Удалить
+                  </Button>
+                </Group>
+              </Stack>
             </Group>
-
-            <Badge mt="sm" size="sm">
-              {q.type === "SINGLE" ? "Один вариант" : "Несколько"}
-            </Badge>
           </Card>
         ))}
 

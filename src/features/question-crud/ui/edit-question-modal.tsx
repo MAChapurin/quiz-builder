@@ -40,6 +40,11 @@ export function EditQuestionModal({
   const [formState, action, isPending] = useActionState(
     editQuestionAction,
     {} as EditQuestionFormState,
+    undefined,
+    {
+      success: "Вопрос успешно изменен",
+      error: "Не удалось отредактировать вопрос",
+    },
   );
 
   useEffect(() => {
