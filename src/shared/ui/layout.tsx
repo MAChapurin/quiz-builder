@@ -14,7 +14,7 @@ export function Layout({ headerSlot, footerSlot, children }: LayoutProps) {
     <AppShell header={{ height: 60 }} padding="0">
       <AppShell.Header>{headerSlot}</AppShell.Header>
       <AppShell.Main>{children}</AppShell.Main>
-      {footerSlot}
+      <AppShell.Footer>{footerSlot}</AppShell.Footer>
     </AppShell>
   );
 }

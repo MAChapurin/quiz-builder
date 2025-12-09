@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState as useReactActionState } from "react";
-import { toast } from "sonner";
+import { notifications } from "@mantine/notifications";
 
 type ToastMessages = {
   success?: string;
@@ -9,7 +9,6 @@ type ToastMessages = {
 };
 
 type ActionWithoutPayload<State> = (prevState: State) => State | Promise<State>;
-
 type ActionWithPayload<State, Payload> = (
   prevState: State,
   payload: Payload,
@@ -70,20 +69,31 @@ export function useActionState<
         );
 
       if (!hasErrors && toastMessages?.success) {
-        toast.success(toastMessages.success);
+        notifications.show({
+          title: "Готово",
+          message: toastMessages.success,
+          color: "green",
+        });
       }
 
       if (hasErrors && toastMessages?.error) {
-        toast.error(toastMessages.error);
+        notifications.show({
+          title: "Ошибка",
+          message: toastMessages.error,
+          color: "red",
+        });
       }
 
       return result;
     } catch (error: unknown) {
-      if (isNextRedirectError(error)) {
-        throw error;
-      }
+      if (isNextRedirectError(error)) throw error;
 
-      toast.error("Что-то пошло не так");
+      notifications.show({
+        title: "Ошибка",
+        message: "Что-то пошло не так",
+        color: "red",
+      });
+
       console.error(error);
       return prevState;
     }

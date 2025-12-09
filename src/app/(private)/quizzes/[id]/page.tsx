@@ -1,6 +1,15 @@
 import { quizService } from "@/entities/quiz/server";
 import { AddQuestionModal } from "@/features/question-crud/ui/add-question-modal";
-import { Card, Title, Text, Button, Center, Stack, Box } from "@mantine/core";
+import {
+  Card,
+  Title,
+  Text,
+  Button,
+  Center,
+  Stack,
+  Box,
+  Container,
+} from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -20,13 +29,13 @@ export default async function QuizPage({
   const quiz = result.value;
 
   return (
-    <Box className="max-w-3xl mx-auto py-10 px-4">
+    <Container size="lg">
       <Title order={1}>{quiz.title}</Title>
       <Text mt="md" c="dimmed">
         {quiz.description}
       </Text>
       <AddQuestionModal quizId={id} />
-    </Box>
+    </Container>
   );
 }
 

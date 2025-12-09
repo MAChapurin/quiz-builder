@@ -15,6 +15,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@mantine/core": "8.0.0",
     "@mantine/hooks": "8.0.0",
+    "@mantine/notifications": "^8.3.10",
     "@paralleldrive/cuid2": "3.0.4",
     "@prisma/client": "6.19.0",
     "@tabler/icons-react": "3.35.0",
