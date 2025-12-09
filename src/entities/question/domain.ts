@@ -16,4 +16,5 @@ export type QuestionEntity = {
   text: string;
   type: QuestionType;
   options: OptionEntity[];
+  createdAt: Date;
 };

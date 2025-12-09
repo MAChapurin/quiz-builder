@@ -37,6 +37,7 @@ model Question {
   text    String
   options Option[]
   answers Answer[]
+  createdAt  DateTime @default(now())
 }
 
 model Option {
@@ -45,6 +46,7 @@ model Option {
   questionId String
   text       String
   isCorrect  Boolean  @default(false)
+  order      Int      @default(0)
 }
 
 model Answer {

@@ -27,7 +27,6 @@ type Props = {
 
 export function QuizDetail({ quiz, questions }: Props) {
   const lastQuestionRef = useRef<HTMLDivElement>(null);
-
   return (
     <Container size="lg" py="lg">
       <Title order={1}>{quiz.title}</Title>

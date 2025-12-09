@@ -18,13 +18,17 @@ import {
   editQuestionAction,
   EditQuestionFormState,
 } from "../actions/edit-question";
-import { QuestionType } from "@/entities/question/domain";
+import { QuestionEntity, QuestionType } from "@/entities/question/domain";
 import { IconPlus } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 
 type OptionInput = { id?: string; text: string; isCorrect: boolean };
 
-export function EditQuestionModal({ questions }: { questions: any[] }) {
+export function EditQuestionModal({
+  questions,
+}: {
+  questions: QuestionEntity[];
+}) {
   const router = useRouter();
 
   const [opened, setOpened] = useState(false);
@@ -45,7 +49,7 @@ export function EditQuestionModal({ questions }: { questions: any[] }) {
       setQuestionId(found.id);
       setText(found.text);
       setType(found.type);
-      setOptions(found.options.map((o: any) => ({ ...o })));
+      setOptions(found.options.map((o) => ({ ...o })));
       setOpened(true);
     });
   }, [questions]);

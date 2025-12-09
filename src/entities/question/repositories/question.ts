@@ -8,9 +8,19 @@ export async function createQuestion(data: CreateQuestionDTO) {
       quizId: data.quizId,
       text: data.text,
       type: data.type,
-      options: { create: data.options },
+      options: {
+        create: data.options.map((opt, index) => ({
+          text: opt.text,
+          isCorrect: opt.isCorrect,
+          order: index,
+        })),
+      },
     },
-    include: { options: true },
+    include: {
+      options: {
+        orderBy: { order: "asc" },
+      },
+    },
   });
 
   return question as unknown as QuestionEntity & { options: OptionEntity[] };
@@ -19,7 +29,12 @@ export async function createQuestion(data: CreateQuestionDTO) {
 export async function getQuestionsByQuiz(quizId: string) {
   return prisma.question.findMany({
     where: { quizId },
-    include: { options: true },
+    include: {
+      options: {
+        orderBy: { order: "asc" },
+      },
+    },
+    orderBy: { createdAt: "asc" },
   }) as Promise<(QuestionEntity & { options: OptionEntity[] })[]>;
 }
 
@@ -31,25 +46,47 @@ export async function updateQuestion(
 ) {
   const question = await prisma.question.update({
     where: { id },
-    data: { text: data.text, type: data.type },
+    data: {
+      text: data.text,
+      type: data.type,
+    },
   });
 
   if (data.options) {
-    for (const opt of data.options) {
+    for (let index = 0; index < data.options.length; index++) {
+      const opt = data.options[index];
+
       if (opt.id) {
         await prisma.option.update({
           where: { id: opt.id },
-          data: { text: opt.text, isCorrect: opt.isCorrect },
+          data: {
+            text: opt.text,
+            isCorrect: opt.isCorrect,
+            order: index,
+          },
         });
       } else {
         await prisma.option.create({
-          data: { questionId: id, text: opt.text, isCorrect: opt.isCorrect },
+          data: {
+            questionId: id,
+            text: opt.text,
+            isCorrect: opt.isCorrect,
+            order: index,
+          },
         });
       }
     }
   }
 
-  return getQuestionsByQuiz(question.quizId);
+  return prisma.question.findMany({
+    where: { quizId: question.quizId },
+    include: {
+      options: {
+        orderBy: { order: "asc" },
+      },
+    },
+    orderBy: { createdAt: "asc" },
+  }) as Promise<(QuestionEntity & { options: OptionEntity[] })[]>;
 }
 
 export async function deleteQuestion(id: string) {
