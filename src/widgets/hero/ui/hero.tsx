@@ -1,3 +1,4 @@
+import { DemoQuizContainer } from "@/features/practice-quiz/ui/demo-quiz-container";
 import { LINKS_ID } from "@/shared/config";
 import {
   Box,
@@ -24,12 +25,8 @@ export function Hero() {
               настройками и мгновенным сбором ответов.
             </Text>
             <Group mt="md">
-              <Button size="md" radius="md">
-                Создать тест
-              </Button>
-              <Button size="md" variant="outline" radius="md">
-                Попробовать демо
-              </Button>
+              <Button>Создать тест</Button>
+              <DemoQuizContainer />
             </Group>
           </Stack>
         </Center>

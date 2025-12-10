@@ -27,9 +27,13 @@ import { QuestionEntity } from "@/entities/question/domain";
 
 type PracticeQuizModalProps = {
   questions: QuestionEntity[];
+  title?: string;
 };
 
-export function PracticeQuizModal({ questions }: PracticeQuizModalProps) {
+export function PracticeQuizModal({
+  questions,
+  title = "Пробное прохождение квиза",
+}: PracticeQuizModalProps) {
   const [opened, { toggle }] = useDisclosure(false);
   const [isOpen, setOpened] = useState(false);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
@@ -114,7 +118,7 @@ export function PracticeQuizModal({ questions }: PracticeQuizModalProps) {
     <Modal
       opened={isOpen}
       onClose={() => setOpened(false)}
-      title="Пробное прохождение квиза"
+      title={title}
       size="lg"
     >
       <Stack gap="md">
