@@ -4,7 +4,6 @@ import {
   Title,
   Text,
   Card,
-  Group,
   SimpleGrid,
   Box,
   ThemeIcon,
