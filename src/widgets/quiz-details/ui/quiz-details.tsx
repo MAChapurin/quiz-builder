@@ -16,12 +16,18 @@ import { QuestionEntity } from "@/entities/question/domain";
 
 import { useRef } from "react";
 import { emitter, pluralize } from "@/shared/lib";
-import { IconCirclePlus, IconPencil, IconTrash } from "@tabler/icons-react";
+import {
+  IconCirclePlus,
+  IconPencil,
+  IconPlayerPlay,
+  IconTrash,
+} from "@tabler/icons-react";
 import {
   EditQuizModal,
   AddQuestionModal,
   DeleteQuestionModal,
   EditQuestionModal,
+  PracticeQuizModal,
 } from "@/features";
 
 type Props = {
@@ -56,6 +62,16 @@ export function QuizDetail({ quiz, questions }: Props) {
               Редактировать квиз
             </Button>
             <Button
+              variant="outline"
+              leftSection={<IconPlayerPlay size={16} />}
+              onClick={() =>
+                emitter.emit("quiz-practice-click", { id: quiz.id })
+              }
+            >
+              Пройти пробно
+            </Button>
+
+            <Button
               leftSection={<IconCirclePlus size={20} />}
               onClick={() =>
                 emitter.emit("add-question-click", { id: quiz.id })
@@ -72,6 +88,7 @@ export function QuizDetail({ quiz, questions }: Props) {
       <AddQuestionModal scrollToRef={lastQuestionRef} />
       <EditQuestionModal questions={questions} />
       <DeleteQuestionModal questions={questions} />
+      <PracticeQuizModal questions={questions} />
 
       <Stack mt="lg" gap="md">
         {questions.map((q, index) => (

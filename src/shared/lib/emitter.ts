@@ -6,6 +6,7 @@ type EventsMap = {
   "add-question-click": { id: string };
   "edit-question-click": { id: string };
   "delete-question-click": { id: string };
+  "quiz-practice-click": { id: string };
 };
 
 type EventCallback<T> = (data: T) => void;

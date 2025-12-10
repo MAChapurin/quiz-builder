@@ -3,3 +3,4 @@ export * from "./auth";
 export * from "./quiz-crud";
 export * from "./profile";
 export * from "./question-crud";
+export * from "./practice-quiz";
