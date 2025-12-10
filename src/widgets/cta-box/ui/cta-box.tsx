@@ -1,12 +1,5 @@
-import {
-  Button,
-  Container,
-  Title,
-  Text,
-  Stack,
-  Box,
-  Center,
-} from "@mantine/core";
+import { CTAModal } from "@/features/cta-modal";
+import { Container, Title, Text, Stack, Box, Center } from "@mantine/core";
 
 export function CtaBox() {
   return (
@@ -20,9 +13,7 @@ export function CtaBox() {
             <Text fz="lg" c="dimmed" ta="center">
               Начните прямо сейчас — это бесплатно и занимает всего пару минут.
             </Text>
-            <Button size="lg" radius="md">
-              Начать сейчас
-            </Button>
+            <CTAModal btnText="Начать сейчас" variant="filled" />
           </Stack>
         </Center>
       </Container>

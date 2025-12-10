@@ -1,8 +1,9 @@
-import { DemoQuizContainer } from "@/features/practice-quiz/ui/demo-quiz-container";
+import { DemoQuizContainer } from "@/features";
+import { CTAModal } from "@/features/cta-modal";
+
 import { LINKS_ID } from "@/shared/config";
 import {
   Box,
-  Button,
   Center,
   Container,
   Group,
@@ -25,7 +26,7 @@ export function Hero() {
               настройками и мгновенным сбором ответов.
             </Text>
             <Group mt="md">
-              <Button>Создать тест</Button>
+              <CTAModal />
               <DemoQuizContainer />
             </Group>
           </Stack>
