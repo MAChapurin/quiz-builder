@@ -11,11 +11,13 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { HeroBG } from "./hero-bg";
 
 export function Hero() {
   return (
-    <Box py={80} id={LINKS_ID.HOME}>
-      <Container size="lg">
+    <Box py={80} id={LINKS_ID.HOME} pos={"relative"}>
+      <Container size="lg" pos={"relative"} className="z-0">
+        <HeroBG />
         <Center>
           <Stack align="center" maw={700}>
             <Title order={1} fw={800} ta="center">

@@ -1,11 +1,13 @@
 import { CTAModal } from "@/features/cta-modal";
+import { DotsLineBlock } from "@/shared/ui";
 import { Container, Title, Text, Stack, Box, Center } from "@mantine/core";
 
 export function CtaBox() {
   return (
-    <Box py={80}>
+    <Box>
+      <DotsLineBlock />
       <Container size="lg">
-        <Center>
+        <Center py={80}>
           <Stack align="center">
             <Title order={2} fw={800} ta="center">
               Готовы создать свой первый тест?
@@ -17,6 +19,7 @@ export function CtaBox() {
           </Stack>
         </Center>
       </Container>
+      <DotsLineBlock />
     </Box>
   );
 }
