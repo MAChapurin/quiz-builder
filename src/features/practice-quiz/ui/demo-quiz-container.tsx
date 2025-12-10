@@ -19,10 +19,10 @@ import {
   IconLayoutDashboard,
 } from "@tabler/icons-react";
 
-import { PracticeQuizModal } from "./practice-quiz-modal";
 import { QuestionEntity } from "@/entities/question/domain";
 import { demoQuestions } from "../mock";
 import { emitter } from "@/shared/lib";
+import { PracticeQuizModal } from "./practice-quiz-modal";
 
 export function DemoQuizContainer() {
   const [categoryOpen, setCategoryOpen] = useState(false);
