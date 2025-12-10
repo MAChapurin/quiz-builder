@@ -1,44 +1,80 @@
+"use client";
+
 import { LINKS_ID } from "@/shared/config";
-import { Box, Card, Container, SimpleGrid, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Container,
+  Text,
+  Title,
+  Timeline,
+  ThemeIcon,
+  Stack,
+  Divider,
+  Card,
+} from "@mantine/core";
+import { IconEdit, IconShare, IconChartBar } from "@tabler/icons-react";
 
 export function HowItWorksBox() {
   return (
-    <Box py={80} id={LINKS_ID.HOW}>
+    <Box id={LINKS_ID.HOW}>
+      <Divider mb={80} />
       <Container size="lg">
-        <Title order={2} ta="center" mb={40} fw={700}>
-          Как это работает
-        </Title>
-        <SimpleGrid cols={{ base: 1, sm: 3 }} spacing={30}>
-          <Card withBorder radius="lg" p="xl" ta="center">
-            <Title order={3} mb="sm">
-              1. Создайте тест
-            </Title>
-            <Text c="dimmed">
-              Добавьте вопросы, выберите типы ответов, настройте дизайн и
-              структуру теста.
-            </Text>
-          </Card>
+        <Stack align="center" mb={60} gap={8}>
+          <Title order={2} fw={800} ta="center">
+            Как это работает ?
+          </Title>
+          <Text c="dimmed" ta="center" maw={520}>
+            Всего три простых шага — и ваш квиз готов к запуску
+          </Text>
+        </Stack>
+        <Card withBorder radius="xl" p="xl">
+          <Timeline
+            bulletSize={48}
+            lineWidth={3}
+            className="max-w-full mx-auto"
+            variant="default"
+          >
+            <Timeline.Item
+              title="Создайте тест"
+              bullet={
+                <ThemeIcon size={48} radius="xl" variant="light">
+                  <IconEdit size={24} />
+                </ThemeIcon>
+              }
+            >
+              <Text c="dimmed" size="sm">
+                Добавьте вопросы, настройте варианты ответов и структуру квиза.
+              </Text>
+            </Timeline.Item>
 
-          <Card withBorder radius="lg" p="xl" ta="center">
-            <Title order={3} mb="sm">
-              2. Поделитесь ссылкой
-            </Title>
-            <Text c="dimmed">
-              Отправьте ссылку участникам, разместите её в соцсетях или на
-              сайте.
-            </Text>
-          </Card>
+            <Timeline.Item
+              title="Поделитесь ссылкой"
+              bullet={
+                <ThemeIcon size={48} radius="xl" variant="light">
+                  <IconShare size={24} />
+                </ThemeIcon>
+              }
+            >
+              <Text c="dimmed" size="sm">
+                Отправьте ссылку участникам или разместите её в любом удобном
+                месте.
+              </Text>
+            </Timeline.Item>
 
-          <Card withBorder radius="lg" p="xl" ta="center">
-            <Title order={3} mb="sm">
-              3. Получите результаты
-            </Title>
-            <Text c="dimmed">
-              Следите за ответами, анализируйте данные и выгружайте их в нужном
-              формате.
-            </Text>
-          </Card>
-        </SimpleGrid>
+            <Timeline.Item
+              title="Получайте результаты"
+              bullet={
+                <ThemeIcon size={48} radius="xl" variant="light">
+                  <IconChartBar size={24} />
+                </ThemeIcon>
+              }
+            >
+              <Text c="dimmed" size="sm">
+                Следите за ответами и аналитикой в режиме реального времени.
+              </Text>
+            </Timeline.Item>
+          </Timeline>
+        </Card>
       </Container>
     </Box>
   );
