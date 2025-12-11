@@ -1,12 +1,13 @@
 "use client";
 
-import { Divider, SegmentedControl } from "@mantine/core";
+import { Divider, Flex, SegmentedControl } from "@mantine/core";
 import { QuestionEntity } from "@/entities/question/domain";
 import { QuizWithQuestions } from "@/entities/quiz/domain";
 
 import {
   DeleteQuizModal,
   EditQuizModal,
+  HelpDrawer,
   PracticeQuizModal,
   useOpenQuiz,
 } from "@/features";
@@ -15,6 +16,7 @@ import { useEffect, useState } from "react";
 import { QuizTableList } from "./quiz-table-list";
 import { QuizCardsList } from "./quiz-card-list";
 import { IconArticle, IconBorderAll } from "@tabler/icons-react";
+import { QuizHelpContent } from "@/features/help-drawer/ui/quiz-list-hep-content";
 
 export type QuizListViewType = "table" | "cards";
 
@@ -46,15 +48,18 @@ export function QuizList({
   return (
     <div>
       <Divider my={16} />
-      <SegmentedControl
-        value={view}
-        onChange={(v) => setView(v as QuizListViewType)}
-        data={[
-          { label: <IconArticle />, value: "table" },
-          { label: <IconBorderAll />, value: "cards" },
-        ]}
-        size="sm"
-      />
+      <Flex align={"center"} justify={"space-between"}>
+        <SegmentedControl
+          value={view}
+          onChange={(v) => setView(v as QuizListViewType)}
+          data={[
+            { label: <IconArticle />, value: "table" },
+            { label: <IconBorderAll />, value: "cards" },
+          ]}
+          size="sm"
+        />
+        <HelpDrawer content={<QuizHelpContent />} />
+      </Flex>
       <Divider my={16} />
 
       <EditQuizModal quizzes={quizzes} />
