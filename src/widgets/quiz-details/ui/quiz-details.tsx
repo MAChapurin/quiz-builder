@@ -62,6 +62,7 @@ export function QuizDetail({ quiz, questions }: Props) {
               Редактировать квиз
             </Button>
             <Button
+              disabled={questions.length === 0}
               variant="outline"
               leftSection={<IconPlayerPlay size={16} />}
               onClick={() =>

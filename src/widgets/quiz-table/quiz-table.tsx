@@ -18,23 +18,43 @@ import {
   IconTrash,
   IconDotsVertical,
   IconEdit,
+  IconPlayerPlay,
 } from "@tabler/icons-react";
 
 import { QuizWithQuestions } from "@/entities/quiz/domain";
-import { DeleteQuizModal, EditQuizModal, useOpenQuiz } from "@/features";
+import {
+  DeleteQuizModal,
+  EditQuizModal,
+  PracticeQuizModal,
+  useOpenQuiz,
+} from "@/features";
 import { emitter, formatDateRu, pluralize } from "@/shared/lib";
-import { FetchQuizQuestionsButton } from "@/features/practice-quiz/ui/FetchQuizQuestionsButton";
+import { useEffect, useState } from "react";
+import { QuestionEntity } from "@/entities/question/domain";
 
 export function QuizTable({
   quizzes,
 }: {
   quizzes: (QuizWithQuestions & { createdAtFormatted: string })[];
 }) {
+  const [questions, setQuestions] = useState<QuestionEntity[]>([]);
+
   useOpenQuiz();
+
+  useEffect(() => {
+    return emitter.subscribe("quiz-practice-click", ({ id }) => {
+      const targetQuiz = quizzes.find((quiz) => quiz.id === id);
+      if (targetQuiz) {
+        setQuestions(targetQuiz.questions);
+      }
+    });
+  }, []);
+
   return (
     <div>
       <EditQuizModal quizzes={quizzes} />
       <DeleteQuizModal quizzes={quizzes} />
+      <PracticeQuizModal questions={questions} />
       <Stack className="block md:hidden" gap="sm">
         {quizzes.map((quiz) => (
           <Box key={quiz.id} className="p-4 border border-gray-300 rounded-md">
@@ -140,7 +160,16 @@ export function QuizTable({
               <Table.Td className="text-center">0</Table.Td>
               <Table.Td>
                 <Flex className="justify-end gap-2">
-                  <FetchQuizQuestionsButton quizId={quiz.id} />
+                  <ActionIcon
+                    disabled={quiz.questions.length === 0}
+                    size={"md"}
+                    variant="outline"
+                    onClick={() => {
+                      emitter.emit("quiz-practice-click", { id: quiz.id });
+                    }}
+                  >
+                    <IconPlayerPlay size={16} />
+                  </ActionIcon>
                   <ActionIcon size={"md"} variant="outline">
                     <IconShare size={16} />
                   </ActionIcon>
