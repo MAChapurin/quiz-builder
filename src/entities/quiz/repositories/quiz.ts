@@ -21,6 +21,20 @@ export async function getQuizzesByUser(
   }) as unknown as QuizEntity[];
 }
 
+export async function getQuizzesByUserWithQuestions(authorId: string) {
+  return prisma.quiz.findMany({
+    where: { authorId },
+    include: {
+      questions: {
+        include: {
+          options: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
 export async function updateQuiz(
   id: string,
   data: Partial<CreateQuizDTO>,
@@ -37,6 +51,7 @@ export const quizRepository = {
   createQuiz,
   getQuiz,
   getQuizzesByUser,
+  getQuizzesByUserWithQuestions,
   updateQuiz,
   deleteQuiz,
 };

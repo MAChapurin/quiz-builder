@@ -1,7 +1,12 @@
-export enum QuestionType {
-  SINGLE = "SINGLE",
-  MULTIPLE = "MULTIPLE",
-}
+import { QuestionType as PrismaQuestionType } from "@prisma/client";
+
+export const QuestionType = PrismaQuestionType;
+export type QuestionType = PrismaQuestionType;
+
+// export enum QuestionType {
+//   SINGLE = "SINGLE",
+//   MULTIPLE = "MULTIPLE",
+// }
 
 export type OptionEntity = {
   id: string;

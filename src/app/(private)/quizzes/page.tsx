@@ -16,7 +16,9 @@ export default async function QuizzesPage() {
   const { session } = await sessionService.verifySession();
   if (!session) return <UserNotFound />;
 
-  const quizzesResult = await quizService.getQuizzesByUserService(session.id);
+  const quizzesResult = await quizService.getQuizzesWithQuestionsByUser(
+    session.id,
+  );
   const quizzes = matchEither(quizzesResult, {
     left: () => [],
     right: (q) =>
@@ -26,6 +28,7 @@ export default async function QuizzesPage() {
       })),
   });
 
+  // console.log(quizzes);
   return (
     <Container size={"lg"}>
       <div className="flex justify-between items-center my-10">

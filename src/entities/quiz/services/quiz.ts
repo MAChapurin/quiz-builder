@@ -1,6 +1,6 @@
 import { quizRepository } from "../repositories/quiz";
 import { CreateQuizDTO } from "../dto";
-import { QuizEntity } from "../domain";
+import { QuizEntity, QuizWithQuestions } from "../domain";
 import { left, right, Either } from "@/shared/lib/either";
 
 export const createQuizService = async (
@@ -28,6 +28,18 @@ export const getQuizzesByUserService = async (
 ): Promise<Either<"no-quizzes", QuizEntity[]>> => {
   const quizzes = await quizRepository.getQuizzesByUser(authorId);
   if (!quizzes || quizzes.length === 0) return left("no-quizzes");
+  return right(quizzes);
+};
+
+export const getQuizzesWithQuestionsByUser = async (
+  userId: string,
+): Promise<Either<"quizzes-not-found", QuizWithQuestions[]>> => {
+  const quizzes = await quizRepository.getQuizzesByUserWithQuestions(userId);
+
+  if (!quizzes || quizzes.length === 0) {
+    return left("quizzes-not-found");
+  }
+
   return right(quizzes);
 };
 

@@ -20,14 +20,15 @@ import {
   IconEdit,
 } from "@tabler/icons-react";
 
-import { QuizEntity } from "@/entities/quiz/domain";
+import { QuizWithQuestions } from "@/entities/quiz/domain";
 import { DeleteQuizModal, EditQuizModal, useOpenQuiz } from "@/features";
-import { emitter, formatDateRu } from "@/shared/lib";
+import { emitter, formatDateRu, pluralize } from "@/shared/lib";
+import { FetchQuizQuestionsButton } from "@/features/practice-quiz/ui/FetchQuizQuestionsButton";
 
 export function QuizTable({
   quizzes,
 }: {
-  quizzes: (QuizEntity & { createdAtFormatted: string })[];
+  quizzes: (QuizWithQuestions & { createdAtFormatted: string })[];
 }) {
   useOpenQuiz();
   return (
@@ -43,16 +44,33 @@ export function QuizTable({
                   component="span"
                   className="font-semibold flex items-center gap-2"
                 >
-                  <Tooltip label="Количество прохождений" refProp="rootRef">
-                    <Chip size="xs" defaultChecked>
-                      0
-                    </Chip>
-                  </Tooltip>
                   {quiz.title}
                 </Text>
                 <Text className="text-xs text-gray-500">
                   {formatDateRu(quiz.createdAtFormatted)}
                 </Text>
+              </Stack>
+              <Stack>
+                <Tooltip label="Количество прохождений" refProp="rootRef">
+                  <Chip size="xs" defaultChecked>
+                    0{" "}
+                    {pluralize(0, [
+                      "прохождение",
+                      "прохождения",
+                      "прохождений",
+                    ])}
+                  </Chip>
+                </Tooltip>
+                <Tooltip label="Количество вопросов" refProp="rootRef">
+                  <Chip size="xs" defaultChecked>
+                    {quiz.questions.length}{" "}
+                    {pluralize(quiz.questions.length, [
+                      "вопрос",
+                      "вопроса",
+                      "вопросов",
+                    ])}
+                  </Chip>
+                </Tooltip>
               </Stack>
 
               <Menu shadow="md" width={200}>
@@ -103,6 +121,7 @@ export function QuizTable({
           <Table.Tr>
             <Table.Th>Название</Table.Th>
             <Table.Th className="text-center">Дата создания</Table.Th>
+            <Table.Th className="text-center">Количество вопросов</Table.Th>
             <Table.Th className="text-center">Прохождения</Table.Th>
             <Table.Th className="text-right">Действия</Table.Th>
           </Table.Tr>
@@ -115,9 +134,13 @@ export function QuizTable({
               <Table.Td className="text-center">
                 {formatDateRu(quiz.createdAtFormatted)}
               </Table.Td>
+              <Table.Td className="text-center">
+                {quiz.questions.length}
+              </Table.Td>
               <Table.Td className="text-center">0</Table.Td>
               <Table.Td>
                 <Flex className="justify-end gap-2">
+                  <FetchQuizQuestionsButton quizId={quiz.id} />
                   <ActionIcon size={"md"} variant="outline">
                     <IconShare size={16} />
                   </ActionIcon>
