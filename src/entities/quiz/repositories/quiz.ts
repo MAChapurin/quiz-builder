@@ -47,6 +47,19 @@ export async function deleteQuiz(id: string): Promise<void> {
   await prisma.quiz.delete({ where: { id } });
 }
 
+export async function togglePublishQuiz(id: string, isPublished: boolean) {
+  return prisma.quiz.update({
+    where: { id },
+    data: { isPublished },
+  }) as unknown as QuizEntity;
+}
+
+export async function getQuizQuestionsCount(quizId: string) {
+  return prisma.question.count({
+    where: { quizId },
+  });
+}
+
 export const quizRepository = {
   createQuiz,
   getQuiz,
@@ -54,4 +67,6 @@ export const quizRepository = {
   getQuizzesByUserWithQuestions,
   updateQuiz,
   deleteQuiz,
+  getQuizQuestionsCount,
+  togglePublishQuiz,
 };

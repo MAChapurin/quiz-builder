@@ -53,6 +53,7 @@ export const createQuizAction = async (
     title: parsed.data.title,
     description: parsed.data.description,
     authorId: session.id,
+    isPublished: false,
   };
 
   try {

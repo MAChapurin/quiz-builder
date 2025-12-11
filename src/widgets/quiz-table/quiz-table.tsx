@@ -17,16 +17,18 @@ import {
   IconPlayerPlay,
 } from "@tabler/icons-react";
 
+import { QuestionEntity } from "@/entities/question/domain";
 import { QuizWithQuestions } from "@/entities/quiz/domain";
+
 import {
   DeleteQuizModal,
   EditQuizModal,
   PracticeQuizModal,
+  SwitchPublicQuiz,
   useOpenQuiz,
 } from "@/features";
 import { emitter, formatDateRu, pluralize } from "@/shared/lib";
 import { useEffect, useState } from "react";
-import { QuestionEntity } from "@/entities/question/domain";
 
 export function QuizTable({
   quizzes,
@@ -61,14 +63,24 @@ export function QuizTable({
             className="p-4 shadow-sm"
           >
             <Stack gap={6}>
-              <Text className="font-semibold text-base">{quiz.title}</Text>
-              <Text className="text-[12px] text-gray-500">
-                {formatDateRu(quiz.createdAtFormatted)}
-              </Text>
-              <Text fz="sm" c="dimmed" className="truncate">
-                {quiz.description}
-              </Text>
-              <Flex gap={8}>
+              <Flex justify="space-between" align="start">
+                <Stack gap={6} className="max-w-[70%]">
+                  <Text className="font-semibold text-base">{quiz.title}</Text>
+                  <Text className="text-[12px] text-gray-500">
+                    {formatDateRu(quiz.createdAtFormatted)}
+                  </Text>
+                  <Text fz="sm" c="dimmed" className="truncate">
+                    {quiz.description}
+                  </Text>
+                </Stack>
+                <SwitchPublicQuiz
+                  quizId={quiz.id}
+                  initialValue={quiz.isPublished}
+                  disabled={quiz.questions.length === 0}
+                />
+                {JSON.stringify(quiz.isPublished)}
+              </Flex>
+              <Flex gap={8} mt={8}>
                 <Chip size="xs" variant="outline" color="blue" checked={false}>
                   {quiz.questions.length}{" "}
                   {pluralize(quiz.questions.length, [
@@ -97,15 +109,13 @@ export function QuizTable({
                 >
                   <IconPlayerPlay size={18} />
                 </ActionIcon>
-
                 <ActionIcon
                   size="lg"
                   variant="default"
-                  disabled={quiz.questions.length === 0}
+                  disabled={quiz.questions.length === 0 || !quiz.isPublished}
                 >
                   <IconShare size={18} />
                 </ActionIcon>
-
                 <ActionIcon
                   variant="default"
                   size="lg"
@@ -127,7 +137,6 @@ export function QuizTable({
                 >
                   <IconTrash size={18} />
                 </ActionIcon>
-
                 <ActionIcon
                   size="lg"
                   variant="default"
@@ -150,6 +159,7 @@ export function QuizTable({
             <Table.Th className="text-center">Дата создания</Table.Th>
             <Table.Th className="text-center">Количество вопросов</Table.Th>
             <Table.Th className="text-center">Прохождения</Table.Th>
+            <Table.Th className="text-center">Публикация</Table.Th>
             <Table.Th className="text-right">Действия</Table.Th>
           </Table.Tr>
         </Table.Thead>
@@ -165,6 +175,15 @@ export function QuizTable({
                 {quiz.questions.length}
               </Table.Td>
               <Table.Td className="text-center">0</Table.Td>
+              <Table.Td className="text-center">
+                <Flex justify={"center"}>
+                  <SwitchPublicQuiz
+                    quizId={quiz.id}
+                    disabled={quiz.questions.length === 0}
+                    initialValue={quiz.isPublished}
+                  />
+                </Flex>
+              </Table.Td>
               <Table.Td>
                 <Flex className="justify-end gap-2">
                   <ActionIcon
@@ -180,7 +199,7 @@ export function QuizTable({
                   <ActionIcon
                     size={"md"}
                     variant="default"
-                    disabled={quiz.questions.length === 0}
+                    disabled={quiz.questions.length === 0 || !quiz.isPublished}
                   >
                     <IconShare size={16} />
                   </ActionIcon>

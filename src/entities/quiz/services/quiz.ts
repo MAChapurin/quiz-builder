@@ -73,3 +73,32 @@ export const deleteQuizService = async (
     return left("quiz-delete-failed");
   }
 };
+
+export const togglePublishQuizService = async (
+  id: string,
+  isPublished: boolean,
+): Promise<
+  Either<
+    "quiz-not-found" | "quiz-update-failed" | "quiz-has-no-questions",
+    QuizEntity
+  >
+> => {
+  const quiz = await quizRepository.getQuiz(id);
+  if (!quiz) return left("quiz-not-found");
+
+  if (isPublished) {
+    const count = await quizRepository.getQuizQuestionsCount(id);
+
+    if (count === 0) {
+      return left("quiz-has-no-questions");
+    }
+  }
+
+  try {
+    const updated = await quizRepository.togglePublishQuiz(id, isPublished);
+    return right(updated);
+  } catch (err) {
+    console.log(err);
+    return left("quiz-update-failed");
+  }
+};

@@ -11,6 +11,6 @@ export type QuizEntity = {
   title: string;
   description?: string;
   authorId: string;
-  // createdAt: string;
+  isPublished: boolean;
   createdAt: Date;
 };
