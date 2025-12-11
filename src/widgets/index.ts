@@ -7,3 +7,4 @@ export * from "./how-it-works-box";
 export * from "./cta-box";
 export * from "./quiz-details";
 export * from "./quiz-list";
+export * from "./cookies-banner";
