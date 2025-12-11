@@ -5,9 +5,11 @@ import {
   Flex,
   Text,
   Stack,
-  Chip,
   ActionIcon,
   Card,
+  Divider,
+  Badge,
+  SimpleGrid,
 } from "@mantine/core";
 import {
   IconLineHeight,
@@ -53,51 +55,77 @@ export function QuizTable({
       <EditQuizModal quizzes={quizzes} />
       <DeleteQuizModal quizzes={quizzes} />
       <PracticeQuizModal questions={questions} />
-      <Stack className="flex md:hidden" gap="lg">
+      <SimpleGrid
+        className="md:hidden"
+        cols={{ base: 1, sm: 2, lg: 3 }}
+        spacing={{ base: 10, sm: "xl" }}
+        verticalSpacing={{ base: "md", sm: "xl" }}
+      >
         {quizzes.map((quiz) => (
           <Card
             withBorder
             key={quiz.id}
             radius="xl"
-            p="xl"
-            className="p-4 shadow-sm"
+            p="lg"
+            className="shadow-sm"
           >
+            <Flex justify="space-between" align="start" mb={14}>
+              <Text className="font-semibold text-lg leading-tight max-w-[75%]">
+                {quiz.title}
+              </Text>
+
+              <Text className="text-[11px] text-gray-500 shrink-0">
+                {formatDateRu(quiz.createdAtFormatted)}
+              </Text>
+            </Flex>
+            {quiz.description && (
+              <Text fz="sm" c="dimmed" className="line-clamp-2 mb-auto">
+                {quiz.description}
+              </Text>
+            )}
+            <Flex gap={8} mt={14} wrap="wrap">
+              <Badge size="xs" variant="outline" color="gray">
+                {quiz.questions.length}{" "}
+                {pluralize(quiz.questions.length, [
+                  "вопрос",
+                  "вопроса",
+                  "вопросов",
+                ])}
+              </Badge>
+
+              <Badge size="xs" variant="outline" color="gray">
+                0 {pluralize(0, ["прохождение", "прохождения", "прохождений"])}
+              </Badge>
+            </Flex>
+            <Divider my={16} />
             <Stack gap={6}>
-              <Flex justify="space-between" align="start">
-                <Stack gap={6} className="max-w-[70%]">
-                  <Text className="font-semibold text-base">{quiz.title}</Text>
-                  <Text className="text-[12px] text-gray-500">
-                    {formatDateRu(quiz.createdAtFormatted)}
-                  </Text>
-                  <Text fz="sm" c="dimmed" className="truncate">
-                    {quiz.description}
-                  </Text>
-                </Stack>
+              <Flex justify="space-between" align="center" gap={"lg"}>
+                <Text fz="sm">Публикация:</Text>
+                <Badge
+                  variant="outline"
+                  size="xs"
+                  color={quiz.isPublished ? "green" : "gray"}
+                >
+                  {" "}
+                  {quiz.isPublished ? "Опубликован" : "Не опубликован"}
+                </Badge>
+                <div className="ml-auto"></div>
                 <SwitchPublicQuiz
                   quizId={quiz.id}
                   initialValue={quiz.isPublished}
                   disabled={quiz.questions.length === 0}
                 />
-                {JSON.stringify(quiz.isPublished)}
-              </Flex>
-              <Flex gap={8} mt={8}>
-                <Chip size="xs" variant="outline" color="blue" checked={false}>
-                  {quiz.questions.length}{" "}
-                  {pluralize(quiz.questions.length, [
-                    "вопрос",
-                    "вопроса",
-                    "вопросов",
-                  ])}
-                </Chip>
-
-                <Chip size="xs" variant="outline" color="green" checked={false}>
-                  0{" "}
-                  {pluralize(0, ["прохождение", "прохождения", "прохождений"])}
-                </Chip>
               </Flex>
             </Stack>
-            <Flex justify="space-between" align="center" mt={16}>
-              <Flex gap={6}>
+            <Divider my={16} />
+            <Flex
+              justify="space-between"
+              align="center"
+              mt={16}
+              wrap="wrap"
+              gap={10}
+            >
+              <Flex gap={10}>
                 <ActionIcon
                   size="lg"
                   variant="default"
@@ -106,27 +134,33 @@ export function QuizTable({
                   onClick={() =>
                     emitter.emit("quiz-practice-click", { id: quiz.id })
                   }
+                  title="Пройти"
                 >
                   <IconPlayerPlay size={18} />
                 </ActionIcon>
+
                 <ActionIcon
                   size="lg"
                   variant="default"
                   disabled={quiz.questions.length === 0 || !quiz.isPublished}
+                  title="Поделиться"
                 >
                   <IconShare size={18} />
                 </ActionIcon>
+
                 <ActionIcon
-                  variant="default"
                   size="lg"
+                  variant="default"
                   onClick={() =>
                     emitter.emit("quiz-edit-click", { id: quiz.id })
                   }
+                  title="Редактировать"
                 >
                   <IconEdit size={18} />
                 </ActionIcon>
               </Flex>
-              <Flex gap={6}>
+
+              <Flex gap={10}>
                 <ActionIcon
                   size="lg"
                   color="red"
@@ -134,15 +168,18 @@ export function QuizTable({
                   onClick={() =>
                     emitter.emit("quiz-deleted-click", { id: quiz.id })
                   }
+                  title="Удалить"
                 >
                   <IconTrash size={18} />
                 </ActionIcon>
+
                 <ActionIcon
                   size="lg"
                   variant="default"
                   onClick={() =>
                     emitter.emit("quiz-open-click", { id: quiz.id })
                   }
+                  title="Открыть"
                 >
                   <IconLineHeight size={18} />
                 </ActionIcon>
@@ -150,7 +187,7 @@ export function QuizTable({
             </Flex>
           </Card>
         ))}
-      </Stack>
+      </SimpleGrid>
 
       <Table className="hidden md:table" striped highlightOnHover>
         <Table.Thead>

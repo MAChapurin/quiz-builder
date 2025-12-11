@@ -150,6 +150,7 @@ export function QuizDetail({ quiz, questions }: Props) {
             variant="default"
             fullWidth
             size="lg"
+            radius={"md"}
             h={100}
             leftSection={<IconCirclePlus size={28} />}
             onClick={() => emitter.emit("add-question-click", { id: quiz.id })}
