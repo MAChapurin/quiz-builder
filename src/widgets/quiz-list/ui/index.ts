@@ -1,1 +1,1 @@
-export { QuizList } from "./quiz-list";
+export { QuizList, type QuizListViewType } from "./quiz-list";

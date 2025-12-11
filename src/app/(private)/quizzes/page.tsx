@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { Metadata } from "next";
 import { Button, Container } from "@mantine/core";
 
@@ -7,7 +8,7 @@ import { matchEither } from "@/shared/lib/either";
 import { sessionService } from "@/entities/user/server";
 import { quizService } from "@/entities/quiz/server";
 import { CreateQuizButton } from "@/features";
-import { QuizList } from "@/widgets";
+import { QuizList, QuizListViewType } from "@/widgets";
 
 export const metadata: Metadata = {
   title: "Мои квизы",
@@ -17,6 +18,9 @@ export const metadata: Metadata = {
 export default async function QuizzesPage() {
   const { session } = await sessionService.verifySession();
   if (!session) return <UserNotFound />;
+
+  const cookieStore = await cookies();
+  const view = cookieStore.get("quizView")?.value ?? "cards";
 
   const quizzesResult = await quizService.getQuizzesWithQuestionsByUser(
     session.id,
@@ -40,7 +44,7 @@ export default async function QuizzesPage() {
       {quizzes.length === 0 ? (
         <p>У вас пока нет квизов</p>
       ) : (
-        <QuizList quizzes={quizzes} />
+        <QuizList quizzes={quizzes} initialView={view as QuizListViewType} />
       )}
     </Container>
   );

@@ -16,15 +16,23 @@ import { QuizTableList } from "./quiz-table-list";
 import { QuizCardsList } from "./quiz-card-list";
 import { IconArticle, IconBorderAll } from "@tabler/icons-react";
 
+export type QuizListViewType = "table" | "cards";
+
 export function QuizList({
   quizzes,
+  initialView,
 }: {
   quizzes: (QuizWithQuestions & { createdAtFormatted: string })[];
+  initialView: QuizListViewType;
 }) {
   const [questions, setQuestions] = useState<QuestionEntity[]>([]);
-  const [view, setView] = useState<"table" | "cards">("cards");
+  const [view, setView] = useState<QuizListViewType>(initialView);
 
   useOpenQuiz();
+
+  useEffect(() => {
+    document.cookie = `quizView=${view}; path=/; max-age=31536000`;
+  }, [view]);
 
   useEffect(() => {
     return emitter.subscribe("quiz-practice-click", ({ id }) => {
@@ -40,7 +48,7 @@ export function QuizList({
       <Divider my={16} />
       <SegmentedControl
         value={view}
-        onChange={(v) => setView(v as "table" | "cards")}
+        onChange={(v) => setView(v as QuizListViewType)}
         data={[
           { label: <IconArticle />, value: "table" },
           { label: <IconBorderAll />, value: "cards" },

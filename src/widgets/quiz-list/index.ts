@@ -1,1 +1,1 @@
-export { QuizList } from "./ui";
+export { QuizList, type QuizListViewType } from "./ui";
