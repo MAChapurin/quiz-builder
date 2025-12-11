@@ -2,21 +2,17 @@
 
 import {
   Table,
-  Button,
   Flex,
-  Menu,
   Text,
-  Box,
   Stack,
-  Tooltip,
   Chip,
   ActionIcon,
+  Card,
 } from "@mantine/core";
 import {
   IconLineHeight,
   IconShare,
   IconTrash,
-  IconDotsVertical,
   IconEdit,
   IconPlayerPlay,
 } from "@tabler/icons-react";
@@ -55,84 +51,95 @@ export function QuizTable({
       <EditQuizModal quizzes={quizzes} />
       <DeleteQuizModal quizzes={quizzes} />
       <PracticeQuizModal questions={questions} />
-      <Stack className="block md:hidden" gap="sm">
+      <Stack className="flex md:hidden" gap="lg">
         {quizzes.map((quiz) => (
-          <Box key={quiz.id} className="p-4 border border-gray-300 rounded-md">
-            <Flex className="justify-between items-start gap-2">
-              <Stack gap={1}>
-                <Text
-                  component="span"
-                  className="font-semibold flex items-center gap-2"
+          <Card
+            withBorder
+            key={quiz.id}
+            radius="xl"
+            p="xl"
+            className="p-4 shadow-sm"
+          >
+            <Stack gap={6}>
+              <Text className="font-semibold text-base">{quiz.title}</Text>
+              <Text className="text-[12px] text-gray-500">
+                {formatDateRu(quiz.createdAtFormatted)}
+              </Text>
+              <Text fz="sm" c="dimmed" className="truncate">
+                {quiz.description}
+              </Text>
+              <Flex gap={8}>
+                <Chip size="xs" variant="outline" color="blue" checked={false}>
+                  {quiz.questions.length}{" "}
+                  {pluralize(quiz.questions.length, [
+                    "вопрос",
+                    "вопроса",
+                    "вопросов",
+                  ])}
+                </Chip>
+
+                <Chip size="xs" variant="outline" color="green" checked={false}>
+                  0{" "}
+                  {pluralize(0, ["прохождение", "прохождения", "прохождений"])}
+                </Chip>
+              </Flex>
+            </Stack>
+            <Flex justify="space-between" align="center" mt={16}>
+              <Flex gap={6}>
+                <ActionIcon
+                  size="lg"
+                  variant="default"
+                  color="blue"
+                  disabled={quiz.questions.length === 0}
+                  onClick={() =>
+                    emitter.emit("quiz-practice-click", { id: quiz.id })
+                  }
                 >
-                  {quiz.title}
-                </Text>
-                <Text className="text-xs text-gray-500">
-                  {formatDateRu(quiz.createdAtFormatted)}
-                </Text>
-              </Stack>
-              <Stack>
-                <Tooltip label="Количество прохождений" refProp="rootRef">
-                  <Chip size="xs" defaultChecked>
-                    0{" "}
-                    {pluralize(0, [
-                      "прохождение",
-                      "прохождения",
-                      "прохождений",
-                    ])}
-                  </Chip>
-                </Tooltip>
-                <Tooltip label="Количество вопросов" refProp="rootRef">
-                  <Chip size="xs" defaultChecked>
-                    {quiz.questions.length}{" "}
-                    {pluralize(quiz.questions.length, [
-                      "вопрос",
-                      "вопроса",
-                      "вопросов",
-                    ])}
-                  </Chip>
-                </Tooltip>
-              </Stack>
+                  <IconPlayerPlay size={18} />
+                </ActionIcon>
 
-              <Menu shadow="md" width={200}>
-                <Menu.Target>
-                  <Button size="xs" variant="light">
-                    <IconDotsVertical size={16} />
-                  </Button>
-                </Menu.Target>
+                <ActionIcon
+                  size="lg"
+                  variant="default"
+                  disabled={quiz.questions.length === 0}
+                >
+                  <IconShare size={18} />
+                </ActionIcon>
 
-                <Menu.Dropdown>
-                  <Menu.Item leftSection={<IconShare size={16} />}>
-                    Поделиться
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      emitter.emit("quiz-edit-click", { id: quiz.id });
-                    }}
-                    leftSection={<IconEdit size={16} />}
-                  >
-                    Редактировать
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      emitter.emit("quiz-open-click", { id: quiz.id });
-                    }}
-                    leftSection={<IconLineHeight size={16} />}
-                  >
-                    Открыть
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      emitter.emit("quiz-deleted-click", { id: quiz.id });
-                    }}
-                    color="red"
-                    leftSection={<IconTrash size={16} />}
-                  >
-                    Удалить
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+                <ActionIcon
+                  variant="default"
+                  size="lg"
+                  onClick={() =>
+                    emitter.emit("quiz-edit-click", { id: quiz.id })
+                  }
+                >
+                  <IconEdit size={18} />
+                </ActionIcon>
+              </Flex>
+              <Flex gap={6}>
+                <ActionIcon
+                  size="lg"
+                  color="red"
+                  variant="default"
+                  onClick={() =>
+                    emitter.emit("quiz-deleted-click", { id: quiz.id })
+                  }
+                >
+                  <IconTrash size={18} />
+                </ActionIcon>
+
+                <ActionIcon
+                  size="lg"
+                  variant="default"
+                  onClick={() =>
+                    emitter.emit("quiz-open-click", { id: quiz.id })
+                  }
+                >
+                  <IconLineHeight size={18} />
+                </ActionIcon>
+              </Flex>
             </Flex>
-          </Box>
+          </Card>
         ))}
       </Stack>
 
@@ -161,20 +168,24 @@ export function QuizTable({
               <Table.Td>
                 <Flex className="justify-end gap-2">
                   <ActionIcon
-                    disabled={quiz.questions.length === 0}
                     size={"md"}
-                    variant="outline"
+                    variant="default"
+                    disabled={quiz.questions.length === 0}
                     onClick={() => {
                       emitter.emit("quiz-practice-click", { id: quiz.id });
                     }}
                   >
                     <IconPlayerPlay size={16} />
                   </ActionIcon>
-                  <ActionIcon size={"md"} variant="outline">
+                  <ActionIcon
+                    size={"md"}
+                    variant="default"
+                    disabled={quiz.questions.length === 0}
+                  >
                     <IconShare size={16} />
                   </ActionIcon>
                   <ActionIcon
-                    variant="outline"
+                    variant="default"
                     size={"md"}
                     onClick={() => {
                       emitter.emit("quiz-edit-click", { id: quiz.id });
@@ -185,7 +196,7 @@ export function QuizTable({
                   <ActionIcon
                     size="md"
                     color="red"
-                    variant="outline"
+                    variant="default"
                     onClick={() => {
                       emitter.emit("quiz-deleted-click", { id: quiz.id });
                     }}
@@ -194,7 +205,7 @@ export function QuizTable({
                   </ActionIcon>
                   <ActionIcon
                     size="md"
-                    variant="outline"
+                    variant="default"
                     onClick={() => {
                       emitter.emit("quiz-open-click", { id: quiz.id });
                     }}

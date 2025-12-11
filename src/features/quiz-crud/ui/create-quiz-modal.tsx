@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Modal, Stack, TextInput, Button } from "@mantine/core";
+import { Modal, Stack, TextInput, Button, Textarea } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useActionState } from "@/shared/lib/react";
 import { createQuizAction, CreateQuizFormState } from "../actions/create-quiz";
@@ -14,6 +14,8 @@ export function CreateQuizButton() {
   const [formState, action, isPending] = useActionState(
     createQuizAction,
     {} as CreateQuizFormState,
+    undefined,
+    { success: "Квиз успешно создан!" },
   );
 
   useEffect(() => {
@@ -25,7 +27,11 @@ export function CreateQuizButton() {
 
   return (
     <>
-      <Button rightSection={<IconPlus />} onClick={() => setOpened(true)}>
+      <Button
+        variant="default"
+        rightSection={<IconPlus />}
+        onClick={() => setOpened(true)}
+      >
         Создать квиз
       </Button>
 
@@ -46,7 +52,8 @@ export function CreateQuizButton() {
               required
             />
 
-            <TextInput
+            <Textarea
+              rows={4}
               label="Описание"
               name="description"
               placeholder="Введите описание"
@@ -55,7 +62,7 @@ export function CreateQuizButton() {
               required
             />
 
-            <Button type="submit" loading={isPending}>
+            <Button variant="default" type="submit" loading={isPending}>
               Создать
             </Button>
           </Stack>

@@ -55,7 +55,7 @@ export function QuizDetail({ quiz, questions }: Props) {
           </Stack>
           <Stack>
             <Button
-              variant="outline"
+              variant="default"
               leftSection={<IconPencil size={16} />}
               onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
             >
@@ -63,7 +63,7 @@ export function QuizDetail({ quiz, questions }: Props) {
             </Button>
             <Button
               disabled={questions.length === 0}
-              variant="outline"
+              variant="default"
               leftSection={<IconPlayerPlay size={16} />}
               onClick={() =>
                 emitter.emit("quiz-practice-click", { id: quiz.id })
@@ -73,6 +73,7 @@ export function QuizDetail({ quiz, questions }: Props) {
             </Button>
 
             <Button
+              variant="default"
               leftSection={<IconCirclePlus size={20} />}
               onClick={() =>
                 emitter.emit("add-question-click", { id: quiz.id })
@@ -118,7 +119,7 @@ export function QuizDetail({ quiz, questions }: Props) {
 
                 <Group>
                   <Button
-                    variant="outline"
+                    variant="default"
                     size="sm"
                     leftSection={<IconPencil size={16} />}
                     onClick={() =>
@@ -129,7 +130,7 @@ export function QuizDetail({ quiz, questions }: Props) {
                   </Button>
                   <Button
                     color="red"
-                    variant="outline"
+                    variant="default"
                     size="sm"
                     leftSection={<IconTrash size={16} />}
                     onClick={() =>
@@ -144,9 +145,9 @@ export function QuizDetail({ quiz, questions }: Props) {
           </Card>
         ))}
 
-        <Card withBorder p={0}>
+        <Card withBorder p={0} radius={"md"}>
           <Button
-            variant="subtle"
+            variant="default"
             fullWidth
             size="lg"
             h={100}

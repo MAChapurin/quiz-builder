@@ -1,9 +1,10 @@
-import { Avatar } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
+import { IconUserCircle } from "@tabler/icons-react";
 
 export function Profile() {
   return (
-    <div>
-      <Avatar />
-    </div>
+    <ActionIcon variant="default" size="lg">
+      <IconUserCircle />
+    </ActionIcon>
   );
 }
