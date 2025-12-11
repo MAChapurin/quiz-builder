@@ -30,7 +30,7 @@ export function HowItWorksBox() {
         <Card withBorder radius="xl" p="xl">
           <Timeline
             bulletSize={48}
-            lineWidth={3}
+            lineWidth={1}
             className="max-w-full mx-auto"
             variant="default"
           >

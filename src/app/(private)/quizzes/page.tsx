@@ -5,7 +5,9 @@ import { matchEither } from "@/shared/lib/either";
 
 import { CreateQuizButton } from "@/features/quiz-crud/ui/create-quiz-modal";
 import { QuizTable } from "@/widgets/quiz-table/quiz-table";
-import { Container } from "@mantine/core";
+import { Button, Container } from "@mantine/core";
+import Link from "next/link";
+import { routes } from "@/shared/config";
 
 export const metadata: Metadata = {
   title: "Мои квизы",
@@ -28,7 +30,6 @@ export default async function QuizzesPage() {
       })),
   });
 
-  // console.log(quizzes);
   return (
     <Container size={"lg"}>
       <div className="flex justify-between items-center my-10">
@@ -52,6 +53,9 @@ function UserNotFound() {
       <p className="text-gray-500 mt-2">
         Пожалуйста, войдите в систему заново.
       </p>
+      <Button component={Link} href={routes.LOGIN}>
+        Войти
+      </Button>
     </div>
   );
 }

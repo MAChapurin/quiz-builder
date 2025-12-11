@@ -93,7 +93,7 @@ export function AddQuestionModal({
         100,
       );
     }
-  }, [formState.success, isPending]);
+  }, [formState.success, isPending, router, scrollToRef]);
 
   if (!quizId) return null;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 import { Modal, Stack, TextInput, Button, Textarea } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { useActionState } from "@/shared/lib/react";
@@ -11,6 +11,9 @@ export function CreateQuizButton() {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
 
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   const [formState, action, isPending] = useActionState(
     createQuizAction,
     {} as CreateQuizFormState,
@@ -20,8 +23,13 @@ export function CreateQuizButton() {
 
   useEffect(() => {
     if (formState.success && !isPending) {
+      setTitle("");
+      setDescription("");
       setOpened(false);
-      router.refresh();
+
+      startTransition(() => {
+        router.refresh();
+      });
     }
   }, [formState.success, isPending, router]);
 
@@ -47,7 +55,8 @@ export function CreateQuizButton() {
               label="Название квиза"
               name="title"
               placeholder="Введите название"
-              defaultValue={formState.formData?.get("title") as string}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               error={formState.errors?.title}
               required
             />
@@ -57,7 +66,8 @@ export function CreateQuizButton() {
               label="Описание"
               name="description"
               placeholder="Введите описание"
-              defaultValue={formState.formData?.get("description") as string}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               error={formState.errors?.description}
               required
             />

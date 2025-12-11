@@ -44,7 +44,7 @@ export function QuizTable({
         setQuestions(targetQuiz.questions);
       }
     });
-  }, []);
+  }, [quizzes]);
 
   return (
     <div>
