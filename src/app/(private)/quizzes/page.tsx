@@ -1,13 +1,13 @@
+import Link from "next/link";
 import { Metadata } from "next";
+import { Button, Container } from "@mantine/core";
+
+import { routes } from "@/shared/config";
+import { matchEither } from "@/shared/lib/either";
 import { sessionService } from "@/entities/user/server";
 import { quizService } from "@/entities/quiz/server";
-import { matchEither } from "@/shared/lib/either";
-
-import { CreateQuizButton } from "@/features/quiz-crud/ui/create-quiz-modal";
-import { QuizTable } from "@/widgets/quiz-table/quiz-table";
-import { Button, Container } from "@mantine/core";
-import Link from "next/link";
-import { routes } from "@/shared/config";
+import { CreateQuizButton } from "@/features";
+import { QuizList } from "@/widgets";
 
 export const metadata: Metadata = {
   title: "Мои квизы",
@@ -32,7 +32,7 @@ export default async function QuizzesPage() {
 
   return (
     <Container size={"lg"}>
-      <div className="flex justify-between items-center my-10">
+      <div className="flex justify-between items-center my-4">
         <h1 className="text-xl font-bold">Мои квизы</h1>
         <CreateQuizButton />
       </div>
@@ -40,7 +40,7 @@ export default async function QuizzesPage() {
       {quizzes.length === 0 ? (
         <p>У вас пока нет квизов</p>
       ) : (
-        <QuizTable quizzes={quizzes} />
+        <QuizList quizzes={quizzes} />
       )}
     </Container>
   );
