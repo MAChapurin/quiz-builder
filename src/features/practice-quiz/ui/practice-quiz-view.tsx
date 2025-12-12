@@ -23,11 +23,11 @@ import { QuestionEntity } from "@/entities/question/domain";
 import { useDisclosure } from "@mantine/hooks";
 import { usePracticeQuiz } from "../model/use-practice-quiz";
 
-type Props = {
+type PracticeQuizViewProps = {
   questions: QuestionEntity[];
 };
 
-export function PracticeQuizView({ questions }: Props) {
+export function PracticeQuizView({ questions }: PracticeQuizViewProps) {
   const [opened, { toggle }] = useDisclosure(false);
 
   const quiz = usePracticeQuiz(questions);

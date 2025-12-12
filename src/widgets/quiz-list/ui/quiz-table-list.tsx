@@ -77,6 +77,9 @@ export function QuizTableList({
                     size="md"
                     variant="default"
                     disabled={quiz.questions.length === 0 || !quiz.isPublished}
+                    onClick={() =>
+                      emitter.emit("invite-token-click", { id: quiz.id })
+                    }
                     title="Поделиться"
                   >
                     <IconShare size={16} />
@@ -134,6 +137,9 @@ export function QuizTableList({
                         leftSection={<IconShare size={16} />}
                         disabled={
                           quiz.questions.length === 0 || !quiz.isPublished
+                        }
+                        onClick={() =>
+                          emitter.emit("invite-token-click", { id: quiz.id })
                         }
                       >
                         Поделиться

@@ -42,16 +42,16 @@ export const mapLeft = <R, L, L2>(
 
 export const matchEither = <L, R, V>(
   either: Either<L, R>,
-  mathers: {
+  matchers: {
     left: (error: NoInfer<L>) => V;
     right: (value: NoInfer<R>) => V;
   },
 ): V => {
   if (either.type === "left") {
-    return mathers.left(either.error);
+    return matchers.left(either.error);
   }
 
-  return mathers.right(either.value);
+  return matchers.right(either.value);
 };
 
 export const matchEitherAsync = async <L, R, V>(

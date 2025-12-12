@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/widgets/cookies-banner"
-  ],
+, "src/entities/invite-token"  ],
   "exclude": ["node_modules"]
 }

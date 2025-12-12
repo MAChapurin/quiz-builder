@@ -53,8 +53,13 @@ export function PublicQuizList({ quizzes }: PublicQuizListProps) {
                   "вопросов",
                 ])}
               </Badge>
-              <Badge size="xs" variant="outline" color="green">
-                Опубликован
+              <Badge size="xs" variant="outline" color="blue">
+                {quiz.questions.length}{" "}
+                {pluralize(quiz.questions.length, [
+                  "прохождение",
+                  "прохождения",
+                  "прохождений",
+                ])}
               </Badge>
             </Flex>
           </Stack>

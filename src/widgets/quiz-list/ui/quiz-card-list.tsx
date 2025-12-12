@@ -111,6 +111,9 @@ export function QuizCardsList({
                 variant="default"
                 disabled={quiz.questions.length === 0 || !quiz.isPublished}
                 title="Поделиться"
+                onClick={() =>
+                  emitter.emit("invite-token-click", { id: quiz.id })
+                }
               >
                 <IconShare size={18} />
               </ActionIcon>

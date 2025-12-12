@@ -17,6 +17,7 @@ import { QuizTableList } from "./quiz-table-list";
 import { QuizCardsList } from "./quiz-card-list";
 import { IconArticle, IconBorderAll } from "@tabler/icons-react";
 import { QuizHelpContent } from "@/features/help-drawer/ui/quiz-list-hep-content";
+import { GenerateInviteModal } from "@/features/invite-link-modal/ui/invite-link-modal";
 
 export type QuizListViewType = "table" | "cards";
 
@@ -65,6 +66,7 @@ export function QuizList({
       <EditQuizModal quizzes={quizzes} />
       <DeleteQuizModal quizzes={quizzes} />
       <PracticeQuizModal questions={questions} />
+      <GenerateInviteModal quizzes={quizzes} />
 
       {view === "table" ? (
         <QuizTableList quizzes={quizzes} />
