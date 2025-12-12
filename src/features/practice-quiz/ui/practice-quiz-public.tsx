@@ -6,9 +6,13 @@ import { useState } from "react";
 
 type PracticePublicQuizProps = {
   questions: QuestionEntity[];
+  quizId: string;
 };
 
-export function PracticePublicQuiz({ questions }: PracticePublicQuizProps) {
+export function PracticePublicQuiz({
+  questions,
+  quizId,
+}: PracticePublicQuizProps) {
   const [isStarted, setIsStated] = useState(false);
   return (
     <div>
@@ -18,10 +22,10 @@ export function PracticePublicQuiz({ questions }: PracticePublicQuizProps) {
             setIsStated(true);
           }}
         >
-          Пройти тест
+          Начать
         </Button>
       ) : (
-        <PracticeQuizView questions={questions} />
+        <PracticeQuizView questions={questions} quizId={quizId} mode="public" />
       )}
     </div>
   );

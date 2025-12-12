@@ -22,12 +22,25 @@ import {
 import { QuestionEntity } from "@/entities/question/domain";
 import { useDisclosure } from "@mantine/hooks";
 import { usePracticeQuiz } from "../model/use-practice-quiz";
+import { useActionState } from "@/shared/lib/react";
+import {
+  submitQuizResultsAction,
+  SubmitQuizResultsFormState,
+} from "../actions/submit-quiz-results";
+
+type PracticeMode = "test" | "public";
 
 type PracticeQuizViewProps = {
   questions: QuestionEntity[];
+  quizId: string;
+  mode?: PracticeMode;
 };
 
-export function PracticeQuizView({ questions }: PracticeQuizViewProps) {
+export function PracticeQuizView({
+  questions,
+  quizId,
+  mode = "test",
+}: PracticeQuizViewProps) {
   const [opened, { toggle }] = useDisclosure(false);
 
   const quiz = usePracticeQuiz(questions);
@@ -45,6 +58,13 @@ export function PracticeQuizView({ questions }: PracticeQuizViewProps) {
     progressSections,
     answers,
   } = quiz;
+
+  const isPublic = mode === "public";
+
+  const [formState, action, isPending] = useActionState(
+    submitQuizResultsAction,
+    {} as SubmitQuizResultsFormState,
+  );
 
   return (
     <Stack gap="md">
@@ -114,20 +134,52 @@ export function PracticeQuizView({ questions }: PracticeQuizViewProps) {
             </Text>
           </Center>
 
+          {isPublic && (
+            <form action={action}>
+              <input type="hidden" name="quizId" value={quizId} />
+              <input
+                type="hidden"
+                name="answers"
+                value={JSON.stringify(answers)}
+              />
+
+              <Button
+                fullWidth
+                type="submit"
+                loading={isPending}
+                disabled={formState.success}
+              >
+                {formState.success
+                  ? "Результаты отправлены"
+                  : "Отправить результаты"}
+              </Button>
+
+              {formState.error && (
+                <Text c="red" size="sm" mt="xs">
+                  Не удалось отправить результаты
+                </Text>
+              )}
+            </form>
+          )}
+
           <Group className="flex flex-col xs:flex-row" mt="md">
+            {!isPublic && (
+              <Button
+                className="w-full xs:w-fit"
+                onClick={restart}
+                leftSection={<IconRefresh size={16} />}
+              >
+                Пройти заново
+              </Button>
+            )}
+
             <Button
-              className="w-full xs:w-fit"
-              onClick={restart}
-              leftSection={<IconRefresh size={16} />}
-            >
-              Пройти заново
-            </Button>
-            <Button
+              disabled={isPublic && !formState.success}
               className="w-full xs:w-fit"
               onClick={toggle}
               leftSection={<IconListDetails size={16} />}
             >
-              Посмотреть вопросы
+              Посмотреть правильные ответы
             </Button>
           </Group>
 

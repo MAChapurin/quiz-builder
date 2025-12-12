@@ -19,9 +19,9 @@ import { PracticePublicQuiz } from "@/features/practice-quiz/ui/practice-quiz-pu
 export default async function QuizPlayPage({
   params,
 }: {
-  params: { token: string };
+  params: Promise<{ token: string }>;
 }) {
-  const token = params.token;
+  const { token } = await params;
 
   const inviteEither = await inviteTokenService.consumeInviteToken(token);
 
@@ -64,10 +64,8 @@ export default async function QuizPlayPage({
             {questions.length} вопросов
           </Badge>
         </Flex>
-
         <Divider my="lg" />
-
-        <PracticePublicQuiz questions={questions} />
+        <PracticePublicQuiz questions={questions} quizId={quizId} />
       </Card>
     </Center>
   );

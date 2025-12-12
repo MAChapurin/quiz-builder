@@ -30,7 +30,7 @@ export function PracticeQuizModal({
       title={title}
       size="lg"
     >
-      <PracticeQuizView questions={questions} />
+      <PracticeQuizView questions={questions} quizId="" />
     </Modal>
   );
 }
