@@ -60,6 +60,20 @@ export async function getQuizQuestionsCount(quizId: string) {
   });
 }
 
+export async function getPublishedQuizzesWithQuestions() {
+  return prisma.quiz.findMany({
+    where: { isPublished: true },
+    include: {
+      questions: {
+        include: {
+          options: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
 export const quizRepository = {
   createQuiz,
   getQuiz,
@@ -69,4 +83,5 @@ export const quizRepository = {
   deleteQuiz,
   getQuizQuestionsCount,
   togglePublishQuiz,
+  getPublishedQuizzesWithQuestions,
 };

@@ -102,3 +102,22 @@ export const togglePublishQuizService = async (
     return left("quiz-update-failed");
   }
 };
+
+export const getPublishedQuizzesService = async (): Promise<
+  Either<"no-quizzes", QuizWithQuestions[]>
+> => {
+  try {
+    const quizzes = await quizRepository.getPublishedQuizzesWithQuestions();
+
+    if (!quizzes || quizzes.length === 0) return left("no-quizzes");
+    const formatted = quizzes.map((quiz) => ({
+      ...quiz,
+      createdAtFormatted: quiz.createdAt.toISOString().slice(0, 10),
+    }));
+
+    return right(formatted);
+  } catch (err) {
+    console.error("Failed to get published quizzes", err);
+    return left("no-quizzes");
+  }
+};
