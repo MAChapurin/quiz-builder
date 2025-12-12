@@ -18,6 +18,7 @@ import { useRef } from "react";
 import { emitter, pluralize } from "@/shared/lib";
 import {
   IconCirclePlus,
+  IconLinkPlus,
   IconPencil,
   IconPlayerPlay,
   IconTrash,
@@ -29,6 +30,7 @@ import {
   EditQuestionModal,
   PracticeQuizModal,
 } from "@/features";
+import { GenerateInviteModal } from "@/features/invite-link-modal/ui/invite-link-modal";
 
 type Props = {
   quiz: QuizEntity;
@@ -59,7 +61,7 @@ export function QuizDetail({ quiz, questions }: Props) {
               leftSection={<IconPencil size={16} />}
               onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
             >
-              Редактировать квиз
+              Редактировать
             </Button>
             <Button
               disabled={questions.length === 0}
@@ -71,7 +73,16 @@ export function QuizDetail({ quiz, questions }: Props) {
             >
               Пройти пробно
             </Button>
-
+            <Button
+              disabled={questions.length === 0 || !quiz.isPublished}
+              variant="default"
+              leftSection={<IconLinkPlus size={20} />}
+              onClick={() =>
+                emitter.emit("invite-token-click", { id: quiz.id })
+              }
+            >
+              Создать инвайт
+            </Button>
             <Button
               variant="default"
               leftSection={<IconCirclePlus size={20} />}
@@ -91,6 +102,7 @@ export function QuizDetail({ quiz, questions }: Props) {
       <EditQuestionModal questions={questions} />
       <DeleteQuestionModal questions={questions} />
       <PracticeQuizModal questions={questions} />
+      <GenerateInviteModal quizzes={[quiz]} />
 
       <Stack mt="lg" gap="md">
         {questions.map((q, index) => (
