@@ -55,7 +55,32 @@ export const markUsedInviteToken = async (
   }
 };
 
+export const consumeInviteToken = async (
+  token: string,
+): Promise<
+  Either<
+    "invalid-token" | "expired-token" | "used-token" | "invite-update-failed",
+    { quizId: string }
+  >
+> => {
+  const inviteEither = await validateInviteToken(token);
+
+  if (inviteEither.type === "left") {
+    return inviteEither;
+  }
+
+  const { quizId, tokenId } = inviteEither.value;
+
+  const markEither = await markUsedInviteToken(tokenId);
+  if (markEither.type === "left") {
+    return left("invite-update-failed");
+  }
+
+  return right({ quizId });
+};
+
 export const inviteTokenService = {
+  consumeInviteToken,
   generateInviteToken,
   validateInviteToken,
   markUsedInviteToken,
