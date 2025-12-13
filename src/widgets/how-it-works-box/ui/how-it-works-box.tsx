@@ -27,7 +27,7 @@ export function HowItWorksBox() {
             Всего три простых шага — и ваш квиз готов к запуску
           </Text>
         </Stack>
-        <Card withBorder radius="xl" p="xl">
+        <Card withBorder p="xl">
           <Timeline
             bulletSize={48}
             lineWidth={1}

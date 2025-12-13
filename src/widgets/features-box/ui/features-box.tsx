@@ -27,7 +27,6 @@ export function FeaturesBox() {
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
           <Card
             withBorder
-            radius="xl"
             p="xl"
             className="transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
           >
@@ -46,7 +45,6 @@ export function FeaturesBox() {
           </Card>
           <Card
             withBorder
-            radius="xl"
             p="xl"
             className="transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
           >
@@ -65,7 +63,6 @@ export function FeaturesBox() {
           </Card>
           <Card
             withBorder
-            radius="xl"
             p="xl"
             className="transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
           >
