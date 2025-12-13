@@ -4,7 +4,7 @@ import { randomBytes } from "crypto";
 
 export const generateInviteToken = async (
   quizId: string,
-  label?: string,
+  label: string,
 ): Promise<Either<"invite-creation-failed", string>> => {
   try {
     const token = randomBytes(24).toString("hex");
@@ -60,14 +60,11 @@ export const consumeInviteToken = async (
 ): Promise<
   Either<
     "invalid-token" | "expired-token" | "used-token" | "invite-update-failed",
-    { quizId: string }
+    { quizId: string; inviteTokenId: string }
   >
 > => {
   const inviteEither = await validateInviteToken(token);
-
-  if (inviteEither.type === "left") {
-    return inviteEither;
-  }
+  if (inviteEither.type === "left") return inviteEither;
 
   const { quizId, tokenId } = inviteEither.value;
 
@@ -76,7 +73,7 @@ export const consumeInviteToken = async (
     return left("invite-update-failed");
   }
 
-  return right({ quizId });
+  return right({ quizId, inviteTokenId: tokenId });
 };
 
 export const inviteTokenService = {

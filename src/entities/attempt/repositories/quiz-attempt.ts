@@ -1,22 +1,14 @@
 import { prisma } from "@/shared/lib/db";
-import { Prisma, QuizAttemptMode } from "@prisma/client";
-import { QuizAnswers } from "../domain";
+import { Prisma } from "@prisma/client";
+import { CreateQuizAttemptDTO } from "../dto";
+import { QuizAttemptEntity } from "../domain";
 
-type CreateQuizAttemptInput = {
-  quizId: string;
-  inviteTokenId?: string | null;
-  mode: QuizAttemptMode;
-  score: number;
-  total: number;
-  answers: QuizAnswers;
-};
-
-export async function createAttempt(data: CreateQuizAttemptInput) {
+async function createAttempt(data: CreateQuizAttemptDTO) {
   return prisma.quizAttempt.create({
     data: {
       quizId: data.quizId,
       inviteTokenId: data.inviteTokenId ?? null,
-      mode: data.mode,
+      label: data.label,
       score: data.score,
       total: data.total,
       answers: data.answers as Prisma.InputJsonValue,
@@ -24,6 +16,37 @@ export async function createAttempt(data: CreateQuizAttemptInput) {
   });
 }
 
+async function getAttemptsForAuthor(
+  authorId: string,
+): Promise<QuizAttemptEntity[]> {
+  const rows = await prisma.quizAttempt.findMany({
+    where: {
+      quiz: { authorId },
+    },
+    select: {
+      id: true,
+      score: true,
+      total: true,
+      label: true,
+      createdAt: true,
+      quiz: {
+        select: { title: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return rows.map((r) => ({
+    id: r.id,
+    quizTitle: r.quiz.title,
+    score: r.score,
+    total: r.total,
+    label: r.label,
+    createdAt: r.createdAt,
+  }));
+}
+
 export const quizAttemptRepository = {
   createAttempt,
+  getAttemptsForAuthor,
 };

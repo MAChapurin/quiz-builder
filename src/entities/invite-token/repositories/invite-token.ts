@@ -4,7 +4,7 @@ import { InviteTokenEntity } from "../domain";
 export async function createInviteToken(data: {
   quizId: string;
   token: string;
-  label?: string;
+  label: string;
   expiresAt: Date;
 }): Promise<InviteTokenEntity> {
   return prisma.inviteToken.create({ data }) as unknown as InviteTokenEntity;
@@ -16,6 +16,16 @@ export async function getInviteByToken(
   const invite = await prisma.inviteToken.findUnique({
     where: { token },
   });
+  return invite as InviteTokenEntity | null;
+}
+
+export async function getInviteById(
+  id: string,
+): Promise<InviteTokenEntity | null> {
+  const invite = await prisma.inviteToken.findUnique({
+    where: { id },
+  });
+
   return invite as InviteTokenEntity | null;
 }
 
@@ -33,6 +43,7 @@ export async function deleteInvite(id: string) {
 export const inviteTokenRepository = {
   createInviteToken,
   getInviteByToken,
+  getInviteById,
   markInviteUsed,
   deleteInvite,
 };

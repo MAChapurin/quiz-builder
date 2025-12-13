@@ -23,10 +23,8 @@ import { QuestionEntity } from "@/entities/question/domain";
 import { useDisclosure } from "@mantine/hooks";
 import { usePracticeQuiz } from "../model/use-practice-quiz";
 import { useActionState } from "@/shared/lib/react";
-import {
-  submitQuizResultsAction,
-  SubmitQuizResultsFormState,
-} from "../actions/submit-quiz-results";
+import { submitQuizResultsAction } from "../actions/submit-quiz-results";
+import { SubmitQuizResultsFormState } from "../actions/submit-quiz-results.types";
 
 type PracticeMode = "test" | "public";
 
@@ -34,12 +32,14 @@ type PracticeQuizViewProps = {
   questions: QuestionEntity[];
   quizId: string;
   mode?: PracticeMode;
+  inviteTokenId?: string;
 };
 
 export function PracticeQuizView({
   questions,
   quizId,
   mode = "test",
+  inviteTokenId = "",
 }: PracticeQuizViewProps) {
   const [opened, { toggle }] = useDisclosure(false);
 
@@ -142,6 +142,7 @@ export function PracticeQuizView({
                 name="answers"
                 value={JSON.stringify(answers)}
               />
+              <input type="hidden" name="inviteTokenId" value={inviteTokenId} />
 
               <Button
                 fullWidth
@@ -153,12 +154,6 @@ export function PracticeQuizView({
                   ? "Результаты отправлены"
                   : "Отправить результаты"}
               </Button>
-
-              {formState.error && (
-                <Text c="red" size="sm" mt="xs">
-                  Не удалось отправить результаты
-                </Text>
-              )}
             </form>
           )}
 

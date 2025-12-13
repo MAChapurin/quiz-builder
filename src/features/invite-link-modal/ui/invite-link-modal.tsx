@@ -77,7 +77,8 @@ export function GenerateInviteModal({ quizzes }: GenerateInviteModalProps) {
           {!generatedLink ? (
             <>
               <TextInput
-                label="Для кого эта ссылка? (необязательно)"
+                required
+                label="Для кого эта ссылка?"
                 placeholder="Например: Для Ивана"
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
@@ -86,7 +87,7 @@ export function GenerateInviteModal({ quizzes }: GenerateInviteModalProps) {
 
               <input type="hidden" name="quizId" value={quiz.id} />
 
-              <Button type="submit" loading={isPending}>
+              <Button type="submit" loading={isPending} disabled={!label}>
                 Создать ссылку
               </Button>
             </>

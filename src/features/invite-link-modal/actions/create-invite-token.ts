@@ -15,10 +15,13 @@ export const createInviteTokenAction = async (
   formData: FormData,
 ): Promise<CreateInviteTokenFormState> => {
   const quizId = formData.get("quizId") as string;
-  const label = formData.get("label") as string | undefined;
+  const label = formData.get("label") as string;
 
-  if (!quizId) {
-    return { formData, errors: { _errors: "Не указан ID квиза" } };
+  if (!quizId || !label) {
+    return {
+      formData,
+      errors: { _errors: !quizId ? "Не указан ID квиза" : "Не указан label" },
+    };
   }
 
   try {

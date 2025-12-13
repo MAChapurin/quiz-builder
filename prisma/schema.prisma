@@ -56,42 +56,36 @@ enum QuestionType {
 }
 
 model InviteToken {
-  id          String        @id @default(cuid())
+  id          String   @id @default(cuid())
 
   quizId      String
-  quiz        Quiz          @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  attempts    QuizAttempt[]
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
-  token       String        @unique
-  label       String?
+  token       String   @unique
+  label       String  
   expiresAt   DateTime
-  used        Boolean       @default(false)
+  used        Boolean  @default(false)
 
-  createdAt   DateTime      @default(now())
+  createdAt   DateTime @default(now())
 }
 
+
 model QuizAttempt {
-  id             String           @id @default(cuid())
+  id             String   @id @default(cuid())
 
   quizId         String
-  quiz           Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quiz           Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
   inviteTokenId  String?
-  inviteToken    InviteToken?     @relation(fields: [inviteTokenId], references: [id], onDelete: SetNull)
-
-  mode           QuizAttemptMode
+  label          String   
 
   score          Int
   total          Int
   answers        Json
 
-  createdAt      DateTime         @default(now())
+  createdAt      DateTime @default(now())
 
   @@index([quizId])
   @@index([inviteTokenId])
 }
 
-enum QuizAttemptMode {
-  TEST
-  PUBLIC
-}

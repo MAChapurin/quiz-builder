@@ -7,11 +7,13 @@ import { useState } from "react";
 type PracticePublicQuizProps = {
   questions: QuestionEntity[];
   quizId: string;
+  inviteTokenId: string;
 };
 
 export function PracticePublicQuiz({
   questions,
   quizId,
+  inviteTokenId,
 }: PracticePublicQuizProps) {
   const [isStarted, setIsStated] = useState(false);
   return (
@@ -25,7 +27,12 @@ export function PracticePublicQuiz({
           Начать
         </Button>
       ) : (
-        <PracticeQuizView questions={questions} quizId={quizId} mode="public" />
+        <PracticeQuizView
+          questions={questions}
+          quizId={quizId}
+          mode="public"
+          inviteTokenId={inviteTokenId}
+        />
       )}
     </div>
   );

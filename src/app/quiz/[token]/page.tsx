@@ -2,6 +2,7 @@ import { inviteTokenService } from "@/entities/invite-token/server";
 import { quizService } from "@/entities/quiz/server";
 import { questionService } from "@/entities/question/server";
 import { matchEither } from "@/shared/lib/either";
+import { pluralize } from "@/shared/lib";
 import { notFound } from "next/navigation";
 
 import {
@@ -15,7 +16,6 @@ import {
   Title,
 } from "@mantine/core";
 import { PracticePublicQuiz } from "@/features/practice-quiz/ui/practice-quiz-public";
-import { pluralize } from "@/shared/lib";
 
 export default async function QuizPlayPage({
   params,
@@ -30,7 +30,7 @@ export default async function QuizPlayPage({
     notFound();
   }
 
-  const { quizId } = inviteEither.value;
+  const { quizId, inviteTokenId } = inviteEither.value;
 
   const quizEither = await quizService.getQuizService(quizId);
   const quiz = matchEither(quizEither, {
@@ -67,7 +67,11 @@ export default async function QuizPlayPage({
           </Badge>
         </Flex>
         <Divider my="lg" />
-        <PracticePublicQuiz questions={questions} quizId={quizId} />
+        <PracticePublicQuiz
+          questions={questions}
+          quizId={quizId}
+          inviteTokenId={inviteTokenId}
+        />
       </Card>
     </Center>
   );

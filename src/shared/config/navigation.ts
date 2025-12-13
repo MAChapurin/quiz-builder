@@ -18,6 +18,7 @@ export const routes = {
   REGISTER: "/register",
   QUIZZES: "/quizzes",
   QUIZ: "/quiz",
+  RESULTS: "/results",
   NOT_FOUND: "/not-found",
   PUBLIC_QUIZ: "/public-quiz",
 } as const;

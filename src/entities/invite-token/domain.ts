@@ -5,5 +5,5 @@ export interface InviteTokenEntity {
   expiresAt: Date;
   used: boolean;
   createdAt: Date;
-  label?: string;
+  label: string;
 }
