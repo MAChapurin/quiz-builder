@@ -15,6 +15,7 @@ import {
   Title,
 } from "@mantine/core";
 import { PracticePublicQuiz } from "@/features/practice-quiz/ui/practice-quiz-public";
+import { pluralize } from "@/shared/lib";
 
 export default async function QuizPlayPage({
   params,
@@ -61,7 +62,8 @@ export default async function QuizPlayPage({
           </Stack>
 
           <Badge size="lg" variant="light">
-            {questions.length} вопросов
+            {questions.length}{" "}
+            {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
           </Badge>
         </Flex>
         <Divider my="lg" />

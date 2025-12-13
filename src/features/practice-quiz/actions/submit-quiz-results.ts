@@ -1,33 +1,43 @@
 "use server";
 
-import { submitQuizResultsService } from "@/entities/answer/services/submit-quiz-results";
+import { submitQuizResultsService } from "@/entities/attempt/services/submit-quiz-results";
+import { QuizAttemptMode } from "@prisma/client";
+import { QuizAnswers } from "@/entities/attempt/domain";
 
 export type SubmitQuizResultsFormState = {
   success?: boolean;
-  error?: string;
+  error?: boolean;
 };
 
 export async function submitQuizResultsAction(
-  prevState: SubmitQuizResultsFormState,
+  _: SubmitQuizResultsFormState,
   formData: FormData,
 ): Promise<SubmitQuizResultsFormState> {
-  const quizId = formData.get("quizId") as string;
-  const rawAnswers = formData.get("answers") as string;
+  try {
+    const quizId = formData.get("quizId");
+    const answersRaw = formData.get("answers");
 
-  if (!quizId || !rawAnswers) {
-    return { error: "invalid-data" };
+    if (typeof quizId !== "string" || typeof answersRaw !== "string") {
+      return { error: true };
+    }
+
+    const answers = JSON.parse(answersRaw) as QuizAnswers;
+
+    const result = await submitQuizResultsService({
+      quizId,
+      answers,
+      score: Object.values(answers).filter((v) => v.length > 0).length,
+      total: Object.keys(answers).length,
+      mode: QuizAttemptMode.PUBLIC,
+    });
+
+    if (result.type === "left") {
+      return { error: true };
+    }
+
+    return { success: true };
+  } catch (e) {
+    console.error("submitQuizResultsAction error:", e);
+    return { error: true };
   }
-
-  const answers = JSON.parse(rawAnswers) as Record<string, string[]>;
-
-  const result = await submitQuizResultsService({
-    quizId,
-    answers,
-  });
-
-  if (result.type === "left") {
-    return { error: "submit-failed" };
-  }
-
-  return { success: true };
 }
