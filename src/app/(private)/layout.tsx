@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/entities/user/server";
+import { getCurrentUser, sessionService } from "@/entities/user/server";
 import { Layout } from "@/shared/ui";
 import { Footer, HeaderPrivate } from "@/widgets";
 import type { Metadata } from "next";
@@ -14,6 +14,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await sessionService.verifySession();
   const user = await getCurrentUser();
   return (
     <Layout

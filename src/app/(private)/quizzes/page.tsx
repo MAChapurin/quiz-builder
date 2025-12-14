@@ -1,9 +1,7 @@
-import Link from "next/link";
 import { cookies } from "next/headers";
 import { Metadata } from "next";
-import { Button, Container } from "@mantine/core";
+import { Center, Container, Stack, Text } from "@mantine/core";
 
-import { routes } from "@/shared/config";
 import { matchEither } from "@/shared/lib/either";
 import { sessionService } from "@/entities/user/server";
 import { quizService } from "@/entities/quiz/server";
@@ -20,8 +18,6 @@ export default async function QuizzesPage() {
     sessionService.verifySession(),
     cookies(),
   ]);
-
-  if (!session) return <UserNotFound />;
 
   const view = cookieStore.get("quizView")?.value ?? "cards";
 
@@ -42,24 +38,14 @@ export default async function QuizzesPage() {
       </div>
 
       {quizzes.length === 0 ? (
-        <p>У вас пока нет квизов</p>
+        <Stack>
+          <Center className="h-[50dvh]">
+            <Text>У вас пока нет квизов</Text>
+          </Center>
+        </Stack>
       ) : (
         <QuizList quizzes={quizzes} initialView={view as QuizListViewType} />
       )}
     </Container>
-  );
-}
-
-function UserNotFound() {
-  return (
-    <div className="flex flex-col items-center justify-center mt-10">
-      <h1 className="text-2xl font-bold">Ошибка: пользователь не найден</h1>
-      <p className="text-gray-500 mt-2">
-        Пожалуйста, войдите в систему заново.
-      </p>
-      <Button component={Link} href={routes.LOGIN}>
-        Войти
-      </Button>
-    </div>
   );
 }
