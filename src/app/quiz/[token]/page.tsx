@@ -5,17 +5,10 @@ import { matchEither } from "@/shared/lib/either";
 import { pluralize } from "@/shared/lib";
 import { notFound } from "next/navigation";
 
-import {
-  Badge,
-  Card,
-  Center,
-  Divider,
-  Flex,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Badge, Card, Center, Divider, Flex, Text, Title } from "@mantine/core";
 import { PracticePublicQuiz } from "@/features/practice-quiz/ui/practice-quiz-public";
+import { Layout } from "@/shared/ui";
+import { Footer, HeaderQuizInvite } from "@/widgets";
 
 export default async function QuizPlayPage({
   params,
@@ -32,47 +25,55 @@ export default async function QuizPlayPage({
 
   const { quizId, inviteTokenId } = inviteEither.value;
 
-  const quizEither = await quizService.getQuizService(quizId);
+  const [quizEither, questionsEither] = await Promise.all([
+    quizService.getQuizService(quizId),
+    questionService.getQuestionsByQuiz(quizId),
+  ]);
+
   const quiz = matchEither(quizEither, {
     left: () => null,
     right: (q) => q,
   });
 
-  if (!quiz) {
-    notFound();
-  }
-
-  const questionsEither = await questionService.getQuestionsByQuiz(quizId);
   const questions = matchEither(questionsEither, {
     left: () => null,
     right: (q) => q,
   });
 
-  if (!questions || questions.length === 0) {
+  if (!quiz || !questions || questions.length === 0) {
     notFound();
   }
 
   return (
-    <Center mih="70vh" px="md">
-      <Card withBorder radius="lg" padding="xl" shadow="sm" maw={760} w="100%">
-        <Flex justify="space-between" align="flex-start">
-          <Stack gap={4}>
+    <Layout headerSlot={<HeaderQuizInvite />} footerSlot={<Footer />}>
+      <Center mih="70vh" px="md">
+        <Card
+          withBorder
+          radius="lg"
+          padding="xl"
+          shadow="sm"
+          maw={760}
+          w="100%"
+        >
+          <Flex justify="space-between" align="flex-start">
             <Title order={2}>{quiz.title}</Title>
-            {quiz.description && <Text c="dimmed">{quiz.description}</Text>}
-          </Stack>
+            <Badge size="lg" variant="light" ml="auto">
+              {questions.length}{" "}
+              {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
+            </Badge>
+          </Flex>
 
-          <Badge size="lg" variant="light">
-            {questions.length}{" "}
-            {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
-          </Badge>
-        </Flex>
-        <Divider my="lg" />
-        <PracticePublicQuiz
-          questions={questions}
-          quizId={quizId}
-          inviteTokenId={inviteTokenId}
-        />
-      </Card>
-    </Center>
+          {quiz.description && <Text c="dimmed">{quiz.description}</Text>}
+
+          <Divider my="lg" />
+
+          <PracticePublicQuiz
+            questions={questions}
+            quizId={quizId}
+            inviteTokenId={inviteTokenId}
+          />
+        </Card>
+      </Center>
+    </Layout>
   );
 }
