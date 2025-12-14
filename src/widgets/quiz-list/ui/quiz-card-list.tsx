@@ -13,7 +13,7 @@ import {
 
 import { emitter, formatDateRu, pluralize } from "@/shared/lib";
 import { SwitchPublicQuiz } from "@/features";
-import { QuizWithQuestions } from "@/entities/quiz/domain";
+import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
 
 import {
   IconEdit,
@@ -26,7 +26,7 @@ import {
 export function QuizCardsList({
   quizzes,
 }: {
-  quizzes: (QuizWithQuestions & { createdAtFormatted: string })[];
+  quizzes: QuizWithQuestionsExtended[];
 }) {
   return (
     <SimpleGrid
@@ -42,7 +42,7 @@ export function QuizCardsList({
             </Text>
 
             <Text opacity={0.5} fz={"xs"} className="shrink-0">
-              {formatDateRu(quiz.createdAtFormatted)}
+              {formatDateRu(quiz.createdAt)}
             </Text>
           </Flex>
           {quiz.description && (
@@ -52,8 +52,8 @@ export function QuizCardsList({
           )}
           <Flex gap={8} mt={14} wrap="wrap">
             <Badge size="xs" variant="outline" color="gray">
-              {quiz.questions.length}{" "}
-              {pluralize(quiz.questions.length, [
+              {quiz.questionsCount}{" "}
+              {pluralize(quiz.questionsCount, [
                 "вопрос",
                 "вопроса",
                 "вопросов",
@@ -61,7 +61,12 @@ export function QuizCardsList({
             </Badge>
 
             <Badge size="xs" variant="outline" color="gray">
-              0 {pluralize(0, ["прохождение", "прохождения", "прохождений"])}
+              {quiz.attemptsCount}{" "}
+              {pluralize(quiz.attemptsCount, [
+                "прохождение",
+                "прохождения",
+                "прохождений",
+              ])}
             </Badge>
           </Flex>
           <Divider my={16} />

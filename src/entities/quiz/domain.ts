@@ -6,6 +6,11 @@ export type QuizWithQuestions = QuizEntity & {
   })[];
 };
 
+export type QuizWithQuestionsExtended = QuizWithQuestions & {
+  attemptsCount: number;
+  questionsCount: number;
+};
+
 export type QuizEntity = {
   id: string;
   title: string;
@@ -13,4 +18,14 @@ export type QuizEntity = {
   authorId: string;
   isPublished: boolean;
   createdAt: Date;
+};
+
+export type QuizWithQuestionsStats = {
+  id: string;
+  title: string;
+  description?: string;
+  isPublished: boolean;
+  createdAt: Date;
+  questionsCount: number;
+  attemptsCount: number;
 };

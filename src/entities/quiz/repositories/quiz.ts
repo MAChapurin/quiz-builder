@@ -30,6 +30,12 @@ export async function getQuizzesByUserWithQuestions(authorId: string) {
           options: true,
         },
       },
+      _count: {
+        select: {
+          attempts: true,
+          questions: true,
+        },
+      },
     },
     orderBy: { createdAt: "desc" },
   });

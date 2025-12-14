@@ -16,28 +16,26 @@ export const metadata: Metadata = {
 };
 
 export default async function QuizzesPage() {
-  const { session } = await sessionService.verifySession();
+  const [{ session }, cookieStore] = await Promise.all([
+    sessionService.verifySession(),
+    cookies(),
+  ]);
+
   if (!session) return <UserNotFound />;
 
-  const cookieStore = await cookies();
   const view = cookieStore.get("quizView")?.value ?? "cards";
 
   const quizzesResult = await quizService.getQuizzesWithQuestionsByUser(
     session.id,
   );
+
   const quizzes = matchEither(quizzesResult, {
     left: () => [],
-    right: (q) =>
-      q.map((quiz) => ({
-        ...quiz,
-        createdAtFormatted: new Date(quiz.createdAt).toISOString().slice(0, 10),
-      })),
+    right: (q) => q,
   });
 
-  console.log(quizzes);
-
   return (
-    <Container size={"lg"}>
+    <Container size="lg">
       <div className="flex justify-between items-center my-4">
         <h1 className="text-xl font-bold">Мои квизы</h1>
         <CreateQuizButton />

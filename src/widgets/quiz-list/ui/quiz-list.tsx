@@ -2,7 +2,7 @@
 
 import { Divider, Flex, SegmentedControl } from "@mantine/core";
 import { QuestionEntity } from "@/entities/question/domain";
-import { QuizWithQuestions } from "@/entities/quiz/domain";
+import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
 
 import {
   DeleteQuizModal,
@@ -25,7 +25,7 @@ export function QuizList({
   quizzes,
   initialView,
 }: {
-  quizzes: (QuizWithQuestions & { createdAtFormatted: string })[];
+  quizzes: QuizWithQuestionsExtended[];
   initialView: QuizListViewType;
 }) {
   const [questions, setQuestions] = useState<QuestionEntity[]>([]);

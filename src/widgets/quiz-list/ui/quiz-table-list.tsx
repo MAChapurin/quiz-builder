@@ -10,7 +10,7 @@ import {
   IconDotsVertical,
 } from "@tabler/icons-react";
 
-import { QuizWithQuestions } from "@/entities/quiz/domain";
+import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
 
 import { SwitchPublicQuiz } from "@/features";
 import { emitter, formatDateRu } from "@/shared/lib";
@@ -18,7 +18,7 @@ import { emitter, formatDateRu } from "@/shared/lib";
 export function QuizTableList({
   quizzes,
 }: {
-  quizzes: (QuizWithQuestions & { createdAtFormatted: string })[];
+  quizzes: QuizWithQuestionsExtended[];
 }) {
   return (
     <Table striped highlightOnHover>
@@ -44,7 +44,7 @@ export function QuizTableList({
           <Table.Tr key={quiz.id}>
             <Table.Td>{quiz.title}</Table.Td>
             <Table.Td className="text-center hidden sm:table-cell">
-              {formatDateRu(quiz.createdAtFormatted)}
+              {formatDateRu(quiz.createdAt)}
             </Table.Td>
             <Table.Td className="text-center hidden sm:table-cell">
               {quiz.questions.length}
