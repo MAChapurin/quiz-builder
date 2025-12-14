@@ -1,10 +1,10 @@
 import { ActionIcon } from "@mantine/core";
 import { IconUserCircle } from "@tabler/icons-react";
 
-export function Profile() {
+export function Profile({ name }: { name: string }) {
   return (
     <ActionIcon variant="default" size="lg">
-      <IconUserCircle />
+      {name ? name[0] : <IconUserCircle />}
     </ActionIcon>
   );
 }

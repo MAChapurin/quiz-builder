@@ -34,6 +34,8 @@ export default async function QuizzesPage() {
       })),
   });
 
+  console.log(quizzes);
+
   return (
     <Container size={"lg"}>
       <div className="flex justify-between items-center my-4">

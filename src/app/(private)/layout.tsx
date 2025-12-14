@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/entities/user/server";
 import { Layout } from "@/shared/ui";
 import { Footer, HeaderPrivate } from "@/widgets";
 import type { Metadata } from "next";
@@ -8,13 +9,18 @@ export const metadata: Metadata = {
     "Приложение для составления квизов, отправки их людям и просмотра результатов",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getCurrentUser();
+  console.log(user);
   return (
-    <Layout headerSlot={<HeaderPrivate />} footerSlot={<Footer />}>
+    <Layout
+      headerSlot={<HeaderPrivate name={user?.name || ""} />}
+      footerSlot={<Footer />}
+    >
       {children}
     </Layout>
   );

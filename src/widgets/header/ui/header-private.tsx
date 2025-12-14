@@ -9,7 +9,7 @@ import { Logo } from "@/shared/ui";
 import { routes } from "@/shared/config";
 import { NavLinks } from "./nav-links";
 
-export function HeaderPrivate() {
+export function HeaderPrivate({ name }: { name: string }) {
   const pathname = usePathname();
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -23,7 +23,7 @@ export function HeaderPrivate() {
           </Group>
           <Group>
             <ColorSchemesSwitcher />
-            <Profile />
+            <Profile name={name} />
             <Group visibleFrom="md">
               <LogOutButton />
             </Group>
