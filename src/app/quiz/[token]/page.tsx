@@ -1,14 +1,12 @@
-import { inviteTokenService } from "@/entities/invite-token/server";
-import { quizService } from "@/entities/quiz/server";
-import { questionService } from "@/entities/question/server";
-import { matchEither } from "@/shared/lib/either";
-import { pluralize } from "@/shared/lib";
 import { notFound } from "next/navigation";
 
 import { Badge, Card, Center, Divider, Flex, Text, Title } from "@mantine/core";
-import { PracticePublicQuiz } from "@/features/practice-quiz/ui/practice-quiz-public";
-import { Layout } from "@/shared/ui";
-import { Footer, HeaderQuizInvite } from "@/widgets";
+
+import { inviteTokenService } from "@/entities/invite-token/server";
+import { quizService } from "@/entities/quiz/server";
+import { questionService } from "@/entities/question/server";
+import { PracticePublicQuiz } from "@/features";
+import { matchEither, pluralize } from "@/shared/lib";
 
 export default async function QuizPlayPage({
   params,
@@ -45,35 +43,26 @@ export default async function QuizPlayPage({
   }
 
   return (
-    <Layout headerSlot={<HeaderQuizInvite />} footerSlot={<Footer />}>
-      <Center mih="70vh" px="md">
-        <Card
-          withBorder
-          radius="lg"
-          padding="xl"
-          shadow="sm"
-          maw={760}
-          w="100%"
-        >
-          <Flex justify="space-between" align="flex-start">
-            <Title order={2}>{quiz.title}</Title>
-            <Badge size="lg" variant="light" ml="auto">
-              {questions.length}{" "}
-              {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
-            </Badge>
-          </Flex>
+    <Center mih="70vh" px="md">
+      <Card withBorder radius="lg" padding="xl" shadow="sm" maw={760} w="100%">
+        <Flex justify="space-between" align="flex-start">
+          <Title order={2}>{quiz.title}</Title>
+          <Badge size="lg" variant="light" ml="auto">
+            {questions.length}{" "}
+            {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
+          </Badge>
+        </Flex>
 
-          {quiz.description && <Text c="dimmed">{quiz.description}</Text>}
+        {quiz.description && <Text c="dimmed">{quiz.description}</Text>}
 
-          <Divider my="lg" />
+        <Divider my="lg" />
 
-          <PracticePublicQuiz
-            questions={questions}
-            quizId={quizId}
-            inviteTokenId={inviteTokenId}
-          />
-        </Card>
-      </Center>
-    </Layout>
+        <PracticePublicQuiz
+          questions={questions}
+          quizId={quizId}
+          inviteTokenId={inviteTokenId}
+        />
+      </Card>
+    </Center>
   );
 }
