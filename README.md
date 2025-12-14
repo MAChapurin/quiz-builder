@@ -1,4 +1,84 @@
-# 🧠 Quiz Constructor
+# Quiz Constructor
+
+[Посмотреть проект](https://quiz-builder-mu-two.vercel.app/)
+
+## О проекте
+
+Quiz Constructor — это современный конструктор квизов с возможностью создания тестов, проведения практических прохождений, отслеживания результатов и генерации персональных ссылок для прохождения. Проект использует **Next.js 15**, **TypeScript**, **Prisma**, **Mantine UI**, и ориентирован на модульную архитектуру.
+
+Основные возможности:
+
+- Создание и редактирование квизов и вопросов
+- Публичное и тестовое прохождение квизов
+- Генерация персональных инвайт-ссылок
+- Отправка результатов и расчёт очков
+- Админская панель и модальные виджеты
+- Поддержка тёмной и светлой темы
+- Адаптивный интерфейс для мобильных устройств
+
+---
+
+## Стек
+
+- **Next.js 15** — SSR / SSG, серверные Actions
+- **React 19** + **TypeScript 5**
+- **Prisma 6** + PostgreSQL / SQLite
+- **Mantine UI 8** + TailwindCSS
+- **Zod** для валидации DTO и форм
+- **Sonner** для уведомлений
+- **Event Emitter** вместо глобального стэйт-менеджера (только для виджетов и модальных окон)
+- **bcryptjs**, **jsonwebtoken**, **jose** — для аутентификации
+
+---
+
+## Архитектура
+
+Проект построен по **чистой архитектуре**:
+
+- **Entities / Domain** — определяют сущности и типы (Quiz, Question, Attempt, InviteToken)
+- **DTO** — структуры данных для передачи между слоями
+- **Repositories** — работа с базой данных через Prisma
+- **Services** — бизнес-логика, использующая репозитории
+- **UI / Widgets** — компоненты и модальные окна, Event-driven через эмиттер
+
+### Mermaid-диаграмма архитектуры
+
+```mermaid
+flowchart TD
+    subgraph Entities
+        QuizEntity[Quiz Entity]
+        QuestionEntity[Question Entity]
+        AttemptEntity[Attempt Entity]
+        InviteTokenEntity[InviteToken Entity]
+    end
+
+    subgraph Repositories
+        QuizRepo[Quiz Repository]
+        QuestionRepo[Question Repository]
+        AttemptRepo[Quiz Attempt Repository]
+        InviteRepo[Invite Token Repository]
+    end
+
+    subgraph Services
+        QuizService[Quiz Service]
+        AttemptService[Quiz Attempt Service]
+        InviteService[Invite Token Service]
+    end
+
+    subgraph UI
+        Header[Header Component]
+        QuizPage[Quiz Page / PracticeQuizView]
+        Modals[Widgets / Modals / Event-driven]
+    end
+
+    Entities --> Repositories
+    Repositories --> Services
+    Services --> UI
+    Modals --> Services
+    UI --> Modals
+
+
+<!-- # 🧠 Quiz Constructor
 
 Современное fullstack‑приложение для создания, прохождения и анализа квизов. Google forms на минималках.
 
@@ -36,32 +116,34 @@
 Проект следует **feature‑first / domain‑driven** подходу.
 
 ```
+
 src/
- ├─ app/                 # Next.js App Router
- │   ├─ (public)
- │   ├─ (private)
- │   └─ layout.tsx
- │
- ├─ entities/            # Доменные сущности
- │   ├─ quiz/
- │   ├─ question/
- │   ├─ attempt/
- │   └─ invite-token/
- │
- ├─ features/            # Пользовательские сценарии
- │   ├─ practice-quiz/
- │   ├─ create-quiz/
- │   └─ auth/
- │
- ├─ shared/              # Общие утилиты
- │   ├─ lib/
- │   │   ├─ either.ts
- │   │   └─ db.ts
- │   ├─ ui/
- │   └─ config/
- |-  widgets/            # Секции для отображения ui и набором пользовательских сценариев
- │
- └─ prisma/              # Prisma schema & migrations
+├─ app/ # Next.js App Router
+│ ├─ (public)
+│ ├─ (private)
+│ └─ layout.tsx
+│
+├─ entities/ # Доменные сущности
+│ ├─ quiz/
+│ ├─ question/
+│ ├─ attempt/
+│ └─ invite-token/
+│
+├─ features/ # Пользовательские сценарии
+│ ├─ practice-quiz/
+│ ├─ create-quiz/
+│ └─ auth/
+│
+├─ shared/ # Общие утилиты
+│ ├─ lib/
+│ │ ├─ either.ts
+│ │ └─ db.ts
+│ ├─ ui/
+│ └─ config/
+|- widgets/ # Секции для отображения ui и набором пользовательских сценариев
+│
+└─ prisma/ # Prisma schema & migrations
+
 ```
 
 ### Ключевые принципы
@@ -80,18 +162,20 @@ src/
 ## 🔁 Data Flow (пример: отправка результатов)
 
 ```
+
 Client Form
-  ↓
+↓
 Server Action (use server)
-  ↓
+↓
 Zod validation
-  ↓
+↓
 Service (submitQuizResultsService)
-  ↓
+↓
 Repository (Prisma)
-  ↓
+↓
 Either<error | success>
-```
+
+````
 
 Label попытки:
 
@@ -133,7 +217,7 @@ Prisma используется как единственный источник
 ```bash
 pnpm prisma migrate dev
 pnpm prisma studio
-```
+````
 
 После `postinstall` автоматически вызывается:
 
@@ -191,4 +275,4 @@ http://localhost:3000
 
 ---
 
-## ⭐ TL;DR
+## ⭐ TL;DR -->
