@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { ColorSchemesSwitcher, LogOutButton, Profile } from "@/features";
 import { Logo } from "@/shared/ui";
 import { routes } from "@/shared/config";
-import { NavLinks } from "./navlinks";
+import { NavLinks } from "./nav-links";
 
 export function HeaderPrivate() {
   const pathname = usePathname();
@@ -23,8 +23,8 @@ export function HeaderPrivate() {
           </Group>
           <Group>
             <ColorSchemesSwitcher />
+            <Profile />
             <Group visibleFrom="md">
-              <Profile />
               <LogOutButton />
             </Group>
             <Burger hiddenFrom="md" opened={opened} onClick={open} />
@@ -34,15 +34,15 @@ export function HeaderPrivate() {
       <Drawer
         opened={opened}
         onClose={close}
-        size="75%"
         title="Меню"
         hiddenFrom="md"
         position="right"
       >
         <Stack gap="md">
+          <Group className="ml-auto">
+            <LogOutButton />
+          </Group>
           <NavLinks pathname={pathname} onClick={close} />
-          <Profile />
-          <LogOutButton />
         </Stack>
       </Drawer>
     </>
