@@ -3,9 +3,9 @@
 import { Chip, Group, Button, Flex, Loader } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { QuizTitleEntity } from "@/entities/quiz/domain";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { setCookie, removeCookie } from "@/shared/lib";
+import { setCookie, removeCookie, emitter } from "@/shared/lib";
 import { COOKIE_KEYS, QUERY_KEYS } from "@/shared/config";
 
 export function AttemptsQuizFilterChips({
@@ -40,6 +40,10 @@ export function AttemptsQuizFilterChips({
 
   const handleChange = (values: string[]) => updateFilter(values);
   const handleReset = () => updateFilter([]);
+
+  useEffect(() => {
+    return emitter.subscribe("attempt-filter-reset", handleReset);
+  }, []);
 
   if (!titles || titles.length === 0) return null;
 

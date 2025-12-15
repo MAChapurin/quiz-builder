@@ -1,5 +1,12 @@
 import { Metadata } from "next";
-import { Center, Container, Stack, Text, Title } from "@mantine/core";
+import {
+  Center,
+  Container,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 
 import { COOKIE_KEYS } from "@/shared/config";
 import { getServerCookies, matchEither } from "@/shared/lib";
@@ -8,7 +15,11 @@ import { attemptService } from "@/entities/attempt/server";
 import { getQuizTitlesByUserService } from "@/entities/quiz/services/quiz";
 
 import { AttemptList } from "@/widgets/attempt-list";
-import { AttemptsQuizFilterChips } from "@/features/attempt-filter";
+import {
+  AttemptsQuizFilterChips,
+  AttemptsQuizFilterResetButton,
+} from "@/features/attempt-filter";
+import { IconFilterOff, IconListSearch } from "@tabler/icons-react";
 
 export const metadata: Metadata = {
   title: "Результаты квизов",
@@ -59,21 +70,26 @@ export default async function ResultsPage({ searchParams }: Props) {
 
       {noAttempts ? (
         <Center mih="70vh" px="md">
-          <Stack align="center">
-            {filteredOut ? (
-              <>
-                <Text>По выбранным фильтрам результатов нет</Text>
-                <Text>Попробуйте снять фильтры или выбрать другие квизы.</Text>
-              </>
-            ) : (
-              <>
-                <Text>Пока нет результатов прохождений</Text>
-                <Text>
-                  Отправьте несколько ссылок на прохождение ваших квизов, чтобы
-                  увидеть результаты здесь.
-                </Text>
-              </>
-            )}
+          <Stack align="center" gap="sm" maw={420} ta="center">
+            <ThemeIcon size={64} variant="light">
+              {filteredOut ? (
+                <IconFilterOff size={32} />
+              ) : (
+                <IconListSearch size={32} />
+              )}
+            </ThemeIcon>
+
+            <Title order={3}>
+              {filteredOut ? "Ничего не найдено" : "Пока нет результатов"}
+            </Title>
+
+            <Text c="dimmed">
+              {filteredOut
+                ? "Выбранные фильтры не дали результатов. Попробуйте снять их или выбрать другие квизы."
+                : "Когда кто-нибудь пройдет ваши квизы, результаты появятся здесь."}
+            </Text>
+
+            {filteredOut && <AttemptsQuizFilterResetButton />}
           </Stack>
         </Center>
       ) : (
