@@ -1,6 +1,15 @@
 "use client";
 
-import { Container, Group, Flex, Burger, Drawer, Stack } from "@mantine/core";
+import {
+  Container,
+  Group,
+  Flex,
+  Burger,
+  Drawer,
+  Stack,
+  Center,
+  Divider,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname } from "next/navigation";
 
@@ -37,12 +46,14 @@ export function HeaderPrivate({ name }: { name: string }) {
         title="Меню"
         hiddenFrom="md"
         position="right"
+        size={"xs"}
       >
         <Stack gap="md">
-          <Group className="ml-auto">
-            <LogOutButton />
-          </Group>
           <NavLinks pathname={pathname} onClick={close} />
+          <Divider />
+          <Center>
+            <LogOutButton withLabel size="xs" />
+          </Center>
         </Stack>
       </Drawer>
     </>

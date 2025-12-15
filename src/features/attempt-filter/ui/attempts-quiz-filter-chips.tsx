@@ -38,18 +38,19 @@ export function AttemptsQuizFilterChips({
     });
   };
 
-  const handleChange = (values: string[]) => updateFilter(values);
-  const handleReset = () => updateFilter([]);
+  const onChange = (values: string[]) => updateFilter(values);
+  const onReset = () => updateFilter([]);
 
   useEffect(() => {
-    return emitter.subscribe("attempt-filter-reset", handleReset);
+    return emitter.subscribe("attempt-filter-reset", onReset);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!titles || titles.length === 0) return null;
 
   return (
     <Flex align="center" gap="md" wrap="wrap" mb="md">
-      <Chip.Group multiple value={activeIds} onChange={handleChange}>
+      <Chip.Group multiple value={activeIds} onChange={onChange}>
         <Group gap="sm" wrap="wrap">
           {titles.map((quiz) => (
             <Chip key={quiz.id} value={quiz.id}>
@@ -62,7 +63,7 @@ export function AttemptsQuizFilterChips({
       <Button
         variant="default"
         size="xs"
-        onClick={handleReset}
+        onClick={onReset}
         leftSection={isPending ? <Loader size="xs" /> : <IconX size={16} />}
         disabled={isPending || activeIds.length === 0}
       >
