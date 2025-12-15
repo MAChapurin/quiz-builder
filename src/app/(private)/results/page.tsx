@@ -28,7 +28,7 @@ export default async function ResultsPage() {
   return (
     <Container size="lg">
       <div className="flex justify-between items-center my-4">
-        <Title>Результаты прохождений</Title>
+        <Title className="text-xl font-bold">Результаты прохождений</Title>
       </div>
 
       {attempts.length === 0 ? (
