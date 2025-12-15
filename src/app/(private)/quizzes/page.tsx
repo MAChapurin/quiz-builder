@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { Metadata } from "next";
-import { Center, Container, Stack, Text } from "@mantine/core";
+import { Center, Container, Stack, Text, Title } from "@mantine/core";
 
 import { matchEither } from "@/shared/lib/either";
 import { sessionService } from "@/entities/user/server";
@@ -31,21 +31,23 @@ export default async function QuizzesPage() {
   });
 
   return (
-    <Container size="lg">
-      <div className="flex justify-between items-center my-4">
-        <h1 className="text-xl font-bold">Мои квизы</h1>
-        <CreateQuizButton />
-      </div>
+    <>
+      <Container size="lg">
+        <div className="flex justify-between items-center my-4">
+          <Title className="text-xl font-bold">Мои квизы</Title>
+          <CreateQuizButton />
+        </div>
 
-      {quizzes.length === 0 ? (
-        <Stack>
-          <Center className="h-[50dvh]">
-            <Text>У вас пока нет квизов</Text>
-          </Center>
-        </Stack>
-      ) : (
-        <QuizList quizzes={quizzes} initialView={view as QuizListViewType} />
-      )}
-    </Container>
+        {quizzes.length === 0 ? (
+          <Stack>
+            <Center className="h-[50dvh]">
+              <Text>У вас пока нет квизов</Text>
+            </Center>
+          </Stack>
+        ) : (
+          <QuizList quizzes={quizzes} initialView={view as QuizListViewType} />
+        )}
+      </Container>
+    </>
   );
 }

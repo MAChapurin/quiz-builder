@@ -46,7 +46,7 @@ export function QuizCardsList({
             </Text>
           </Flex>
           {quiz.description && (
-            <Text fz="sm" c="dimmed" className="line-clamp-2 mb-auto">
+            <Text fz="sm" c="dimmed" className="truncate mb-auto">
               {quiz.description}
             </Text>
           )}
