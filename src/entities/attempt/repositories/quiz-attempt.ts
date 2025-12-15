@@ -18,10 +18,14 @@ async function createAttempt(data: CreateQuizAttemptDTO) {
 
 async function getAttemptsForAuthor(
   authorId: string,
+  quizIds?: string[],
 ): Promise<QuizAttemptEntity[]> {
   const rows = await prisma.quizAttempt.findMany({
     where: {
-      quiz: { authorId },
+      quiz: {
+        authorId,
+        id: quizIds && quizIds.length > 0 ? { in: quizIds } : undefined,
+      },
     },
     select: {
       id: true,

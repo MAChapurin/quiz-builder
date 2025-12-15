@@ -86,7 +86,7 @@ Server Action (use server)
   ↓
 Zod validation
   ↓
-Service (submitQuizResultsService)
+Service
   ↓
 Repository (Prisma)
   ↓

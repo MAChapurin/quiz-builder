@@ -3,7 +3,7 @@ import { SubmitQuizResultsDTO } from "../dto";
 import { left, right, Either } from "@/shared/lib/either";
 import { quizAttemptRepository } from "../repositories/quiz-attempt";
 
-export async function submitQuizResultsService(
+export async function submitQuizResults(
   input: SubmitQuizResultsDTO,
 ): Promise<Either<"attempt-create-failed", true>> {
   try {

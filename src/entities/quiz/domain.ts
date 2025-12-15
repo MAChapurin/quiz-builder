@@ -29,3 +29,8 @@ export type QuizWithQuestionsStats = {
   questionsCount: number;
   attemptsCount: number;
 };
+
+export type QuizTitleEntity = {
+  id: string;
+  title: string;
+};

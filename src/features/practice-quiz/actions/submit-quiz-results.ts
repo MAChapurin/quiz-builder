@@ -1,11 +1,11 @@
 "use server";
 
 import { calculateScoreCorrectly } from "@/entities/attempt/domain";
-import { submitQuizResultsService } from "@/entities/attempt/services/submit-quiz-results";
 import { questionService } from "@/entities/question/server";
 
 import { submitQuizResultsSchema } from "./submit-quiz-results.schema";
 import { SubmitQuizResultsFormState } from "./submit-quiz-results.types";
+import { attemptService } from "@/entities/attempt/server";
 
 export async function submitQuizResultsAction(
   _: SubmitQuizResultsFormState,
@@ -44,7 +44,7 @@ export async function submitQuizResultsAction(
 
     const total = Object.keys(correctOptionIdsByQuestion).length;
 
-    const result = await submitQuizResultsService({
+    const result = await attemptService.submitQuizResults({
       quizId,
       inviteTokenId,
       answers,

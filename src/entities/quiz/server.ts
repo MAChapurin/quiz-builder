@@ -7,6 +7,7 @@ import {
   updateQuizService,
   togglePublishQuizService,
   getPublishedQuizzesService,
+  getQuizTitlesByUserService,
 } from "./services/quiz";
 
 export const quizService = {
@@ -18,4 +19,5 @@ export const quizService = {
   deleteQuizService,
   togglePublishQuizService,
   getPublishedQuizzesService,
+  getQuizTitlesByUserService,
 };

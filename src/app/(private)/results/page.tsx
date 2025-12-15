@@ -1,29 +1,50 @@
-import Link from "next/link";
 import { Metadata } from "next";
-import { Button, Center, Container, Stack, Text, Title } from "@mantine/core";
+import { Center, Container, Stack, Text, Title } from "@mantine/core";
 
-import { routes } from "@/shared/config";
-import { matchEither } from "@/shared/lib/either";
+import { COOKIE_KEYS } from "@/shared/config";
+import { getServerCookies, matchEither } from "@/shared/lib";
 import { sessionService } from "@/entities/user/server";
+import { attemptService } from "@/entities/attempt/server";
+import { getQuizTitlesByUserService } from "@/entities/quiz/services/quiz";
 
 import { AttemptList } from "@/widgets/attempt-list";
-import { getAttemptsForAuthorService } from "@/entities/attempt/services/get-attempts-for-author";
+import { AttemptsQuizFilterChips } from "@/features/attempt-filter";
 
 export const metadata: Metadata = {
   title: "Результаты квизов",
   description: "Результаты прохождений ваших квизов",
 };
 
-export default async function ResultsPage() {
-  const { session } = await sessionService.verifySession();
-  if (!session) return <UserNotFound />;
+type Props = { searchParams: Promise<{ quiz?: string }> };
 
-  const attemptsEither = await getAttemptsForAuthorService(session.id);
+export default async function ResultsPage({ searchParams }: Props) {
+  const { session } = await sessionService.verifySession();
+
+  const params = await searchParams;
+  const cookies = await getServerCookies();
+
+  const initialFilterIds =
+    params.quiz?.split(",").filter(Boolean) ??
+    cookies[COOKIE_KEYS.ATTEMPT]?.split(",").filter(Boolean) ??
+    [];
+
+  const [attemptsEither, titlesEither] = await Promise.all([
+    attemptService.getAttemptsForAuthor(session.id, initialFilterIds),
+    getQuizTitlesByUserService(session.id),
+  ]);
 
   const attempts = matchEither(attemptsEither, {
     left: () => [],
     right: (a) => a,
   });
+
+  const titles = matchEither(titlesEither, {
+    left: () => [],
+    right: (t) => t,
+  });
+
+  const noAttempts = attempts.length === 0;
+  const filteredOut = initialFilterIds.length > 0 && noAttempts;
 
   return (
     <Container size="lg">
@@ -31,34 +52,33 @@ export default async function ResultsPage() {
         <Title className="text-xl font-bold">Результаты прохождений</Title>
       </div>
 
-      {attempts.length === 0 ? (
+      <AttemptsQuizFilterChips
+        titles={titles}
+        initialValue={initialFilterIds}
+      />
+
+      {noAttempts ? (
         <Center mih="70vh" px="md">
           <Stack align="center">
-            <Text>Пока нет результатов прохождений</Text>
-            <Text>
-              Отправльте несколько ссылок на прохождение ваших квизов, чтобы
-              увидеть результаты здесь.
-            </Text>
-            <Button component={Link} href={routes.QUIZZES}>
-              К квизам
-            </Button>
+            {filteredOut ? (
+              <>
+                <Text>По выбранным фильтрам результатов нет</Text>
+                <Text>Попробуйте снять фильтры или выбрать другие квизы.</Text>
+              </>
+            ) : (
+              <>
+                <Text>Пока нет результатов прохождений</Text>
+                <Text>
+                  Отправьте несколько ссылок на прохождение ваших квизов, чтобы
+                  увидеть результаты здесь.
+                </Text>
+              </>
+            )}
           </Stack>
         </Center>
       ) : (
         <AttemptList attempts={attempts} />
       )}
     </Container>
-  );
-}
-
-function UserNotFound() {
-  return (
-    <Center mih="70vh" px="md">
-      <Title>Ошибка: пользователь не найден</Title>
-      <Text>Пожалуйста, войдите в систему заново.</Text>
-      <Button component={Link} href={routes.LOGIN}>
-        Войти
-      </Button>
-    </Center>
   );
 }

@@ -2,6 +2,7 @@ import { quizRepository } from "../repositories/quiz";
 import { CreateQuizDTO } from "../dto";
 import {
   QuizEntity,
+  QuizTitleEntity,
   QuizWithQuestions,
   QuizWithQuestionsExtended,
 } from "../domain";
@@ -32,6 +33,18 @@ export const getQuizzesByUserService = async (
 ): Promise<Either<"no-quizzes", QuizEntity[]>> => {
   const quizzes = await quizRepository.getQuizzesByUser(authorId);
   if (!quizzes || quizzes.length === 0) return left("no-quizzes");
+  return right(quizzes);
+};
+
+export const getQuizTitlesByUserService = async (
+  authorId: string,
+): Promise<Either<"no-quizzes", QuizTitleEntity[]>> => {
+  const quizzes = await quizRepository.getQuizTitlesByUser(authorId);
+
+  if (!quizzes || quizzes.length === 0) {
+    return left("no-quizzes");
+  }
+
   return right(quizzes);
 };
 

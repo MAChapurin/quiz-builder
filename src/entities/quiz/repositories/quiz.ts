@@ -1,5 +1,5 @@
 import { prisma } from "@/shared/lib/db";
-import { QuizEntity } from "../domain";
+import { QuizEntity, QuizTitleEntity } from "../domain";
 import { CreateQuizDTO } from "../dto";
 
 export async function createQuiz(data: CreateQuizDTO): Promise<QuizEntity> {
@@ -19,6 +19,19 @@ export async function getQuizzesByUser(
   return prisma.quiz.findMany({
     where: { authorId },
   }) as unknown as QuizEntity[];
+}
+
+export async function getQuizTitlesByUser(
+  authorId: string,
+): Promise<QuizTitleEntity[]> {
+  return prisma.quiz.findMany({
+    where: { authorId },
+    select: {
+      id: true,
+      title: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
 }
 
 export async function getQuizzesByUserWithQuestions(authorId: string) {
@@ -90,4 +103,5 @@ export const quizRepository = {
   getQuizQuestionsCount,
   togglePublishQuiz,
   getPublishedQuizzesWithQuestions,
+  getQuizTitlesByUser,
 };

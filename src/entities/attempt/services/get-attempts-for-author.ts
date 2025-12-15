@@ -2,12 +2,14 @@ import { Either, left, right } from "@/shared/lib/either";
 import { quizAttemptRepository } from "../repositories/quiz-attempt";
 import { QuizAttemptEntity } from "../domain";
 
-export type GetAttemptsForAuthorError = "no-attempts";
-
-export async function getAttemptsForAuthorService(
+export async function getAttemptsForAuthor(
   authorId: string,
-): Promise<Either<GetAttemptsForAuthorError, QuizAttemptEntity[]>> {
-  const attempts = await quizAttemptRepository.getAttemptsForAuthor(authorId);
+  quizIds?: string[],
+): Promise<Either<"no-attempts", QuizAttemptEntity[]>> {
+  const attempts = await quizAttemptRepository.getAttemptsForAuthor(
+    authorId,
+    quizIds,
+  );
 
   if (attempts.length === 0) {
     return left("no-attempts");
