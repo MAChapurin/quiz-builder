@@ -18,31 +18,31 @@ model User {
 }
 
 model Quiz {
-  id            String        @id @default(cuid())
-  title         String
-  description   String
-  author        User          @relation("AuthorQuizzes", fields: [authorId], references: [id])
-  authorId      String
-  questions     Question[]
-  inviteTokens  InviteToken[]
-  attempts      QuizAttempt[]
+  id           String        @id @default(cuid())
+  title        String
+  description  String
+  author       User          @relation("AuthorQuizzes", fields: [authorId], references: [id])
+  authorId     String
+  questions    Question[]
+  inviteTokens InviteToken[]
+  attempts     QuizAttempt[]
 
-  isPublished   Boolean       @default(false)
-  createdAt     DateTime      @default(now())
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }
 
 model Question {
-  id         String        @id @default(cuid())
-  quiz       Quiz          @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  quizId     String
-  type       QuestionType
-  text       String
-  options    Option[]
-  createdAt  DateTime      @default(now())
+  id        String       @id @default(cuid())
+  quiz      Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId    String
+  type      QuestionType
+  text      String
+  options   Option[]
+  createdAt DateTime     @default(now())
 }
 
 model Option {
-  id         String    @id @default(cuid())
+  id         String   @id @default(cuid())
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
   text       String
@@ -56,36 +56,34 @@ enum QuestionType {
 }
 
 model InviteToken {
-  id          String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  quizId      String
-  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
-  token       String   @unique
-  label       String  
-  expiresAt   DateTime
-  used        Boolean  @default(false)
+  token     String   @unique
+  label     String
+  expiresAt DateTime
+  used      Boolean  @default(false)
 
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
-
 model QuizAttempt {
-  id             String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  quizId         String
-  quiz           Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
-  inviteTokenId  String?
-  label          String   
+  inviteTokenId String?
+  label         String
 
-  score          Int
-  total          Int
-  answers        Json
+  score   Int
+  total   Int
+  answers Json
 
-  createdAt      DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([quizId])
   @@index([inviteTokenId])
 }
-
