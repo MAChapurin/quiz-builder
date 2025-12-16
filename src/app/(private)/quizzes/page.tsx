@@ -7,6 +7,7 @@ import { sessionService } from "@/entities/user/server";
 import { quizService } from "@/entities/quiz/server";
 import { CreateQuizButton } from "@/features";
 import { QuizList, QuizListViewType } from "@/widgets";
+import { COOKIE_KEYS } from "@/shared/config";
 
 export const metadata: Metadata = {
   title: "Мои квизы",
@@ -19,7 +20,7 @@ export default async function QuizzesPage() {
     cookies(),
   ]);
 
-  const view = cookieStore.get("quizView")?.value ?? "cards";
+  const view = cookieStore.get(COOKIE_KEYS.QUIZ_LIST_VIEW)?.value ?? "cards";
 
   const quizzesResult = await quizService.getQuizzesWithQuestionsByUser(
     session.id,

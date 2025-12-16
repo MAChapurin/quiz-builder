@@ -11,6 +11,7 @@ import "@mantine/notifications/styles.css";
 
 import { CookiesBanner } from "@/widgets";
 import { getServerCookies } from "@/shared/lib";
+import { COOKIE_KEYS } from "@/shared/config";
 
 export const metadata: Metadata = {
   title: "Конструктор тестов",
@@ -24,7 +25,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookies = await getServerCookies();
-  const bannerSeen = cookies["quiz_banner_seen"] === "true";
+  const bannerSeen = cookies[COOKIE_KEYS.BANNER] === "true";
 
   return (
     <html lang="en" {...mantineHtmlProps}>

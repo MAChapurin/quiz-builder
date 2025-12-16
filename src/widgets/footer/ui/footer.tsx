@@ -10,11 +10,11 @@ export function Footer() {
             <Text>© {new Date().getFullYear()} QuizBuilder.</Text>
             <ActionIcon
               component="a"
-              href="https://github.com/MAChapurin"
+              href="https://github.com/MAChapurin/quiz-builder"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <IconBrandGithub size={24} className="text-white" />
+              <IconBrandGithub size={24} className="" />
             </ActionIcon>
           </Flex>
         </Container>

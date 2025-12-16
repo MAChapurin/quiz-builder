@@ -12,30 +12,28 @@ import {
   Transition,
 } from "@mantine/core";
 import { useCookies } from "@/shared/hooks/use-cookies";
-
-const BANNER_COOKIE = "quiz_banner_seen";
-const OPTIONAL_COOKIE = "quiz_allow_optional";
+import { COOKIE_KEYS } from "@/shared/config";
 
 export function CookiesBanner() {
   const { get, set } = useCookies();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const seen = get(BANNER_COOKIE) === "true";
+    const seen = get(COOKIE_KEYS.BANNER) === "true";
     if (!seen) {
       setTimeout(() => setVisible(true), 40);
     }
   }, [get]);
 
   function onAcceptAll() {
-    set(OPTIONAL_COOKIE, "true", 365);
-    set(BANNER_COOKIE, "true", 365);
+    set(COOKIE_KEYS.OPTIONAL, "true", 365);
+    set(COOKIE_KEYS.BANNER, "true", 365);
     setVisible(false);
   }
 
   function onOnlyRequired() {
-    set(OPTIONAL_COOKIE, "false", 365);
-    set(BANNER_COOKIE, "true", 365);
+    set(COOKIE_KEYS.OPTIONAL, "false", 365);
+    set(COOKIE_KEYS.BANNER, "true", 365);
     setVisible(false);
   }
 

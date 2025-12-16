@@ -56,6 +56,7 @@ export default async function ResultsPage({ searchParams }: Props) {
 
   const noAttempts = attempts.length === 0;
   const filteredOut = initialFilterIds.length > 0 && noAttempts;
+  const showFilters = initialFilterIds.length > 0 || attempts.length > 0;
 
   return (
     <Container size="lg">
@@ -63,10 +64,12 @@ export default async function ResultsPage({ searchParams }: Props) {
         <Title className="text-xl font-bold">Результаты прохождений</Title>
       </div>
 
-      <AttemptsQuizFilterChips
-        titles={titles}
-        initialValue={initialFilterIds}
-      />
+      {showFilters && (
+        <AttemptsQuizFilterChips
+          titles={titles}
+          initialValue={initialFilterIds}
+        />
+      )}
 
       {noAttempts ? (
         <Center mih="70vh" px="md">

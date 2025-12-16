@@ -11,7 +11,8 @@ import {
   PracticeQuizModal,
   useOpenQuiz,
 } from "@/features";
-import { emitter } from "@/shared/lib";
+import { COOKIE_KEYS } from "@/shared/config";
+import { emitter, setCookie } from "@/shared/lib";
 import { useEffect, useState } from "react";
 import { QuizTableList } from "./quiz-table-list";
 import { QuizCardsList } from "./quiz-card-list";
@@ -34,7 +35,7 @@ export function QuizList({
   useOpenQuiz();
 
   useEffect(() => {
-    document.cookie = `quizView=${view}; path=/; max-age=31536000`;
+    setCookie(COOKIE_KEYS.QUIZ_LIST_VIEW, view, 365);
   }, [view]);
 
   useEffect(() => {
