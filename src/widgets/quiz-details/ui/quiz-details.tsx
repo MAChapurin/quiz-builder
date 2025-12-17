@@ -29,19 +29,20 @@ import {
   DeleteQuestionModal,
   EditQuestionModal,
   PracticeQuizModal,
+  SwitchPublicQuiz,
 } from "@/features";
 import { GenerateInviteModal } from "@/features/invite-link-modal/ui/invite-link-modal";
 
-type Props = {
+type QuizDetailProps = {
   quiz: QuizEntity;
   questions: QuestionEntity[];
 };
 
-export function QuizDetail({ quiz, questions }: Props) {
+export function QuizDetail({ quiz, questions }: QuizDetailProps) {
   const lastQuestionRef = useRef<HTMLDivElement>(null);
   return (
     <Container size="lg" py="lg">
-      <Card withBorder p="lg" radius="md" mb="md">
+      <Card withBorder p="lg" mb="md">
         <Group align="flex-start">
           <Stack style={{ flex: 1 }}>
             <Title order={1}>{quiz.title}</Title>
@@ -54,9 +55,18 @@ export function QuizDetail({ quiz, questions }: Props) {
               {questions.length}{" "}
               {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
             </Badge>
+            <Badge variant="outline" color="gray">
+              {quiz.attemptsCount}{" "}
+              {pluralize(quiz.attemptsCount, [
+                "прохождение",
+                "прохождения",
+                "прохождений",
+              ])}
+            </Badge>
           </Stack>
           <Stack>
             <Button
+              justify="space-between"
               variant="default"
               leftSection={<IconPencil size={16} />}
               onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
@@ -64,6 +74,7 @@ export function QuizDetail({ quiz, questions }: Props) {
               Редактировать
             </Button>
             <Button
+              justify="space-between"
               disabled={questions.length === 0}
               variant="default"
               leftSection={<IconPlayerPlay size={16} />}
@@ -73,7 +84,14 @@ export function QuizDetail({ quiz, questions }: Props) {
             >
               Пройти пробно
             </Button>
+            <SwitchPublicQuiz
+              quizId={quiz.id}
+              initialValue={quiz.isPublished}
+              variant="button"
+              disabled={questions.length === 0}
+            />
             <Button
+              justify="space-between"
               disabled={questions.length === 0 || !quiz.isPublished}
               variant="default"
               leftSection={<IconLinkPlus size={20} />}
@@ -84,6 +102,7 @@ export function QuizDetail({ quiz, questions }: Props) {
               Создать инвайт
             </Button>
             <Button
+              justify="space-between"
               variant="default"
               leftSection={<IconCirclePlus size={20} />}
               onClick={() =>

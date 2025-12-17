@@ -8,9 +8,23 @@ export async function createQuiz(data: CreateQuizDTO): Promise<QuizEntity> {
 }
 
 export async function getQuiz(id: string): Promise<QuizEntity | null> {
-  return prisma.quiz.findUnique({
+  const quiz = await prisma.quiz.findUnique({
     where: { id },
-  }) as unknown as QuizEntity | null;
+    include: {
+      _count: {
+        select: {
+          attempts: true,
+        },
+      },
+    },
+  });
+
+  if (!quiz) return null;
+
+  return {
+    ...quiz,
+    attemptsCount: quiz._count.attempts,
+  } as QuizEntity;
 }
 
 export async function getQuizzesByUser(

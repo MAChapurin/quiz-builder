@@ -6,7 +6,7 @@ import {
   getQuizzesWithQuestionsByUser,
   updateQuizService,
   togglePublishQuizService,
-  getPublishedQuizzesService,
+  // getPublishedQuizzesService,
   getQuizTitlesByUserService,
 } from "./services/quiz";
 
@@ -18,6 +18,6 @@ export const quizService = {
   updateQuizService,
   deleteQuizService,
   togglePublishQuizService,
-  getPublishedQuizzesService,
+  // getPublishedQuizzesService,
   getQuizTitlesByUserService,
 };

@@ -18,6 +18,7 @@ export type QuizEntity = {
   authorId: string;
   isPublished: boolean;
   createdAt: Date;
+  attemptsCount: number;
 };
 
 export type QuizWithQuestionsStats = {
