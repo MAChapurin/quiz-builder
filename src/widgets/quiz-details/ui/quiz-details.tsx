@@ -9,6 +9,7 @@ import {
   Group,
   Badge,
   Button,
+  Divider,
 } from "@mantine/core";
 
 import { QuizEntity } from "@/entities/quiz/domain";
@@ -43,7 +44,7 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
   return (
     <Container size="lg" py="lg">
       <Card withBorder p="lg" mb="md">
-        <Group align="flex-start">
+        <Group align="stretch">
           <Stack style={{ flex: 1 }}>
             <Title order={1}>{quiz.title}</Title>
             {quiz.description && (
@@ -51,39 +52,22 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
                 {quiz.description}
               </Text>
             )}
-            <Badge>
-              {questions.length}{" "}
-              {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
-            </Badge>
-            <Badge variant="outline" color="gray">
-              {quiz.attemptsCount}{" "}
-              {pluralize(quiz.attemptsCount, [
-                "прохождение",
-                "прохождения",
-                "прохождений",
-              ])}
-            </Badge>
+            <Group mt={"auto"}>
+              <Badge>
+                {questions.length}{" "}
+                {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
+              </Badge>
+              <Badge variant="outline" color="gray">
+                {quiz.attemptsCount}{" "}
+                {pluralize(quiz.attemptsCount, [
+                  "прохождение",
+                  "прохождения",
+                  "прохождений",
+                ])}
+              </Badge>
+            </Group>
           </Stack>
           <Stack>
-            <Button
-              justify="space-between"
-              variant="default"
-              leftSection={<IconPencil size={16} />}
-              onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
-            >
-              Редактировать
-            </Button>
-            <Button
-              justify="space-between"
-              disabled={questions.length === 0}
-              variant="default"
-              leftSection={<IconPlayerPlay size={16} />}
-              onClick={() =>
-                emitter.emit("quiz-practice-click", { id: quiz.id })
-              }
-            >
-              Пройти пробно
-            </Button>
             <SwitchPublicQuiz
               quizId={quiz.id}
               initialValue={quiz.isPublished}
@@ -100,6 +84,26 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
               }
             >
               Создать инвайт
+            </Button>
+            <Divider />
+            <Button
+              justify="space-between"
+              disabled={questions.length === 0}
+              variant="default"
+              leftSection={<IconPlayerPlay size={16} />}
+              onClick={() =>
+                emitter.emit("quiz-practice-click", { id: quiz.id })
+              }
+            >
+              Пройти пробно
+            </Button>
+            <Button
+              justify="space-between"
+              variant="default"
+              leftSection={<IconPencil size={16} />}
+              onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
+            >
+              Редактировать
             </Button>
             <Button
               justify="space-between"
@@ -176,12 +180,12 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
           </Card>
         ))}
 
-        <Card withBorder p={0} radius={"md"}>
+        <Card withBorder p={0}>
           <Button
+            className="border-none"
             variant="default"
             fullWidth
             size="lg"
-            radius={"md"}
             h={100}
             leftSection={<IconCirclePlus size={28} />}
             onClick={() => emitter.emit("add-question-click", { id: quiz.id })}
