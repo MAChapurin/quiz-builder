@@ -1,6 +1,6 @@
 import { prisma } from "@/shared/lib/db";
 import { QuestionEntity, OptionEntity } from "../domain";
-import { CreateQuestionDTO } from "../dto";
+import { CreateQuestionDTO, UpdateOptionDTO } from "../dto";
 
 export async function createQuestion(data: CreateQuestionDTO) {
   const question = await prisma.question.create({
@@ -40,8 +40,8 @@ export async function getQuestionsByQuiz(quizId: string) {
 
 export async function updateQuestion(
   id: string,
-  data: Partial<Omit<CreateQuestionDTO, "quizId">> & {
-    options?: { id?: string; text: string; isCorrect: boolean }[];
+  data: Partial<Omit<CreateQuestionDTO, "quizId" | "options">> & {
+    options?: UpdateOptionDTO[];
   },
 ) {
   const question = await prisma.question.update({
@@ -53,6 +53,25 @@ export async function updateQuestion(
   });
 
   if (data.options) {
+    const existingOptions = await prisma.option.findMany({
+      where: { questionId: id },
+      select: { id: true },
+    });
+
+    const incomingIds = data.options
+      .map((o) => o.id)
+      .filter((id): id is string => Boolean(id));
+
+    const idsToDelete = existingOptions
+      .map((o) => o.id)
+      .filter((id) => !incomingIds.includes(id));
+
+    if (idsToDelete.length > 0) {
+      await prisma.option.deleteMany({
+        where: { id: { in: idsToDelete } },
+      });
+    }
+
     for (let index = 0; index < data.options.length; index++) {
       const opt = data.options[index];
 
@@ -81,12 +100,10 @@ export async function updateQuestion(
   return prisma.question.findMany({
     where: { quizId: question.quizId },
     include: {
-      options: {
-        orderBy: { order: "asc" },
-      },
+      options: { orderBy: { order: "asc" } },
     },
     orderBy: { createdAt: "asc" },
-  }) as Promise<(QuestionEntity & { options: OptionEntity[] })[]>;
+  });
 }
 
 export async function deleteQuestion(id: string) {

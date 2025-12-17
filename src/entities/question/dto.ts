@@ -11,3 +11,9 @@ export type CreateQuestionDTO = {
   type: QuestionType;
   options: CreateOptionDTO[];
 };
+
+export type UpdateOptionDTO = {
+  id?: string;
+  text: string;
+  isCorrect: boolean;
+};

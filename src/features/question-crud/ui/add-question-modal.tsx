@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, startTransition } from "react";
+import { useEffect, useState, startTransition } from "react";
 import {
   Modal,
   Stack,
@@ -12,16 +12,16 @@ import {
   CloseButton,
   TextInput,
 } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+
 import { useActionState } from "@/shared/lib/react";
 import {
   createQuestionAction,
   CreateQuestionFormState,
 } from "../actions/create-question";
-import { useRouter } from "next/navigation";
-import { IconPlus } from "@tabler/icons-react";
 import { emitter } from "@/shared/lib";
-
-type OptionInput = { text: string; isCorrect: boolean };
+import { useCreateQuestion } from "../model/use-create-question";
 
 export function AddQuestionModal({
   scrollToRef,
@@ -31,11 +31,8 @@ export function AddQuestionModal({
   const router = useRouter();
   const [opened, setOpened] = useState(false);
   const [quizId, setQuizId] = useState<string | null>(null);
-  const [type, setType] = useState<"SINGLE" | "MULTIPLE">("SINGLE");
-  const [options, setOptions] = useState<OptionInput[]>([
-    { text: "", isCorrect: false },
-  ]);
-  const [text, setText] = useState("");
+
+  const form = useCreateQuestion();
 
   const [formState, action, isPending] = useActionState(
     createQuestionAction,
@@ -45,55 +42,26 @@ export function AddQuestionModal({
   );
 
   useEffect(() => {
-    const unsubscribe = emitter.subscribe("add-question-click", ({ id }) => {
+    return emitter.subscribe("add-question-click", ({ id }) => {
       setQuizId(id);
       setOpened(true);
     });
-    return unsubscribe;
   }, []);
 
-  const addOption = () =>
-    setOptions([...options, { text: "", isCorrect: false }]);
-  const removeOption = (index: number) =>
-    setOptions(options.filter((_, i) => i !== index));
-
-  const handleTextChange = (index: number, value: string) =>
-    setOptions((prev) =>
-      prev.map((opt, i) => (i === index ? { ...opt, text: value } : opt)),
-    );
-
-  const setCorrectSingle = (index: number) =>
-    setOptions((prev) =>
-      prev.map((opt, i) => ({ ...opt, isCorrect: i === index })),
-    );
-
-  const toggleCorrectMultiple = (index: number, checked: boolean) =>
-    setOptions((prev) =>
-      prev.map((opt, i) =>
-        i === index ? { ...opt, isCorrect: checked } : opt,
-      ),
-    );
-
-  const hasAtLeastOneOption = options.some((opt) => opt.text.trim() !== "");
-  const hasAtLeastOneCorrect = options.some((opt) => opt.isCorrect);
-  const canSubmit = hasAtLeastOneOption && hasAtLeastOneCorrect;
-
   useEffect(() => {
-    if (formState.success && !isPending) {
-      setOpened(false);
-      setQuizId(null);
-      setOptions([{ text: "", isCorrect: false }]);
-      setText("");
-      setType("SINGLE");
-      startTransition(() => {
-        router.refresh();
-      });
-      setTimeout(
-        () => scrollToRef?.current?.scrollIntoView({ behavior: "smooth" }),
-        100,
-      );
-    }
-  }, [formState.success, isPending, router, scrollToRef]);
+    if (!formState.success || isPending) return;
+
+    setOpened(false);
+    setQuizId(null);
+    form.reset();
+
+    startTransition(() => router.refresh());
+
+    setTimeout(
+      () => scrollToRef?.current?.scrollIntoView({ behavior: "smooth" }),
+      100,
+    );
+  }, [formState.success, isPending]);
 
   if (!quizId) return null;
 
@@ -105,22 +73,26 @@ export function AddQuestionModal({
     >
       <form action={action}>
         <input type="hidden" name="quizId" value={quizId} />
-        <input type="hidden" name="options" value={JSON.stringify(options)} />
+        <input
+          type="hidden"
+          name="options"
+          value={JSON.stringify(form.options)}
+        />
 
         <Stack>
           <Textarea
             label="Текст вопроса"
             name="text"
             required
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={form.text}
+            onChange={(e) => form.setText(e.target.value)}
             error={formState.errors?.text}
             disabled={isPending}
           />
 
           <Radio.Group
-            value={type}
-            onChange={(val) => setType(val as "SINGLE" | "MULTIPLE")}
+            value={form.type}
+            onChange={form.onTypeChange}
             label="Тип вопроса"
             name="type"
           >
@@ -135,57 +107,49 @@ export function AddQuestionModal({
           </Radio.Group>
 
           <Stack gap="xs">
-            {options.map((opt, idx) => (
-              <Group key={idx} align="center" gap="xs">
+            {form.options.map((opt, idx) => (
+              <Group key={idx} gap="xs">
                 <TextInput
-                  placeholder={`Вариант ${idx + 1}`}
+                  ref={(el) => void (form.optionInputRefs.current[idx] = el)}
                   value={opt.text}
-                  onChange={(e) => handleTextChange(idx, e.target.value)}
-                  required
-                  style={{ flex: 1 }}
+                  onChange={(e) => form.onTextChange(idx, e.target.value)}
                   disabled={isPending}
+                  style={{ flex: 1 }}
                 />
-                {type === "SINGLE" ? (
+
+                {form.type === "SINGLE" ? (
                   <Radio
                     checked={opt.isCorrect}
-                    onChange={() => setCorrectSingle(idx)}
-                    disabled={isPending}
-                    label="Верный"
+                    onChange={() => form.setCorrectSingle(idx)}
                   />
                 ) : (
                   <Checkbox
                     checked={opt.isCorrect}
                     onChange={(e) =>
-                      toggleCorrectMultiple(idx, e.currentTarget.checked)
+                      form.onToggleCorrectMultiple(idx, e.currentTarget.checked)
                     }
-                    disabled={isPending}
-                    label="Верный"
                   />
                 )}
+
                 <CloseButton
-                  mt={4}
-                  onClick={() => removeOption(idx)}
-                  disabled={isPending}
+                  onClick={() => form.onRemoveOption(idx)}
+                  disabled={isPending || form.options.length <= 2}
                 />
               </Group>
             ))}
 
             <Button
-              leftSection={<IconPlus />}
               type="button"
               variant="subtle"
-              onClick={addOption}
+              leftSection={<IconPlus />}
+              onClick={form.onAddOption}
               disabled={isPending}
             >
               Добавить вариант
             </Button>
           </Stack>
 
-          <Button
-            type="submit"
-            loading={isPending}
-            disabled={isPending || !canSubmit}
-          >
+          <Button type="submit" loading={isPending} disabled={!form.canSubmit}>
             Создать вопрос
           </Button>
         </Stack>
