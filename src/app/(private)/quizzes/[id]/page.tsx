@@ -12,7 +12,7 @@ export default async function QuizPage({
   const { id } = await params;
 
   const [quizResult, questionsResult] = await Promise.all([
-    quizService.getQuizService(id),
+    quizService.getQuiz(id),
     questionService.getQuestionsByQuiz(id),
   ]);
 

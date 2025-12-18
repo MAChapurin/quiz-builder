@@ -7,7 +7,7 @@ import {
 } from "../domain";
 import { left, right, Either } from "@/shared/lib/either";
 
-export const createQuizService = async (
+export const createQuiz = async (
   data: CreateQuizDTO,
 ): Promise<Either<"quiz-creation-failed", QuizEntity>> => {
   try {
@@ -19,7 +19,7 @@ export const createQuizService = async (
   }
 };
 
-export const getQuizService = async (
+export const getQuiz = async (
   id: string,
 ): Promise<Either<"quiz-not-found", QuizEntity>> => {
   const quiz = await quizRepository.getQuiz(id);
@@ -27,7 +27,7 @@ export const getQuizService = async (
   return right(quiz);
 };
 
-export const getQuizzesByUserService = async (
+export const getQuizzesByUser = async (
   authorId: string,
 ): Promise<Either<"no-quizzes", QuizEntity[]>> => {
   const quizzes = await quizRepository.getQuizzesByUser(authorId);
@@ -35,7 +35,7 @@ export const getQuizzesByUserService = async (
   return right(quizzes);
 };
 
-export const getQuizTitlesByUserService = async (
+export const getQuizTitlesByUser = async (
   authorId: string,
 ): Promise<Either<"no-quizzes", QuizTitleEntity[]>> => {
   const quizzes = await quizRepository.getQuizTitlesByUser(authorId);
@@ -65,7 +65,7 @@ export const getQuizzesWithQuestionsByUser = async (
   );
 };
 
-export const updateQuizService = async (
+export const updateQuiz = async (
   id: string,
   data: Partial<CreateQuizDTO>,
 ): Promise<Either<"quiz-update-failed" | "quiz-not-found", QuizEntity>> => {
@@ -81,7 +81,7 @@ export const updateQuizService = async (
   }
 };
 
-export const deleteQuizService = async (
+export const deleteQuiz = async (
   id: string,
 ): Promise<Either<"quiz-delete-failed" | "quiz-not-found", true>> => {
   const existingQuiz = await quizRepository.getQuiz(id);
@@ -96,7 +96,7 @@ export const deleteQuizService = async (
   }
 };
 
-export const togglePublishQuizService = async (
+export const togglePublishQuiz = async (
   id: string,
   isPublished: boolean,
 ): Promise<

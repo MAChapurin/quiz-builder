@@ -24,7 +24,7 @@ export default async function QuizPlayPage({
   const { quizId, inviteTokenId } = inviteEither.value;
 
   const [quizEither, questionsEither] = await Promise.all([
-    quizService.getQuizService(quizId),
+    quizService.getQuiz(quizId),
     questionService.getQuestionsByQuiz(quizId),
   ]);
 

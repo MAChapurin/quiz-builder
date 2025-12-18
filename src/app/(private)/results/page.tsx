@@ -12,7 +12,6 @@ import { COOKIE_KEYS } from "@/shared/config";
 import { getServerCookies, matchEither } from "@/shared/lib";
 import { sessionService } from "@/entities/user/server";
 import { attemptService } from "@/entities/attempt/server";
-import { getQuizTitlesByUserService } from "@/entities/quiz/services/quiz";
 
 import { AttemptList } from "@/widgets/attempt-list";
 import {
@@ -20,6 +19,7 @@ import {
   AttemptsQuizFilterResetButton,
 } from "@/features/attempt-filter";
 import { IconFilterOff, IconListSearch } from "@tabler/icons-react";
+import { quizService } from "@/entities/quiz/server";
 
 export const metadata: Metadata = {
   title: "Результаты квизов",
@@ -41,7 +41,7 @@ export default async function ResultsPage({ searchParams }: Props) {
 
   const [attemptsEither, titlesEither] = await Promise.all([
     attemptService.getAttemptsForAuthor(session.id, initialFilterIds),
-    getQuizTitlesByUserService(session.id),
+    quizService.getQuizTitlesByUser(session.id),
   ]);
 
   const attempts = matchEither(attemptsEither, {

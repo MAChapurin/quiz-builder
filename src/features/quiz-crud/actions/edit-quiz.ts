@@ -47,7 +47,7 @@ export const editQuizAction = async (
     };
   }
 
-  const result = await quizService.updateQuizService(parsed.data.id, {
+  const result = await quizService.updateQuiz(parsed.data.id, {
     title: parsed.data.title,
     description: parsed.data.description,
   });

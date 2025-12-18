@@ -18,7 +18,7 @@ export async function deleteQuizAction(
     return { error: "Не передан id квиза" };
   }
 
-  const result = await quizService.deleteQuizService(id);
+  const result = await quizService.deleteQuiz(id);
 
   const error = matchEither(result, {
     left: (e) => {

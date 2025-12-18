@@ -40,10 +40,7 @@ export const togglePublishQuizAction = async (
     };
   }
 
-  const result = await quizService.togglePublishQuizService(
-    quizId,
-    publishValue,
-  );
+  const result = await quizService.togglePublishQuiz(quizId, publishValue);
 
   if (result.type === "left") {
     const messages = {

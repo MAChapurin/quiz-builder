@@ -57,7 +57,7 @@ export const createQuizAction = async (
   };
 
   try {
-    const quizEither = await quizService.createQuizService(dto);
+    const quizEither = await quizService.createQuiz(dto);
 
     const quiz = matchEither(quizEither, {
       left: () => undefined,
