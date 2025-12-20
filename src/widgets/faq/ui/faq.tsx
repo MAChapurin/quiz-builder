@@ -2,56 +2,41 @@
 
 import { LINKS_ID } from "@/shared/config";
 import { Accordion, Box, Container, Title } from "@mantine/core";
+import { useTranslations } from "next-intl";
 
 export function FAQ() {
+  const t = useTranslations("widgets.faq");
+
   return (
     <Box py={80} id={LINKS_ID.FAQ}>
       <Container size="lg">
         <Title order={2} ta="center" mb={40} fw={700}>
-          Часто задаваемые вопросы
+          {t("title")}
         </Title>
+
         <Accordion radius="md" variant="separated">
-          <Accordion.Item value="q1">
-            <Accordion.Control>Это бесплатно?</Accordion.Control>
-            <Accordion.Panel>
-              Да, сервис полностью бесплатный. Вы можете создавать любое
-              количество тестов, делиться ими и получать ответы без ограничений.
-              В будущем могут появиться расширенные функции, но базовый
-              функционал всегда останется бесплатным.
-            </Accordion.Panel>
+          <Accordion.Item value="free">
+            <Accordion.Control>{t("items.free.question")}</Accordion.Control>
+            <Accordion.Panel>{t("items.free.answer")}</Accordion.Panel>
           </Accordion.Item>
 
-          <Accordion.Item value="q2">
-            <Accordion.Control>Нужно ли регистрироваться?</Accordion.Control>
-            <Accordion.Panel>
-              Для прохождения тестов регистрация не требуется — достаточно
-              открыть ссылку. Однако, чтобы создавать тесты, сохранять их,
-              просматривать результаты и управлять структурой вопросов,
-              потребуется создать аккаунт.
-            </Accordion.Panel>
-          </Accordion.Item>
-
-          <Accordion.Item value="q3">
+          <Accordion.Item value="registration">
             <Accordion.Control>
-              Можно ли редактировать тест после публикации?
+              {t("items.registration.question")}
             </Accordion.Control>
-            <Accordion.Panel>
-              Да, вы можете изменять вопросы, варианты ответов и настройки теста
-              в любой момент. Изменения моментально вступают в силу, и
-              пользователи увидят обновлённую версию теста при следующем
-              открытии.
-            </Accordion.Panel>
+            <Accordion.Panel>{t("items.registration.answer")}</Accordion.Panel>
           </Accordion.Item>
 
-          <Accordion.Item value="q4">
+          <Accordion.Item value="editing">
+            <Accordion.Control>{t("items.editing.question")}</Accordion.Control>
+            <Accordion.Panel>{t("items.editing.answer")}</Accordion.Panel>
+          </Accordion.Item>
+
+          <Accordion.Item value="noAccount">
             <Accordion.Control>
-              Могут ли пользователи проходить тест без аккаунта?
+              {t("items.noAccount.question")}
             </Accordion.Control>
-            <Accordion.Panel>
-              Да, это одна из ключевых возможностей. Пользователь просто
-              открывает ссылку и может сразу начинать прохождение. Это удобно
-              для быстрых опросов, анкетирования и обратной связи.
-            </Accordion.Panel>
+            <Accordion.Panel>{t("items.noAccount.answer")}</Accordion.Panel>
           </Accordion.Item>
         </Accordion>
       </Container>

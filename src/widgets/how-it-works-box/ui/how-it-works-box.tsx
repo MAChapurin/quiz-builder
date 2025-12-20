@@ -13,18 +13,21 @@ import {
   Card,
 } from "@mantine/core";
 import { IconEdit, IconShare, IconChartBar } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 export function HowItWorksBox() {
+  const t = useTranslations("widgets.howItWorksBox");
+
   return (
     <Box id={LINKS_ID.HOW}>
       <Divider mb={80} />
       <Container size="lg">
         <Stack align="center" mb={60} gap={8}>
           <Title order={2} fw={800} ta="center">
-            Как это работает ?
+            {t("title")}
           </Title>
           <Text c="dimmed" ta="center" maw={520}>
-            Всего три простых шага — и ваш квиз готов к запуску
+            {t("description")}
           </Text>
         </Stack>
         <Card withBorder p="xl">
@@ -35,7 +38,7 @@ export function HowItWorksBox() {
             variant="default"
           >
             <Timeline.Item
-              title="Создайте тест"
+              title={t("steps.create.title")}
               bullet={
                 <ThemeIcon size={48} radius="xl" variant="light">
                   <IconEdit size={24} />
@@ -43,12 +46,12 @@ export function HowItWorksBox() {
               }
             >
               <Text c="dimmed" size="sm">
-                Добавьте вопросы, настройте варианты ответов и структуру квиза.
+                {t("steps.create.description")}
               </Text>
             </Timeline.Item>
 
             <Timeline.Item
-              title="Поделитесь ссылкой"
+              title={t("steps.share.title")}
               bullet={
                 <ThemeIcon size={48} radius="xl" variant="light">
                   <IconShare size={24} />
@@ -56,13 +59,12 @@ export function HowItWorksBox() {
               }
             >
               <Text c="dimmed" size="sm">
-                Отправьте ссылку участникам или разместите её в любом удобном
-                месте.
+                {t("steps.share.description")}
               </Text>
             </Timeline.Item>
 
             <Timeline.Item
-              title="Получайте результаты"
+              title={t("steps.results.title")}
               bullet={
                 <ThemeIcon size={48} radius="xl" variant="light">
                   <IconChartBar size={24} />
@@ -70,7 +72,7 @@ export function HowItWorksBox() {
               }
             >
               <Text c="dimmed" size="sm">
-                Следите за ответами и аналитикой в режиме реального времени.
+                {t("steps.results.description")}
               </Text>
             </Timeline.Item>
           </Timeline>

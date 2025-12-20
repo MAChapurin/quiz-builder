@@ -23,8 +23,22 @@ import { QuestionEntity } from "@/entities/question/domain";
 import { demoQuestions } from "../mock";
 import { emitter } from "@/shared/lib";
 import { PracticeQuizModal } from "./practice-quiz-modal";
+import { useTranslations } from "next-intl";
+
+const categories: {
+  key: keyof typeof demoQuestions;
+  icon: React.ReactNode;
+}[] = [
+  { key: "frontendBasics", icon: <IconLayoutDashboard size={28} /> },
+  { key: "react", icon: <IconBrandReact size={28} /> },
+  { key: "typescript", icon: <IconBrandTypescript size={28} /> },
+  { key: "backendBasics", icon: <IconServer size={28} /> },
+  { key: "nodejs", icon: <IconBrandNodejs size={28} /> },
+  { key: "databases", icon: <IconDatabase size={28} /> },
+];
 
 export function DemoQuizContainer() {
+  const t = useTranslations("features.demoQuiz");
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [questions, setQuestions] = useState<QuestionEntity[]>([]);
 
@@ -39,57 +53,29 @@ export function DemoQuizContainer() {
 
   return (
     <>
-      <Button onClick={() => setCategoryOpen(true)}>Пройти демо-квиз</Button>
+      <Button onClick={() => setCategoryOpen(true)}>
+        {t("button.categorySelector")}
+      </Button>
 
       <Modal
         opened={categoryOpen}
         onClose={() => setCategoryOpen(false)}
-        title="Выберите категорию"
+        title={t("modal.categorySelector.title")}
         centered
         size="lg"
       >
         <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-          <CategoryCard
-            title="Frontend basics"
-            description="HTML, CSS, SPA"
-            icon={<IconLayoutDashboard size={28} />}
-            onClick={() => handleSelectCategory("frontendBasics")}
-          />
-
-          <CategoryCard
-            title="React"
-            description="Hooks, Virtual DOM"
-            icon={<IconBrandReact size={28} />}
-            onClick={() => handleSelectCategory("react")}
-          />
-
-          <CategoryCard
-            title="TypeScript"
-            description="Типы, интерфейсы"
-            icon={<IconBrandTypescript size={28} />}
-            onClick={() => handleSelectCategory("typescript")}
-          />
-
-          <CategoryCard
-            title="Backend basics"
-            description="REST, API"
-            icon={<IconServer size={28} />}
-            onClick={() => handleSelectCategory("backendBasics")}
-          />
-
-          <CategoryCard
-            title="Node.js"
-            description="Event loop, V8"
-            icon={<IconBrandNodejs size={28} />}
-            onClick={() => handleSelectCategory("nodejs")}
-          />
-
-          <CategoryCard
-            title="Databases"
-            description="SQL, индексы"
-            icon={<IconDatabase size={28} />}
-            onClick={() => handleSelectCategory("databases")}
-          />
+          {categories.map(({ key, icon }) => (
+            <CategoryCard
+              key={key}
+              icon={icon}
+              title={t(`modal.categorySelector.categories.${key}.title`)}
+              description={t(
+                `modal.categorySelector.categories.${key}.description`,
+              )}
+              onClick={() => handleSelectCategory(key)}
+            />
+          ))}
         </SimpleGrid>
       </Modal>
 
@@ -113,7 +99,7 @@ function CategoryCard({
 }: CategoryCardProps) {
   return (
     <Card
-      pos={"relative"}
+      pos="relative"
       withBorder
       radius="lg"
       p="lg"

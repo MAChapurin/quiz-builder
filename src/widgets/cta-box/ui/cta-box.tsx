@@ -1,8 +1,10 @@
 import { CTAModal } from "@/features/cta-modal";
 import { DotsLineBlock } from "@/shared/ui";
 import { Container, Title, Text, Stack, Box, Center } from "@mantine/core";
+import { useTranslations } from "next-intl";
 
 export function CtaBox() {
+  const t = useTranslations("widgets.ctaBox");
   return (
     <Box>
       <DotsLineBlock />
@@ -10,12 +12,12 @@ export function CtaBox() {
         <Center py={80}>
           <Stack align="center">
             <Title order={2} fw={800} ta="center">
-              Готовы создать свой первый тест?
+              {t("title")}
             </Title>
             <Text fz="lg" c="dimmed" ta="center">
-              Начните прямо сейчас — это бесплатно и занимает всего пару минут.
+              {t("description")}
             </Text>
-            <CTAModal btnText="Начать сейчас" variant="filled" />
+            <CTAModal buttonText={t("button")} variant="filled" />
           </Stack>
         </Center>
       </Container>

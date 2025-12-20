@@ -13,7 +13,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { CookiesBanner } from "@/widgets";
 import { getServerCookies } from "@/shared/lib";
 import { COOKIE_KEYS } from "@/shared/config";
-import { getMessages } from "next-intl/server";
+import { getMessages, getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Конструктор тестов",
@@ -26,13 +26,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookies = await getServerCookies();
+  const [messages, locale, cookies] = await Promise.all([
+    getMessages(),
+    getLocale(),
+    getServerCookies(),
+  ]);
   const bannerSeen = cookies[COOKIE_KEYS.BANNER] === "true";
-  const messages = await getMessages();
-  const locale = messages.locale;
 
   return (
-    <html lang="en" {...mantineHtmlProps}>
+    <html lang={locale} {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
       </head>

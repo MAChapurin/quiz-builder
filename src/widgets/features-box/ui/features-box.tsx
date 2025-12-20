@@ -10,17 +10,20 @@ import {
   Stack,
 } from "@mantine/core";
 import { IconCheck, IconLink, IconPuzzle } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 export function FeaturesBox() {
+  const t = useTranslations("widgets.featuresBox");
+
   return (
-    <Box py={100} id={LINKS_ID.FEATURES} className="">
+    <Box py={100} id={LINKS_ID.FEATURES}>
       <Container size="lg">
         <Stack align="center" mb={60} gap={8}>
           <Title order={2} fw={800} ta="center">
-            Возможности платформы
+            {t("title")}
           </Title>
           <Text c="dimmed" ta="center" maw={520}>
-            Всё необходимое для создания, проведения и анализа онлайн-квизов
+            {t("description")}
           </Text>
         </Stack>
 
@@ -35,14 +38,14 @@ export function FeaturesBox() {
                 <IconPuzzle size={26} />
               </ThemeIcon>
 
-              <Title order={4}>Разные типы вопросов</Title>
+              <Title order={4}>{t("items.questions.title")}</Title>
 
               <Text c="dimmed" size="sm">
-                Одиночный и множественный выбор, шкалы, списки и другие форматы
-                для любых сценариев.
+                {t("items.questions.description")}
               </Text>
             </Stack>
           </Card>
+
           <Card
             withBorder
             p="xl"
@@ -53,14 +56,14 @@ export function FeaturesBox() {
                 <IconLink size={26} />
               </ThemeIcon>
 
-              <Title order={4}>Простое распространение</Title>
+              <Title order={4}>{t("items.sharing.title")}</Title>
 
               <Text c="dimmed" size="sm">
-                Делитесь тестом по ссылке — доступ к прохождению без
-                обязательной регистрации.
+                {t("items.sharing.description")}
               </Text>
             </Stack>
           </Card>
+
           <Card
             withBorder
             p="xl"
@@ -71,11 +74,10 @@ export function FeaturesBox() {
                 <IconCheck size={26} />
               </ThemeIcon>
 
-              <Title order={4}>Ответы и аналитика</Title>
+              <Title order={4}>{t("items.analytics.title")}</Title>
 
               <Text c="dimmed" size="sm">
-                Результаты в реальном времени, статистика и экспорт данных для
-                дальнейшего анализа.
+                {t("items.analytics.description")}
               </Text>
             </Stack>
           </Card>

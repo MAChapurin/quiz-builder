@@ -1,5 +1,222 @@
 {
-  "HomePage": {
-    "title": "Hello world!"
+  "shared": {
+    "ui": {
+      "ok": "",
+      "cancel": "",
+      "save": "",
+      "delete": ""
+    },
+    "common": {
+      "loading": "",
+      "error": "",
+      "empty": ""
+    }
+  },
+
+  "entities": {
+    "user": {
+      "role": {
+        "admin": "",
+        "user": ""
+      },
+      "status": {
+        "active": "",
+        "blocked": ""
+      }
+    },
+    "project": {
+      "status": {
+        "draft": "",
+        "published": ""
+      }
+    }
+  },
+
+  "features": {
+    "auth": {
+      "login": {
+        "title": "",
+        "email": "",
+        "password": "",
+        "submit": "",
+        "errors": {
+          "invalidCredentials": "",
+          "userBlocked": ""
+        }
+      },
+      "register": {
+        "title": "",
+        "submit": "",
+        "success": ""
+      }
+    },
+    "themeSwitcher": {
+      "light": "",
+      "dark": ""
+    },
+    "ctaModal": {
+      "modals": {
+        "main": {
+          "button": {
+            "default": "Create a test"
+          },
+          "modal": {
+            "title": "Creating tests is available after login",
+            "description": "Register or log in to your account to create quizzes, share them via link, and track results.",
+            "actions": {
+              "login": "Login",
+              "register": "Register"
+            },
+            "footerNote": "It's free and takes less than a minute"
+          }
+        }
+      }
+    },
+    "demoQuiz": {
+      "button": {
+        "categorySelector": "Take the demo quiz"
+      },
+      "modal": {
+        "categorySelector": {
+          "title": "Choose a category",
+          "categories": {
+            "frontendBasics": {
+              "title": "Frontend basics",
+              "description": "HTML, CSS, SPA"
+            },
+            "react": {
+              "title": "React",
+              "description": "Hooks, Virtual DOM"
+            },
+            "typescript": {
+              "title": "TypeScript",
+              "description": "Types, interfaces"
+            },
+            "backendBasics": {
+              "title": "Backend basics",
+              "description": "REST, API"
+            },
+            "nodejs": {
+              "title": "Node.js",
+              "description": "Event loop, V8"
+            },
+            "databases": {
+              "title": "Databases",
+              "description": "SQL, indexes"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "widgets": {
+    "header": {
+      "navigation": {
+        "home": "",
+        "projects": "",
+        "profile": ""
+      },
+      "logout": ""
+    },
+    "footer": {
+      "copyright": ""
+    },
+    "hero": {
+      "title": "Create tests quickly and easily",
+      "description": "A modern quiz builder with an intuitive interface, flexible settings, and instant response collection.",
+      "ctaButton": "Create a test"
+    },
+    "featuresBox": {
+      "title": "Platform Features",
+      "description": "Everything you need to create, conduct, and analyze online quizzes",
+      "items": {
+        "questions": {
+          "title": "Different question types",
+          "description": "Single and multiple choice, scales, lists and other formats for any scenario."
+        },
+        "sharing": {
+          "title": "Easy distribution",
+          "description": "Share the test via link — access to completion without mandatory registration."
+        },
+        "analytics": {
+          "title": "Answers and analytics",
+          "description": "Real-time results, statistics and data export for further analysis."
+        }
+      }
+    },
+    "howItWorksBox": {
+      "title": "How it works?",
+      "description": "Just three simple steps — and your quiz is ready to go live",
+      "steps": {
+        "create": {
+          "title": "Create a test",
+          "description": "Add questions, configure answer options and quiz structure."
+        },
+        "share": {
+          "title": "Share the link",
+          "description": "Send the link to participants or place it anywhere convenient."
+        },
+        "results": {
+          "title": "Get results",
+          "description": "Monitor answers and analytics in real time."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": {
+        "free": {
+          "question": "Is it free?",
+          "answer": "Yes, the service is completely free. You can create any number of tests, share them, and receive responses without restrictions. In the future, advanced features may appear, but the basic functionality will always remain free."
+        },
+        "registration": {
+          "question": "Do I need to register?",
+          "answer": "Registration is not required to take tests — just open the link. However, to create tests, save them, view results, and manage question structures, you'll need an account."
+        },
+        "editing": {
+          "question": "Can I edit a test after publishing?",
+          "answer": "Yes, you can change questions, answer options, and test settings at any time. Changes take effect immediately, and users will see the updated version when they open the test next."
+        },
+        "noAccount": {
+          "question": "Can users take the test without an account?",
+          "answer": "Yes, this is one of the key features. Users simply open the link and can start taking the test immediately. This is convenient for quick surveys, questionnaires, and feedback."
+        }
+      }
+    },
+    "ctaBox": {
+      "title": "Ready to create your first test?",
+      "description": "Start right now — it's free and takes just a couple of minutes.",
+      "button": "Start now"
+    },
+    "headerMarketing": {
+      "navigation": {
+        "home": "Home",
+        "features": "Features",
+        "how": "How it works",
+        "faq": "FAQ"
+      },
+      "actions": {
+        "login": "Login",
+        "register": "Registration"
+      },
+      "mobile": {
+        "title": "Menu"
+      }
+    }
+  },
+
+  "app": {
+    "home": {
+      "title": "",
+      "description": ""
+    },
+    "profile": {
+      "title": "",
+      "tabs": {
+        "info": "",
+        "security": ""
+      }
+    }
   }
 }

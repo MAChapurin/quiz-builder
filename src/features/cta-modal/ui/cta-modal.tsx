@@ -14,17 +14,21 @@ import {
 import Link from "next/link";
 import { routes } from "@/shared/config";
 import { IconLock, IconUserPlus, IconLogin } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 interface CTAModalProps {
-  btnText?: string;
+  buttonText: string;
   variant?: "default" | "outline" | "filled";
+  modalKey?: string;
 }
 
 export function CTAModal({
-  btnText = "Создать тест",
+  buttonText,
   variant = "default",
+  modalKey = "main",
 }: CTAModalProps) {
   const [opened, { open, close }] = useDisclosure(false);
+  const t = useTranslations(`features.ctaModal.modals.${modalKey}`);
 
   return (
     <>
@@ -36,12 +40,11 @@ export function CTAModal({
             </ThemeIcon>
 
             <Title order={3} ta="center">
-              Создание тестов доступно после входа
+              {t("modal.title")}
             </Title>
 
             <Text fz="sm" c="dimmed" ta="center">
-              Зарегистрируйтесь или войдите в аккаунт, чтобы создавать квизы,
-              делиться ими по ссылке и отслеживать результаты.
+              {t("modal.description")}
             </Text>
 
             <Group grow w="100%">
@@ -51,7 +54,7 @@ export function CTAModal({
                 variant="outline"
                 leftSection={<IconLogin size={16} />}
               >
-                Войти
+                {t("modal.actions.login")}
               </Button>
 
               <Button
@@ -59,19 +62,19 @@ export function CTAModal({
                 href={routes.REGISTER}
                 leftSection={<IconUserPlus size={16} />}
               >
-                Регистрация
+                {t("modal.actions.register")}
               </Button>
             </Group>
 
             <Text fz="xs" c="dimmed" ta="center">
-              Это бесплатно и займёт меньше минуты
+              {t("modal.footerNote")}
             </Text>
           </Stack>
         </Center>
       </Modal>
 
       <Button variant={variant} onClick={open}>
-        {btnText}
+        {buttonText}
       </Button>
     </>
   );
