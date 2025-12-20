@@ -2,6 +2,7 @@
 
 import React from "react";
 import { TextInput, PasswordInput } from "@mantine/core";
+import { useTranslations } from "next-intl";
 
 export function AuthFieldsRegister({
   errors,
@@ -15,10 +16,13 @@ export function AuthFieldsRegister({
     name?: string;
   };
 }) {
+  const t = useTranslations("features.auth.ui.register.fields");
+
   return (
     <>
       <TextInput
-        label="Почта"
+        label={t("email.label")}
+        placeholder={t("email.placeholder")}
         type="email"
         name="email"
         required
@@ -27,7 +31,8 @@ export function AuthFieldsRegister({
       />
 
       <TextInput
-        label="Имя"
+        label={t("name.label")}
+        placeholder={t("name.placeholder")}
         name="name"
         required
         defaultValue={formData?.get("name")?.toString()}
@@ -35,7 +40,8 @@ export function AuthFieldsRegister({
       />
 
       <PasswordInput
-        label="Пароль"
+        label={t("password.label")}
+        placeholder={t("password.placeholder")}
         name="password"
         required
         defaultValue={formData?.get("password")?.toString()}
@@ -43,7 +49,8 @@ export function AuthFieldsRegister({
       />
 
       <PasswordInput
-        label="Повторите пароль"
+        label={t("confirmPassword.label")}
+        placeholder={t("confirmPassword.placeholder")}
         name="confirmPassword"
         required
         defaultValue={formData?.get("confirmPassword")?.toString()}

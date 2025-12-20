@@ -3,6 +3,8 @@
 import { useState, useTransition, useRef } from "react";
 import { Button, ActionIcon, Modal, Group, Loader, Text } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
+
 import { logout } from "../actions/logout";
 
 type Props = {
@@ -16,6 +18,8 @@ export function LogOutButton({
   size = "lg",
   variant = "default",
 }: Props) {
+  const t = useTranslations("features.auth.ui.logout");
+
   const [modalOpened, setModalOpened] = useState(false);
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
@@ -27,8 +31,6 @@ export function LogOutButton({
       formRef.current?.requestSubmit();
     });
   };
-  const onOpen = () => setModalOpened(true);
-  const onClose = () => setModalOpened(false);
 
   return (
     <>
@@ -37,16 +39,16 @@ export function LogOutButton({
           size={size}
           variant={variant}
           leftSection={<IconLogout size={16} />}
-          onClick={onOpen}
+          onClick={() => setModalOpened(true)}
         >
-          Выйти
+          {t("button.label")}
         </Button>
       ) : (
         <ActionIcon
           size={size}
           variant={variant}
-          aria-label="Выйти"
-          onClick={onOpen}
+          aria-label={t("button.aria")}
+          onClick={() => setModalOpened(true)}
         >
           <IconLogout size={18} />
         </ActionIcon>
@@ -54,14 +56,15 @@ export function LogOutButton({
 
       <Modal
         opened={modalOpened}
-        onClose={onClose}
-        title="Подтвердите выход"
+        onClose={() => setModalOpened(false)}
+        title={t("modal.title")}
         centered
       >
-        <Text>Вы уверены, что хотите выйти?</Text>
-        <Group justify={"center"} mt="md">
-          <Button variant="default" onClick={onClose}>
-            Отмена
+        <Text>{t("modal.description")}</Text>
+
+        <Group justify="center" mt="md">
+          <Button variant="default" onClick={() => setModalOpened(false)}>
+            {t("modal.actions.cancel")}
           </Button>
 
           <form ref={formRef} action={logout}>
@@ -72,7 +75,7 @@ export function LogOutButton({
               disabled={isPending}
               leftSection={isPending ? <Loader size="xs" /> : null}
             >
-              Выйти
+              {t("modal.actions.confirm")}
             </Button>
           </form>
         </Group>

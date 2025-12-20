@@ -6,6 +6,7 @@ import { Logo } from "@/shared/ui";
 import Link from "next/link";
 import { routes } from "@/shared/config";
 import { IconLogin, IconUserPlus } from "@tabler/icons-react";
+import { LanguageSwitcher } from "@/features/language-swither";
 
 export function HeaderAuth() {
   return (
@@ -13,6 +14,7 @@ export function HeaderAuth() {
       <Flex h="100%" align="center" justify="space-between">
         <Logo />
         <Group className="flex">
+          <LanguageSwitcher />
           <ColorSchemesSwitcher />
           <Button
             component={Link}

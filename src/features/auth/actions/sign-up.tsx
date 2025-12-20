@@ -2,76 +2,79 @@
 
 import { createUser, sessionService } from "@/entities/user/server";
 import { z } from "zod";
+import { getTranslations } from "next-intl/server";
 
-export type SignUnFormState = {
+export type SignUpFormState = {
   formData?: FormData;
   errors?: {
+    name?: string;
+    email?: string;
     password?: string;
     confirmPassword?: string;
-    email?: string;
-    name?: string;
     _errors?: string;
   };
+  successMessage?: string;
 };
 
-const formDataSchema = z
-  .object({
-    password: z.string().min(3),
-    confirmPassword: z.string().min(3),
-    email: z.string().email("Некорректный email"),
-    name: z.string().min(1, "Имя обязательно"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Пароли не совпадают",
-    path: ["confirmPassword"],
-  });
-
 export const signUpAction = async (
-  _state: SignUnFormState,
+  _state: SignUpFormState,
   formData: FormData,
-): Promise<SignUnFormState & { success?: boolean }> => {
-  const data = Object.fromEntries(formData.entries());
-  const result = formDataSchema.safeParse(data);
+): Promise<SignUpFormState & { success?: boolean }> => {
+  const t = await getTranslations("features.auth.actions.register");
 
-  if (!result.success) {
-    const formatedErrors = result.error.format();
+  const data = Object.fromEntries(formData.entries());
+
+  const schema = z
+    .object({
+      name: z.string().min(1, t("errors.nameRequired")),
+      email: z.string().email(t("errors.invalidEmail")),
+      password: z.string().min(3, t("errors.shortPassword")),
+      confirmPassword: z.string().min(3, t("errors.shortPassword")),
+    })
+    .refine((d) => d.password === d.confirmPassword, {
+      message: t("errors.passwordMismatch"),
+      path: ["confirmPassword"],
+    });
+
+  const parsed = schema.safeParse(data);
+
+  if (!parsed.success) {
+    const f = parsed.error.format();
     return {
       formData,
       errors: {
-        password: formatedErrors.password?._errors.join(", "),
-        confirmPassword: formatedErrors.confirmPassword?._errors.join(", "),
-        email: formatedErrors.email?._errors.join(", "),
-        name: formatedErrors.name?._errors.join(", "),
-        _errors: formatedErrors._errors?.join(", "),
+        name: f.name?._errors?.join(", "),
+        email: f.email?._errors?.join(", "),
+        password: f.password?._errors?.join(", "),
+        confirmPassword: f.confirmPassword?._errors?.join(", "),
+        _errors: f._errors?.join(", "),
       },
     };
   }
 
-  const { password, email, name } = result.data;
+  const { name, email, password } = parsed.data;
 
-  const createUserResult = await createUser({
-    password,
-    email,
-    name,
-  });
+  const createResult = await createUser({ name, email, password });
 
-  if (createUserResult.type === "right") {
-    await sessionService.addSession(createUserResult.value);
+  if (createResult.type === "right") {
+    await sessionService.addSession(createResult.value);
     return {
       formData,
       errors: undefined,
       success: true,
+      successMessage: t("toasts.success"),
     };
   }
 
-  const errors = {
-    "user-login-exists": "Пользователь с таким email уже существует",
-  }[createUserResult.error];
+  const errorMessage =
+    {
+      "user-login-exists": t("errors.userExists"),
+    }[createResult.error] || t("errors.generic");
 
   return {
     formData,
     errors: {
-      _errors: errors,
+      _errors: errorMessage,
     },
   };
 };

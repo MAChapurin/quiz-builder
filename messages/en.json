@@ -34,22 +34,107 @@
 
   "features": {
     "auth": {
-      "login": {
-        "title": "",
-        "email": "",
-        "password": "",
-        "submit": "",
-        "errors": {
-          "invalidCredentials": "",
-          "userBlocked": ""
+      "actions": {
+        "login": {
+          "errors": {
+            "invalidEmail": "Invalid email",
+            "shortPassword": "Password must be at least 3 characters",
+            "invalidCredentials": "Invalid email or password",
+            "generic": "Login failed"
+          },
+          "toasts": {
+            "success": "Welcome back!",
+            "error": "Login error"
+          }
+        },
+        "register": {
+          "errors": {
+            "nameRequired": "Name is required",
+            "invalidEmail": "Invalid email",
+            "shortPassword": "Password must be at least 3 characters",
+            "passwordMismatch": "Passwords do not match",
+            "userExists": "A user with this email already exists",
+            "generic": "Registration failed"
+          },
+          "toasts": {
+            "success": "Welcome to QuizBuilder!"
+          }
         }
       },
-      "register": {
-        "title": "",
-        "submit": "",
-        "success": ""
+
+      "ui": {
+        "login": {
+          "title": "Sign in",
+          "description": "Welcome back! Please sign in to your account.",
+          "buttons": {
+            "submit": "Sign in"
+          },
+          "links": {
+            "register": "Don't have an account? Register"
+          },
+          "fields": {
+            "email": {
+              "label": "Email",
+              "placeholder": "Enter your email"
+            },
+            "password": {
+              "label": "Password",
+              "placeholder": "Enter your password"
+            }
+          }
+        },
+
+        "register": {
+          "title": "Sign up",
+          "description": "Create your account to get started",
+          "buttons": {
+            "submit": "Create account"
+          },
+          "link": {
+            "text": "Already have an account?",
+            "linkText": "Sign in"
+          },
+          "fields": {
+            "email": {
+              "label": "Email",
+              "placeholder": "Enter your email"
+            },
+            "name": {
+              "label": "Name",
+              "placeholder": "Enter your name"
+            },
+            "password": {
+              "label": "Password",
+              "placeholder": "Enter your password"
+            },
+            "confirmPassword": {
+              "label": "Confirm password",
+              "placeholder": "Repeat your password"
+            }
+          }
+        },
+
+        "logout": {
+          "button": {
+            "label": "Log out",
+            "aria": "Log out"
+          },
+          "modal": {
+            "title": "Confirm logout",
+            "description": "Are you sure you want to log out?",
+            "actions": {
+              "cancel": "Cancel",
+              "confirm": "Log out"
+            }
+          }
+        },
+
+        "common": {
+          "errorTitle": "Error"
+        }
       }
     },
+
     "themeSwitcher": {
       "light": "",
       "dark": ""
@@ -207,15 +292,14 @@
   },
 
   "app": {
-    "home": {
-      "title": "",
-      "description": ""
-    },
-    "profile": {
-      "title": "",
-      "tabs": {
-        "info": "",
-        "security": ""
+    "auth": {
+      "layout": {
+        "meta": {
+          "title": "Authentication",
+          "description": "An app for creating quizzes, sharing them with people, and viewing results"
+        },
+        "title": "Welcome to QuizBuilder!",
+        "homeButton": "Go to home"
       }
     }
   }

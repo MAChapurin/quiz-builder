@@ -5,23 +5,29 @@ import { Button, Container, Title } from "@mantine/core";
 import { IconHome } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Авторизация",
-  description:
-    "Приложение для составления квизов, отправки их людям и просмотра результатов",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("app.auth.layout.meta");
 
-export default function RootLayout({
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
+
+export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const t = await getTranslations("app.auth.layout");
+
   return (
     <Layout headerSlot={<HeaderAuth />} footerSlot={null}>
-      <Container size={"lg"} className="flex flex-col items-center">
+      <Container size="lg" className="flex flex-col items-center">
         <Title ta="center" my={40}>
-          Добро пожаловать в QuizBuilder!
+          {t("title")}
         </Title>
         {children}
         <Button
@@ -30,7 +36,7 @@ export default function RootLayout({
           href={routes.HOME}
           my={40}
         >
-          На главную
+          {t("homeButton")}
         </Button>
       </Container>
     </Layout>

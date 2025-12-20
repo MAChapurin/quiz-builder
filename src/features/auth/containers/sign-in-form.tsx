@@ -1,27 +1,31 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { useActionState } from "@/shared/lib/react";
+
 import { AuthFormLayout } from "../ui/auth-form-layout";
 import { AuthFields } from "../ui/sign-in-fields";
 import { SubmitButton } from "../ui/submit-button";
 import { BottomLink } from "../ui/link";
-
-import { signInAction, SignInFormState } from "../actions/sing-in";
-import { useActionState } from "@/shared/lib/react";
-
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { routes } from "@/shared/config";
 import { ErrorMessage } from "../ui/error-message";
+import { routes } from "@/shared/config";
+import { signInAction, SignInFormState } from "../actions/sing-in";
 
 export function SignInForm() {
   const router = useRouter();
+
+  const tUi = useTranslations("features.auth.ui.login");
+  const tActions = useTranslations("features.auth.actions.login");
+
   const [formState, action, isPending] = useActionState(
     signInAction,
     {} as SignInFormState,
     undefined,
     {
-      success: "Добро пожаловать!",
-      error: "Ошибка входа",
+      success: tActions("toasts.success"),
+      error: tActions("toasts.error"),
     },
   );
 
@@ -33,16 +37,20 @@ export function SignInForm() {
 
   return (
     <AuthFormLayout
-      title="Вход"
-      description="Добро пожаловать! Пожалуйста, войдите в свою учётную запись."
+      title={tUi("title")}
+      description={tUi("description")}
       action={action}
       fields={<AuthFields {...formState} />}
-      actions={<SubmitButton isPending={isPending}> Отправить</SubmitButton>}
+      actions={
+        <SubmitButton isPending={isPending}>
+          {tUi("buttons.submit")}
+        </SubmitButton>
+      }
       error={<ErrorMessage error={formState.errors?._errors} />}
       link={
         <BottomLink
-          text="У вас нет учетной записи?"
-          linkText="Регистрация"
+          text={tUi("links.register").split("?")[0] + "?"}
+          linkText={tUi("links.register").split("?")[1]}
           url={routes.REGISTER}
         />
       }

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { TextInput, PasswordInput } from "@mantine/core";
+import { useTranslations } from "next-intl";
 
 export function AuthFields({
   errors,
@@ -13,21 +14,23 @@ export function AuthFields({
     password?: string;
   };
 }) {
+  const t = useTranslations("features.auth.ui.login.fields");
+
   return (
     <>
       <TextInput
-        label="Почта"
+        label={t("email.label")}
         name="email"
-        placeholder="Введите вашу почту"
+        placeholder={t("email.placeholder")}
         required
         defaultValue={formData?.get("email")?.toString()}
         error={errors?.email}
       />
 
       <PasswordInput
-        label="Пароль"
+        label={t("password.label")}
         name="password"
-        placeholder="Введите ваш пароль"
+        placeholder={t("password.placeholder")}
         required
         defaultValue={formData?.get("password")?.toString()}
         error={errors?.password}

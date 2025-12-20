@@ -34,20 +34,103 @@
 
   "features": {
     "auth": {
-      "login": {
-        "title": "",
-        "email": "",
-        "password": "",
-        "submit": "",
-        "errors": {
-          "invalidCredentials": "",
-          "userBlocked": ""
+      "actions": {
+        "login": {
+          "errors": {
+            "invalidEmail": "Некорректный email",
+            "shortPassword": "Пароль должен быть не менее 3 символов",
+            "invalidCredentials": "Неверный email или пароль",
+            "generic": "Ошибка входа"
+          },
+          "toasts": {
+            "success": "Добро пожаловать!",
+            "error": "Ошибка входа"
+          }
+        },
+        "register": {
+          "errors": {
+            "nameRequired": "Имя обязательно",
+            "invalidEmail": "Некорректный email",
+            "shortPassword": "Пароль должен быть не менее 3 символов",
+            "passwordMismatch": "Пароли не совпадают",
+            "userExists": "Пользователь с таким email уже существует",
+            "generic": "Ошибка регистрации"
+          },
+          "toasts": {
+            "success": "Добро пожаловать в QuizBuilder"
+          }
         }
       },
-      "register": {
-        "title": "",
-        "submit": "",
-        "success": ""
+
+      "ui": {
+        "login": {
+          "title": "Вход",
+          "description": "Добро пожаловать! Пожалуйста, войдите в свою учётную запись.",
+          "buttons": {
+            "submit": "Войти"
+          },
+          "links": {
+            "register": "У вас нет учетной записи? Регистрация"
+          },
+          "fields": {
+            "email": {
+              "label": "Почта",
+              "placeholder": "Введите вашу почту"
+            },
+            "password": {
+              "label": "Пароль",
+              "placeholder": "Введите ваш пароль"
+            }
+          }
+        },
+
+        "register": {
+          "title": "Регистрация",
+          "description": "Создайте свою учетную запись, чтобы начать",
+          "buttons": {
+            "submit": "Зарегистрироваться"
+          },
+          "link": {
+            "text": "У вас уже есть аккаунт?",
+            "linkText": "Вход"
+          },
+          "fields": {
+            "email": {
+              "label": "Почта",
+              "placeholder": "Введите почту"
+            },
+            "name": {
+              "label": "Имя",
+              "placeholder": "Введите имя"
+            },
+            "password": {
+              "label": "Пароль",
+              "placeholder": "Введите пароль"
+            },
+            "confirmPassword": {
+              "label": "Повторите пароль",
+              "placeholder": "Повторите пароль"
+            }
+          }
+        },
+
+        "logout": {
+          "button": {
+            "label": "Выйти",
+            "aria": "Выйти"
+          },
+          "modal": {
+            "title": "Подтвердите выход",
+            "description": "Вы уверены, что хотите выйти?",
+            "actions": {
+              "cancel": "Отмена",
+              "confirm": "Выйти"
+            }
+          }
+        },
+        "common": {
+          "errorTitle": "Ошибка"
+        }
       }
     },
     "themeSwitcher": {
@@ -207,15 +290,14 @@
   },
 
   "app": {
-    "home": {
-      "title": "",
-      "description": ""
-    },
-    "profile": {
-      "title": "",
-      "tabs": {
-        "info": "",
-        "security": ""
+    "auth": {
+      "layout": {
+        "meta": {
+          "title": "Авторизация",
+          "description": "Приложение для составления квизов, отправки их людям и просмотра результатов"
+        },
+        "title": "Добро пожаловать в QuizBuilder!",
+        "homeButton": "На главную"
       }
     }
   }
