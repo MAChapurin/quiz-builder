@@ -8,6 +8,7 @@ import { headerLinks, LINKS_ID, routes } from "@/shared/config";
 import { ColorSchemesSwitcher } from "@/features";
 import { MobileMenu } from "./mobile-menu";
 import { Logo } from "@/shared/ui";
+import { LanguageSwitcher } from "@/features/language-swither";
 
 export function HeaderMarketing() {
   const [drawerOpened, setDrawerOpened] = useState(false);
@@ -63,6 +64,7 @@ export function HeaderMarketing() {
         </Group>
 
         <Group className="hidden lg:flex">
+          <LanguageSwitcher />
           <ColorSchemesSwitcher />
           <Button component={Link} href={routes.LOGIN} variant="outline">
             Войти

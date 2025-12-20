@@ -8,10 +8,12 @@ import { Notifications } from "@mantine/notifications";
 import theme from "./theme";
 import "./globals.css";
 import "@mantine/notifications/styles.css";
+import { NextIntlClientProvider } from "next-intl";
 
 import { CookiesBanner } from "@/widgets";
 import { getServerCookies } from "@/shared/lib";
 import { COOKIE_KEYS } from "@/shared/config";
+import { getMessages } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Конструктор тестов",
@@ -26,6 +28,8 @@ export default async function RootLayout({
 }>) {
   const cookies = await getServerCookies();
   const bannerSeen = cookies[COOKIE_KEYS.BANNER] === "true";
+  const messages = await getMessages();
+  const locale = messages.locale;
 
   return (
     <html lang="en" {...mantineHtmlProps}>
@@ -34,9 +38,11 @@ export default async function RootLayout({
       </head>
       <body className="antialiased">
         <MantineProvider theme={theme}>
-          <Notifications />
-          {children}
-          {!bannerSeen && <CookiesBanner />}
+          <NextIntlClientProvider messages={messages} locale={locale}>
+            <Notifications />
+            {children}
+            {!bannerSeen && <CookiesBanner />}
+          </NextIntlClientProvider>
         </MantineProvider>
       </body>
     </html>
