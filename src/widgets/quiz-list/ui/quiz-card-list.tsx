@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   Flex,
   Text,
@@ -10,11 +12,6 @@ import {
   Badge,
   SimpleGrid,
 } from "@mantine/core";
-
-import { emitter, formatDateRu, pluralize } from "@/shared/lib";
-import { SwitchPublicQuiz } from "@/features";
-import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
-
 import {
   IconEdit,
   IconLineHeight,
@@ -23,11 +20,17 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
+import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
+import { SwitchPublicQuiz } from "@/features";
+import { emitter, formatDateRu, pluralize } from "@/shared/lib";
+
 export function QuizCardsList({
   quizzes,
 }: {
   quizzes: QuizWithQuestionsExtended[];
 }) {
+  const t = useTranslations("widgets.quizList");
+
   return (
     <SimpleGrid
       cols={{ base: 1, sm: 2, lg: 3 }}
@@ -41,47 +44,54 @@ export function QuizCardsList({
               {quiz.title}
             </Text>
 
-            <Text opacity={0.5} fz={"xs"} className="shrink-0">
+            <Text opacity={0.5} fz="xs" className="shrink-0">
               {formatDateRu(quiz.createdAt)}
             </Text>
           </Flex>
+
           {quiz.description && (
             <Text fz="sm" c="dimmed" className="truncate mb-auto">
               {quiz.description}
             </Text>
           )}
+
           <Flex gap={8} mt={14} wrap="wrap">
             <Badge size="xs" variant="outline" color="gray">
               {quiz.questionsCount}{" "}
               {pluralize(quiz.questionsCount, [
-                "вопрос",
-                "вопроса",
-                "вопросов",
+                t("badges.questions.one"),
+                t("badges.questions.few"),
+                t("badges.questions.many"),
               ])}
             </Badge>
-
             <Badge size="xs" variant="outline" color="gray">
               {quiz.attemptsCount}{" "}
               {pluralize(quiz.attemptsCount, [
-                "прохождение",
-                "прохождения",
-                "прохождений",
+                t("badges.attempts.one"),
+                t("badges.attempts.few"),
+                t("badges.attempts.many"),
               ])}
             </Badge>
           </Flex>
+
           <Divider my={16} />
+
           <Stack gap={6}>
-            <Flex justify="space-between" align="center" gap={"lg"}>
-              <Text fz="sm">Публикация:</Text>
+            <Flex justify="space-between" align="center" gap="lg">
+              <Text fz="sm">{t("cards.publicationLabel")}</Text>
+
               <Badge
                 variant="outline"
                 size="xs"
                 color={quiz.isPublished ? "green" : "gray"}
               >
-                {" "}
-                {quiz.isPublished ? "Опубликован" : "Не опубликован"}
+                {quiz.isPublished
+                  ? t("publication.published")
+                  : t("publication.unpublished")}
               </Badge>
-              <div className="ml-auto"></div>
+
+              <div className="ml-auto" />
+
               <SwitchPublicQuiz
                 quizId={quiz.id}
                 initialValue={quiz.isPublished}
@@ -89,7 +99,9 @@ export function QuizCardsList({
               />
             </Flex>
           </Stack>
+
           <Divider my={16} />
+
           <Flex
             justify="space-between"
             align="center"
@@ -101,33 +113,30 @@ export function QuizCardsList({
               <ActionIcon
                 size="lg"
                 variant="default"
-                color="blue"
                 disabled={quiz.questions.length === 0}
                 onClick={() =>
                   emitter.emit("quiz-practice-click", { id: quiz.id })
                 }
-                title="Пройти"
+                title={t("actions.practice")}
               >
                 <IconPlayerPlay size={18} />
               </ActionIcon>
-
               <ActionIcon
                 size="lg"
                 variant="default"
                 disabled={quiz.questions.length === 0 || !quiz.isPublished}
-                title="Поделиться"
+                title={t("actions.share")}
                 onClick={() =>
                   emitter.emit("invite-token-click", { id: quiz.id })
                 }
               >
                 <IconShare size={18} />
               </ActionIcon>
-
               <ActionIcon
                 size="lg"
                 variant="default"
+                title={t("actions.edit")}
                 onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
-                title="Редактировать"
               >
                 <IconEdit size={18} />
               </ActionIcon>
@@ -138,19 +147,18 @@ export function QuizCardsList({
                 size="lg"
                 color="red"
                 variant="default"
+                title={t("actions.delete")}
                 onClick={() =>
                   emitter.emit("quiz-deleted-click", { id: quiz.id })
                 }
-                title="Удалить"
               >
                 <IconTrash size={18} />
               </ActionIcon>
-
               <ActionIcon
                 size="lg"
                 variant="default"
+                title={t("actions.open")}
                 onClick={() => emitter.emit("quiz-open-click", { id: quiz.id })}
-                title="Открыть"
               >
                 <IconLineHeight size={18} />
               </ActionIcon>

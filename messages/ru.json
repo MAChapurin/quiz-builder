@@ -282,6 +282,46 @@
         "title": "Меню"
       }
     },
+    "quizList": {
+      "table": {
+        "title": "Название",
+        "createdAt": "Дата создания",
+        "questionsCount": "Количество вопросов",
+        "attempts": "Прохождения",
+        "publication": "Публикация",
+        "actions": "Действия"
+      },
+
+      "cards": {
+        "publicationLabel": "Публикация:"
+      },
+
+      "badges": {
+        "questions": {
+          "one": "вопрос",
+          "few": "вопроса",
+          "many": "вопросов"
+        },
+        "attempts": {
+          "one": "прохождение",
+          "few": "прохождения",
+          "many": "прохождений"
+        }
+      },
+
+      "publication": {
+        "published": "Опубликован",
+        "unpublished": "Не опубликован"
+      },
+
+      "actions": {
+        "practice": "Пройти",
+        "share": "Поделиться",
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "open": "Открыть"
+      }
+    },
     "quizDetail": {
       "badges": {
         "questions": {

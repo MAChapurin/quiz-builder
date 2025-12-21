@@ -284,6 +284,46 @@
         "title": "Menu"
       }
     },
+    "quizList": {
+      "table": {
+        "title": "Title",
+        "createdAt": "Created at",
+        "questionsCount": "Questions",
+        "attempts": "Attempts",
+        "publication": "Publication",
+        "actions": "Actions"
+      },
+
+      "cards": {
+        "publicationLabel": "Publication:"
+      },
+
+      "badges": {
+        "questions": {
+          "one": "question",
+          "few": "questions",
+          "many": "questions"
+        },
+        "attempts": {
+          "one": "attempt",
+          "few": "attempts",
+          "many": "attempts"
+        }
+      },
+
+      "publication": {
+        "published": "Published",
+        "unpublished": "Unpublished"
+      },
+
+      "actions": {
+        "practice": "Practice",
+        "share": "Share",
+        "edit": "Edit",
+        "delete": "Delete",
+        "open": "Open"
+      }
+    },
     "quizDetail": {
       "badges": {
         "questions": {

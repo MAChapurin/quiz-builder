@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { Table, Flex, ActionIcon, Menu } from "@mantine/core";
 import {
   IconLineHeight,
@@ -11,7 +13,6 @@ import {
 } from "@tabler/icons-react";
 
 import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
-
 import { SwitchPublicQuiz } from "@/features";
 import { emitter, formatDateRu } from "@/shared/lib";
 
@@ -20,22 +21,24 @@ export function QuizTableList({
 }: {
   quizzes: QuizWithQuestionsExtended[];
 }) {
+  const t = useTranslations("widgets.quizList");
+
   return (
     <Table striped highlightOnHover>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th>Название</Table.Th>
+          <Table.Th>{t("table.title")}</Table.Th>
           <Table.Th className="text-center hidden sm:table-cell">
-            Дата создания
+            {t("table.createdAt")}
           </Table.Th>
           <Table.Th className="text-center hidden sm:table-cell">
-            Количество вопросов
+            {t("table.questionsCount")}
           </Table.Th>
           <Table.Th className="text-center hidden sm:table-cell">
-            Прохождения
+            {t("table.attempts")}
           </Table.Th>
-          <Table.Th className="text-center">Публикация</Table.Th>
-          <Table.Th className="text-right">Действия</Table.Th>
+          <Table.Th className="text-center">{t("table.publication")}</Table.Th>
+          <Table.Th className="text-right">{t("table.actions")}</Table.Th>
         </Table.Tr>
       </Table.Thead>
 
@@ -43,15 +46,21 @@ export function QuizTableList({
         {quizzes.map((quiz) => (
           <Table.Tr key={quiz.id}>
             <Table.Td>{quiz.title}</Table.Td>
+
             <Table.Td className="text-center hidden sm:table-cell">
               {formatDateRu(quiz.createdAt)}
             </Table.Td>
+
             <Table.Td className="text-center hidden sm:table-cell">
               {quiz.questions.length}
             </Table.Td>
-            <Table.Td className="text-center hidden sm:table-cell">0</Table.Td>
+
+            <Table.Td className="text-center hidden sm:table-cell">
+              {quiz.attemptsCount}
+            </Table.Td>
+
             <Table.Td className="text-center">
-              <Flex justify={"center"}>
+              <Flex justify="center">
                 <SwitchPublicQuiz
                   quizId={quiz.id}
                   disabled={quiz.questions.length === 0}
@@ -59,6 +68,7 @@ export function QuizTableList({
                 />
               </Flex>
             </Table.Td>
+
             <Table.Td>
               <Flex justify="end" className="gap-2 items-center">
                 <Flex className="hidden sm:flex gap-2">
@@ -66,10 +76,10 @@ export function QuizTableList({
                     size="md"
                     variant="default"
                     disabled={quiz.questions.length === 0}
+                    title={t("actions.practice")}
                     onClick={() =>
                       emitter.emit("quiz-practice-click", { id: quiz.id })
                     }
-                    title="Пройти"
                   >
                     <IconPlayerPlay size={16} />
                   </ActionIcon>
@@ -77,20 +87,20 @@ export function QuizTableList({
                     size="md"
                     variant="default"
                     disabled={quiz.questions.length === 0 || !quiz.isPublished}
+                    title={t("actions.share")}
                     onClick={() =>
                       emitter.emit("invite-token-click", { id: quiz.id })
                     }
-                    title="Поделиться"
                   >
                     <IconShare size={16} />
                   </ActionIcon>
                   <ActionIcon
                     size="md"
                     variant="default"
+                    title={t("actions.edit")}
                     onClick={() =>
                       emitter.emit("quiz-edit-click", { id: quiz.id })
                     }
-                    title="Редактировать"
                   >
                     <IconEdit size={16} />
                   </ActionIcon>
@@ -98,24 +108,25 @@ export function QuizTableList({
                     size="md"
                     color="red"
                     variant="default"
+                    title={t("actions.delete")}
                     onClick={() =>
                       emitter.emit("quiz-deleted-click", { id: quiz.id })
                     }
-                    title="Удалить"
                   >
                     <IconTrash size={16} />
                   </ActionIcon>
                   <ActionIcon
                     size="md"
                     variant="default"
+                    title={t("actions.open")}
                     onClick={() =>
                       emitter.emit("quiz-open-click", { id: quiz.id })
                     }
-                    title="Открыть"
                   >
                     <IconLineHeight size={16} />
                   </ActionIcon>
                 </Flex>
+
                 <div className="sm:hidden">
                   <Menu position="bottom-end" shadow="md">
                     <Menu.Target>
@@ -123,6 +134,7 @@ export function QuizTableList({
                         <IconDotsVertical />
                       </ActionIcon>
                     </Menu.Target>
+
                     <Menu.Dropdown>
                       <Menu.Item
                         leftSection={<IconPlayerPlay size={16} />}
@@ -131,7 +143,7 @@ export function QuizTableList({
                           emitter.emit("quiz-practice-click", { id: quiz.id })
                         }
                       >
-                        Пройти
+                        {t("actions.practice")}
                       </Menu.Item>
                       <Menu.Item
                         leftSection={<IconShare size={16} />}
@@ -142,7 +154,7 @@ export function QuizTableList({
                           emitter.emit("invite-token-click", { id: quiz.id })
                         }
                       >
-                        Поделиться
+                        {t("actions.share")}
                       </Menu.Item>
                       <Menu.Item
                         leftSection={<IconEdit size={16} />}
@@ -150,7 +162,7 @@ export function QuizTableList({
                           emitter.emit("quiz-edit-click", { id: quiz.id })
                         }
                       >
-                        Редактировать
+                        {t("actions.edit")}
                       </Menu.Item>
                       <Menu.Item
                         color="red"
@@ -159,7 +171,7 @@ export function QuizTableList({
                           emitter.emit("quiz-deleted-click", { id: quiz.id })
                         }
                       >
-                        Удалить
+                        {t("actions.delete")}
                       </Menu.Item>
                       <Menu.Item
                         leftSection={<IconLineHeight size={16} />}
@@ -167,7 +179,7 @@ export function QuizTableList({
                           emitter.emit("quiz-open-click", { id: quiz.id })
                         }
                       >
-                        Открыть
+                        {t("actions.open")}
                       </Menu.Item>
                     </Menu.Dropdown>
                   </Menu>

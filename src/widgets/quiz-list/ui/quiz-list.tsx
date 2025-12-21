@@ -1,24 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { Divider, Flex, SegmentedControl } from "@mantine/core";
+import { IconArticle, IconBorderAll } from "@tabler/icons-react";
+
 import { QuestionEntity } from "@/entities/question/domain";
 import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
-
 import {
   DeleteQuizModal,
   EditQuizModal,
+  GenerateInviteModal,
   HelpDrawer,
   PracticeQuizModal,
+  QuizHelpContent,
   useOpenQuiz,
 } from "@/features";
 import { COOKIE_KEYS } from "@/shared/config";
 import { emitter, setCookie } from "@/shared/lib";
-import { useEffect, useState } from "react";
+
 import { QuizTableList } from "./quiz-table-list";
 import { QuizCardsList } from "./quiz-card-list";
-import { IconArticle, IconBorderAll } from "@tabler/icons-react";
-import { QuizHelpContent } from "@/features/help-drawer/ui/quiz-list-hep-content";
-import { GenerateInviteModal } from "@/features/invite-link-modal/ui/invite-link-modal";
 
 export type QuizListViewType = "table" | "cards";
 
