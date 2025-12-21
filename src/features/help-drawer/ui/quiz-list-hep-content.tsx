@@ -1,5 +1,6 @@
-import { ActionIcon, Badge, Divider, Flex, Text, Title } from "@mantine/core";
+"use client";
 
+import { ActionIcon, Badge, Divider, Flex, Text, Title } from "@mantine/core";
 import {
   IconPlayerPlay,
   IconShare,
@@ -11,128 +12,132 @@ import {
   IconCheck,
   IconX,
 } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 export function QuizHelpContent() {
+  const t = useTranslations("features.helpQuizList");
+
   return (
     <div className="space-y-4">
       <section>
-        <Title order={2} fz={"lg"} fw={700} mb={16}>
-          О странице квизов
+        <Title order={2} fz="lg" fw={700} mb={16}>
+          {t("about.title")}
         </Title>
-        <Text>
-          Здесь отображаются все ваши квизы. Вы можете переключать режим
-          отображения (таблица или карточки), проходить квизы, делиться ими,
-          редактировать, удалять и управлять публикацией.
-        </Text>
+        <Text>{t("about.text")}</Text>
       </section>
+
       <Divider />
+
       <section>
-        <Title order={2} fz={"lg"} fw={700} mb={16}>
-          Режим отображения
+        <Title order={2} fz="lg" fw={700} mb={16}>
+          {t("viewMode.title")}
         </Title>
         <ul className="mt-3 list-none">
           <li className="mb-4">
             <ActionIcon variant="default" className="mr-4">
               <IconArticle size={16} />
             </ActionIcon>
-            <b>Таблица</b> — компактный, структурированный вид, подходит для ПК.
+            <b>{t("viewMode.table.label")}</b> —{" "}
+            {t("viewMode.table.description")}
           </li>
           <li>
             <ActionIcon variant="default" className="mr-4">
               <IconBorderAll size={16} />
             </ActionIcon>
-            <b>Карточки</b> — более визуальный режим, удобный на мобильных
-            устройствах.
+            <b>{t("viewMode.cards.label")}</b> —{" "}
+            {t("viewMode.cards.description")}
           </li>
         </ul>
       </section>
+
       <Divider />
+
       <section>
-        <Title order={2} fz={"lg"} fw={700} mb={16}>
-          Статус публикации
+        <Title order={2} fz="lg" fw={700} mb={16}>
+          {t("publication.title")}
         </Title>
-        <Text className="mb-2">Каждый квиз имеет статус публикации:</Text>
+        <Text mb={8}>{t("publication.intro")}</Text>
+
         <Flex direction="column" gap={8}>
           <Flex align="center" gap={8}>
             <Badge color="green" variant="outline" size="xs">
-              Опубликован
+              {t("publication.published")}
             </Badge>
             <IconCheck size={16} color="green" />
           </Flex>
           <Flex align="center" gap={8}>
             <Badge color="gray" variant="outline" size="xs">
-              Не опубликован
+              {t("publication.unpublished")}
             </Badge>
             <IconX size={16} color="gray" />
           </Flex>
         </Flex>
-        <Text className="mt-3">
-          Квиз можно опубликовать только если в нём есть хотя бы один вопрос.
-        </Text>
+
+        <Text mt={12}>{t("publication.note")}</Text>
       </section>
+
       <Divider />
+
       <section>
-        <Title order={2} fz={"lg"} fw={700} mb={16}>
-          Информация о квизе
+        <Title order={2} fz="lg" fw={700} mb={16}>
+          {t("info.title")}
         </Title>
         <ul className="list-disc ml-6">
-          <li>Количество вопросов — отображается в виде бейджа.</li>
-          <li>Число прохождений — сколько раз пользователи прошли квиз.</li>
-          <li>Дата создания — сортируется по умолчанию.</li>
+          {t.raw("info.items").map((item: string, index: number) => (
+            <li key={index}>{item}</li>
+          ))}
         </ul>
       </section>
+
       <Divider />
+
       <section>
-        <Title order={2} fz={"lg"} fw={700} mb={16}>
-          Кнопки действий
+        <Title order={2} fz="lg" fw={700} mb={16}>
+          {t("actions.title")}
         </Title>
-        <Text className="mb-3">
-          На странице используются кнопки с иконками. Ниже показано, что каждая
-          значит:
-        </Text>
+        <Text mb={12}>{t("actions.intro")}</Text>
+
         <div className="space-y-2">
           <Flex align="center" gap={10}>
             <ActionIcon size="md" variant="default">
               <IconPlayerPlay size={16} />
             </ActionIcon>
-            <span>Пройти — начать прохождение квиза</span>
+            <span>{t("actions.play")}</span>
           </Flex>
           <Flex align="center" gap={10}>
             <ActionIcon size="md" variant="default">
               <IconShare size={16} />
             </ActionIcon>
-            <span>Поделиться — получить ссылку на квиз</span>
+            <span>{t("actions.share")}</span>
           </Flex>
           <Flex align="center" gap={10}>
             <ActionIcon size="md" variant="default">
               <IconEdit size={16} />
             </ActionIcon>
-            <span>Редактировать — изменить название, описание и вопросы</span>
+            <span>{t("actions.edit")}</span>
           </Flex>
           <Flex align="center" gap={10}>
             <ActionIcon size="md" variant="default" color="red">
               <IconTrash size={16} />
             </ActionIcon>
-            <span>Удалить — полностью удалить квиз</span>
+            <span>{t("actions.delete")}</span>
           </Flex>
           <Flex align="center" gap={10}>
             <ActionIcon size="md" variant="default">
               <IconLineHeight size={16} />
             </ActionIcon>
-            <span>Открыть — перейти к детальному просмотру квиза</span>
+            <span>{t("actions.open")}</span>
           </Flex>
         </div>
       </section>
+
       <Divider />
+
       <section>
-        <Title order={2} fz={"lg"} fw={700} mb={16}>
-          Мобильная версия
+        <Title order={2} fz="lg" fw={700} mb={16}>
+          {t("mobile.title")}
         </Title>
-        <Text>
-          На маленьких экранах часть действий может быть вынесена в меню для
-          экономии места. Иконки остаются такими же, а подсказки доступны через
-          тултипы.
-        </Text>
+        <Text>{t("mobile.text")}</Text>
       </section>
     </div>
   );

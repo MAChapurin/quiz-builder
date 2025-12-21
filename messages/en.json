@@ -195,6 +195,55 @@
           }
         }
       }
+    },
+    "helpDrawer": {
+      "tooltip": "Page instructions",
+      "title": "How to use this page"
+    },
+    "helpQuizList": {
+      "about": {
+        "title": "About the quizzes page",
+        "text": "This page displays all your quizzes. You can switch between table and card views, take quizzes, share them, edit, delete, and manage their publication status."
+      },
+      "viewMode": {
+        "title": "View mode",
+        "table": {
+          "label": "Table",
+          "description": "A compact, structured view best suited for desktop."
+        },
+        "cards": {
+          "label": "Cards",
+          "description": "A more visual layout, convenient for mobile devices."
+        }
+      },
+      "publication": {
+        "title": "Publication status",
+        "intro": "Each quiz has a publication status:",
+        "published": "Published",
+        "unpublished": "Not published",
+        "note": "A quiz can only be published if it contains at least one question."
+      },
+      "info": {
+        "title": "Quiz information",
+        "items": [
+          "Number of questions — displayed as a badge.",
+          "Attempts count — how many times users have taken the quiz.",
+          "Creation date — sorted by default."
+        ]
+      },
+      "actions": {
+        "title": "Action buttons",
+        "intro": "The page uses icon buttons. Below is what each one means:",
+        "play": "Play — start taking the quiz",
+        "share": "Share — get a link to the quiz",
+        "edit": "Edit — change the title, description, and questions",
+        "delete": "Delete — permanently remove the quiz",
+        "open": "Open — go to the quiz details page"
+      },
+      "mobile": {
+        "title": "Mobile version",
+        "text": "On small screens, some actions may be moved into a menu to save space. Icons remain the same, and hints are available via tooltips."
+      }
     }
   },
 
