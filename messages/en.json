@@ -196,14 +196,6 @@
   },
 
   "widgets": {
-    "header": {
-      "navigation": {
-        "home": "",
-        "projects": "",
-        "profile": ""
-      },
-      "logout": ""
-    },
     "footer": {
       "copyright": ""
     },
@@ -274,16 +266,19 @@
       "description": "Start right now — it's free and takes just a couple of minutes.",
       "button": "Start now"
     },
-    "headerMarketing": {
+    "header": {
       "navigation": {
         "home": "Home",
         "features": "Features",
         "how": "How it works",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "quizzes": "Quizzes",
+        "results": "Results"
       },
       "actions": {
         "login": "Login",
-        "register": "Registration"
+        "register": "Registration",
+        "logout": "Logout"
       },
       "mobile": {
         "title": "Menu"

@@ -1,5 +1,3 @@
-"use client";
-
 import { Container, Group, Flex, Button, ActionIcon } from "@mantine/core";
 import { ColorSchemesSwitcher } from "@/features";
 import { Logo } from "@/shared/ui";
@@ -7,8 +5,10 @@ import Link from "next/link";
 import { routes } from "@/shared/config";
 import { IconLogin, IconUserPlus } from "@tabler/icons-react";
 import { LanguageSwitcher } from "@/features/language-swither";
+import { useTranslations } from "next-intl";
 
 export function HeaderAuth() {
+  const t = useTranslations("widgets.header");
   return (
     <Container size="lg" py={10}>
       <Flex h="100%" align="center" justify="space-between">
@@ -22,14 +22,14 @@ export function HeaderAuth() {
             variant="outline"
             className="hidden xs:block"
           >
-            Войти
+            {t("actions.login")}
           </Button>
           <Button
             component={Link}
             href={routes.REGISTER}
             className="hidden xs:block"
           >
-            Регистрация
+            {t("actions.register")}
           </Button>
           <ActionIcon
             className="xs:hidden"
@@ -37,7 +37,7 @@ export function HeaderAuth() {
             href={routes.LOGIN}
             variant="outline"
             size="lg"
-            aria-label="Войти"
+            aria-label={t("actions.login")}
           >
             <IconLogin />
           </ActionIcon>
@@ -46,7 +46,7 @@ export function HeaderAuth() {
             component={Link}
             href={routes.REGISTER}
             size="lg"
-            aria-label="Регистрация"
+            aria-label={t("actions.register")}
           >
             <IconUserPlus />
           </ActionIcon>

@@ -1,7 +1,6 @@
 "use client";
 
 import { Drawer, Stack, Anchor, Button } from "@mantine/core";
-import { ColorSchemesSwitcher } from "@/features";
 import { headerLinks, LINKS_ID, routes } from "@/shared/config";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -24,7 +23,7 @@ export function MobileMenu({
   activeSection: string;
   handleLinkClick: (href: string) => void;
 }) {
-  const t = useTranslations("widgets.headerMarketing");
+  const t = useTranslations("widgets.header");
 
   return (
     <Drawer
@@ -53,8 +52,6 @@ export function MobileMenu({
             </Anchor>
           );
         })}
-
-        <ColorSchemesSwitcher />
 
         <Button
           component={Link}

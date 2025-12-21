@@ -13,7 +13,12 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { usePathname } from "next/navigation";
 
-import { ColorSchemesSwitcher, LogOutButton, Profile } from "@/features";
+import {
+  ColorSchemesSwitcher,
+  LanguageSwitcher,
+  LogOutButton,
+  Profile,
+} from "@/features";
 import { Logo } from "@/shared/ui";
 import { routes } from "@/shared/config";
 import { NavLinks } from "./nav-links";
@@ -31,6 +36,7 @@ export function HeaderPrivate({ name }: { name: string }) {
             <NavLinks pathname={pathname} />
           </Group>
           <Group>
+            <LanguageSwitcher />
             <ColorSchemesSwitcher />
             <Profile name={name} />
             <Group visibleFrom="md">

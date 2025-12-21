@@ -19,7 +19,7 @@ const navKeyByHref: Record<string, string> = {
 };
 
 export function HeaderMarketing() {
-  const t = useTranslations("widgets.headerMarketing");
+  const t = useTranslations("widgets.header");
 
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [activeSection, setActiveSection] = useState(`#${LINKS_ID.HOME}`);

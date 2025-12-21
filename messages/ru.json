@@ -194,14 +194,6 @@
   },
 
   "widgets": {
-    "header": {
-      "navigation": {
-        "home": "",
-        "projects": "",
-        "profile": ""
-      },
-      "logout": ""
-    },
     "footer": {
       "copyright": ""
     },
@@ -272,16 +264,19 @@
       "description": "Начните прямо сейчас — это бесплатно и занимает всего пару минут.",
       "button": "Начать сейчас"
     },
-    "headerMarketing": {
+    "header": {
       "navigation": {
         "home": "Главная",
         "features": "Возможности",
         "how": "Как это работает",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "quizzes": "Квизы",
+        "results": "Результаты"
       },
       "actions": {
         "login": "Войти",
-        "register": "Регистрация"
+        "register": "Регистрация",
+        "logout": "Выйти"
       },
       "mobile": {
         "title": "Меню"
