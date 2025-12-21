@@ -1,5 +1,8 @@
 "use client";
 
+import { useRef } from "react";
+import { useTranslations } from "next-intl";
+
 import {
   Container,
   Title,
@@ -11,12 +14,6 @@ import {
   Button,
   Divider,
 } from "@mantine/core";
-
-import { QuizEntity } from "@/entities/quiz/domain";
-import { QuestionEntity } from "@/entities/question/domain";
-
-import { useRef } from "react";
-import { emitter, pluralize } from "@/shared/lib";
 import {
   IconCirclePlus,
   IconLinkPlus,
@@ -24,15 +21,19 @@ import {
   IconPlayerPlay,
   IconTrash,
 } from "@tabler/icons-react";
+
+import { QuizEntity } from "@/entities/quiz/domain";
+import { QuestionEntity } from "@/entities/question/domain";
 import {
   EditQuizModal,
   AddQuestionModal,
   DeleteQuestionModal,
   EditQuestionModal,
+  GenerateInviteModal,
   PracticeQuizModal,
   SwitchPublicQuiz,
 } from "@/features";
-import { GenerateInviteModal } from "@/features/invite-link-modal/ui/invite-link-modal";
+import { emitter, pluralize } from "@/shared/lib";
 
 type QuizDetailProps = {
   quiz: QuizEntity;
@@ -40,33 +41,45 @@ type QuizDetailProps = {
 };
 
 export function QuizDetail({ quiz, questions }: QuizDetailProps) {
+  const t = useTranslations("widgets.quizDetail");
   const lastQuestionRef = useRef<HTMLDivElement>(null);
+
+  console.log({ quiz, questions });
+
   return (
     <Container size="lg" py="lg">
       <Card withBorder p="lg" mb="md">
         <Group align="stretch">
           <Stack style={{ flex: 1 }}>
             <Title order={1}>{quiz.title}</Title>
+
             {quiz.description && (
-              <Text color="dimmed" size="sm">
+              <Text c="dimmed" size="sm">
                 {quiz.description}
               </Text>
             )}
-            <Group mt={"auto"}>
+
+            <Group mt="auto">
               <Badge>
                 {questions.length}{" "}
-                {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
+                {pluralize(questions.length, [
+                  t("badges.questions.one"),
+                  t("badges.questions.few"),
+                  t("badges.questions.many"),
+                ])}
               </Badge>
+
               <Badge variant="outline" color="gray">
                 {quiz.attemptsCount}{" "}
                 {pluralize(quiz.attemptsCount, [
-                  "прохождение",
-                  "прохождения",
-                  "прохождений",
+                  t("badges.attempts.one"),
+                  t("badges.attempts.few"),
+                  t("badges.attempts.many"),
                 ])}
               </Badge>
             </Group>
           </Stack>
+
           <Stack>
             <SwitchPublicQuiz
               quizId={quiz.id}
@@ -74,6 +87,7 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
               variant="button"
               disabled={questions.length === 0}
             />
+
             <Button
               justify="space-between"
               disabled={questions.length === 0 || !quiz.isPublished}
@@ -83,9 +97,11 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
                 emitter.emit("invite-token-click", { id: quiz.id })
               }
             >
-              Создать инвайт
+              {t("actions.createInvite")}
             </Button>
+
             <Divider />
+
             <Button
               justify="space-between"
               disabled={questions.length === 0}
@@ -95,16 +111,18 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
                 emitter.emit("quiz-practice-click", { id: quiz.id })
               }
             >
-              Пройти пробно
+              {t("actions.practice")}
             </Button>
+
             <Button
               justify="space-between"
               variant="default"
               leftSection={<IconPencil size={16} />}
               onClick={() => emitter.emit("quiz-edit-click", { id: quiz.id })}
             >
-              Редактировать
+              {t("actions.editQuiz")}
             </Button>
+
             <Button
               justify="space-between"
               variant="default"
@@ -114,7 +132,7 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
               }
               mb="md"
             >
-              Добавить вопрос
+              {t("actions.addQuestion")}
             </Button>
           </Stack>
         </Group>
@@ -130,11 +148,12 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
       <Stack mt="lg" gap="md">
         {questions.map((q, index) => (
           <Card key={q.id} withBorder p="md">
-            <Group align="stretch" justify="space-between" h="100%">
+            <Group align="stretch" justify="space-between">
               <Stack>
                 <Text fw={600}>
                   {index + 1}. {q.text}
                 </Text>
+
                 <Stack mt="xs" gap={4}>
                   {q.options.map((o) => (
                     <Text
@@ -147,32 +166,36 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
                   ))}
                 </Stack>
               </Stack>
-              <Stack justify="space-between" align="flex-end" ml={"auto"}>
+
+              <Stack justify="space-between" align="flex-end">
                 <Badge size="sm">
-                  {q.type === "SINGLE" ? "Один вариант" : "Несколько"}
+                  {q.type === "SINGLE"
+                    ? t("questionType.single")
+                    : t("questionType.multiple")}
                 </Badge>
 
                 <Group>
                   <Button
-                    variant="default"
                     size="sm"
+                    variant="default"
                     leftSection={<IconPencil size={16} />}
                     onClick={() =>
                       emitter.emit("edit-question-click", { id: q.id })
                     }
                   >
-                    Редактировать
+                    {t("actions.editQuestion")}
                   </Button>
+
                   <Button
+                    size="sm"
                     color="red"
                     variant="default"
-                    size="sm"
                     leftSection={<IconTrash size={16} />}
                     onClick={() =>
                       emitter.emit("delete-question-click", { id: q.id })
                     }
                   >
-                    Удалить
+                    {t("actions.deleteQuestion")}
                   </Button>
                 </Group>
               </Stack>
@@ -182,7 +205,6 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
 
         <Card withBorder p={0}>
           <Button
-            className="border-none"
             variant="default"
             fullWidth
             size="lg"
@@ -190,13 +212,12 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
             leftSection={<IconCirclePlus size={28} />}
             onClick={() => emitter.emit("add-question-click", { id: quiz.id })}
           >
-            Добавить вопрос
+            {t("actions.addQuestion")}
           </Button>
         </Card>
 
         <div ref={lastQuestionRef} />
       </Stack>
-      <div className="h-10" />
     </Container>
   );
 }

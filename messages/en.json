@@ -283,6 +283,32 @@
       "mobile": {
         "title": "Menu"
       }
+    },
+    "quizDetail": {
+      "badges": {
+        "questions": {
+          "one": "question",
+          "few": "questions",
+          "many": "questions"
+        },
+        "attempts": {
+          "one": "attempt",
+          "few": "attempts",
+          "many": "attempts"
+        }
+      },
+      "questionType": {
+        "single": "Single choice",
+        "multiple": "Multiple choice"
+      },
+      "actions": {
+        "createInvite": "Create invite",
+        "practice": "Practice",
+        "editQuiz": "Edit",
+        "addQuestion": "Add question",
+        "editQuestion": "Edit",
+        "deleteQuestion": "Delete"
+      }
     }
   },
 

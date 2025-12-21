@@ -281,6 +281,32 @@
       "mobile": {
         "title": "Меню"
       }
+    },
+    "quizDetail": {
+      "badges": {
+        "questions": {
+          "one": "вопрос",
+          "few": "вопроса",
+          "many": "вопросов"
+        },
+        "attempts": {
+          "one": "прохождение",
+          "few": "прохождения",
+          "many": "прохождений"
+        }
+      },
+      "questionType": {
+        "single": "Один вариант",
+        "multiple": "Несколько"
+      },
+      "actions": {
+        "createInvite": "Создать инвайт",
+        "practice": "Пройти пробно",
+        "editQuiz": "Редактировать",
+        "addQuestion": "Добавить вопрос",
+        "editQuestion": "Редактировать",
+        "deleteQuestion": "Удалить"
+      }
     }
   },
 
