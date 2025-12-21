@@ -277,6 +277,43 @@
           }
         }
       }
+    },
+    "practiceQuiz": {
+      "actions": {
+        "fetchQuestions": {
+          "errors": {
+            "missingQuizId": "ID квиза не передан",
+            "notFound": "Вопросы не найдены",
+            "generic": "Ошибка при получении вопросов"
+          }
+        },
+        "submitResults": {
+          "toasts": {
+            "success": "Результаты отправлены",
+            "error": "Не удалось отправить результаты"
+          }
+        }
+      },
+      "ui": {
+        "modal": {
+          "title": "Пробное прохождение квиза"
+        },
+        "public": {
+          "start": "Начать"
+        },
+        "view": {
+          "result": "Ваш результат: {score} из {total}",
+          "sendResults": "Отправить результаты",
+          "sentResults": "Результаты отправлены",
+          "restart": "Пройти заново",
+          "showAnswers": "Посмотреть правильные ответы",
+          "navigation": {
+            "back": "Назад",
+            "next": "Далее",
+            "finish": "Завершить"
+          }
+        }
+      }
     }
   },
 

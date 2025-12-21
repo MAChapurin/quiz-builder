@@ -279,6 +279,43 @@
           }
         }
       }
+    },
+    "practiceQuiz": {
+      "actions": {
+        "fetchQuestions": {
+          "errors": {
+            "missingQuizId": "Quiz ID is missing",
+            "notFound": "Questions not found",
+            "generic": "Failed to fetch questions"
+          }
+        },
+        "submitResults": {
+          "toasts": {
+            "success": "Results sent",
+            "error": "Failed to send results"
+          }
+        }
+      },
+      "ui": {
+        "modal": {
+          "title": "Practice quiz"
+        },
+        "public": {
+          "start": "Start"
+        },
+        "view": {
+          "result": "Your score: {score} out of {total}",
+          "sendResults": "Submit results",
+          "sentResults": "Results submitted",
+          "restart": "Restart quiz",
+          "showAnswers": "View correct answers",
+          "navigation": {
+            "back": "Back",
+            "next": "Next",
+            "finish": "Finish"
+          }
+        }
+      }
     }
   },
 

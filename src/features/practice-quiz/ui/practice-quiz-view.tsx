@@ -23,6 +23,7 @@ import {
 import { QuestionEntity } from "@/entities/question/domain";
 import { useDisclosure } from "@mantine/hooks";
 import { useActionState } from "@/shared/hooks";
+import { useTranslations } from "next-intl";
 
 import { usePracticeQuiz } from "../model/use-practice-quiz";
 import { submitQuizResultsAction } from "../actions/submit-quiz-results";
@@ -43,6 +44,8 @@ export function PracticeQuizView({
   mode = "test",
   inviteTokenId = "",
 }: PracticeQuizViewProps) {
+  const tUi = useTranslations("features.practiceQuiz.ui.view");
+
   const [opened, { toggle }] = useDisclosure(false);
 
   const quiz = usePracticeQuiz(questions);
@@ -132,7 +135,10 @@ export function PracticeQuizView({
         <Stack gap="sm">
           <Center>
             <Text fw={600} size="lg">
-              Ваш результат: {calculateScore()} из {questions.length}
+              {tUi("result", {
+                score: calculateScore(),
+                total: questions.length,
+              })}
             </Text>
           </Center>
 
@@ -152,9 +158,7 @@ export function PracticeQuizView({
                 loading={isPending}
                 disabled={formState.success}
               >
-                {formState.success
-                  ? "Результаты отправлены"
-                  : "Отправить результаты"}
+                {formState.success ? tUi("sentResults") : tUi("sendResults")}
               </Button>
             </form>
           )}
@@ -166,7 +170,7 @@ export function PracticeQuizView({
                 onClick={restart}
                 leftSection={<IconRefresh size={16} />}
               >
-                Пройти заново
+                {tUi("restart")}
               </Button>
             )}
 
@@ -176,7 +180,7 @@ export function PracticeQuizView({
               onClick={toggle}
               leftSection={<IconListDetails size={16} />}
             >
-              Посмотреть правильные ответы
+              {tUi("showAnswers")}
             </Button>
           </Group>
 
@@ -190,6 +194,7 @@ export function PracticeQuizView({
                     <Text fw={600}>
                       {index + 1}. {q.text}
                     </Text>
+
                     {q.options.map((o) => {
                       const isCorrect = o.isCorrect;
                       const isSelected = userAnswerIds.includes(o.id);
@@ -203,6 +208,7 @@ export function PracticeQuizView({
                               <IconX size={16} color="red" />
                             ) : null}
                           </Box>
+
                           <Text
                             color={
                               isCorrect
@@ -228,10 +234,13 @@ export function PracticeQuizView({
       {!showResults && (
         <Group mt="md" justify="space-between">
           <Button disabled={currentIndex === 0} onClick={prevQuestion}>
-            Назад
+            {tUi("navigation.back")}
           </Button>
+
           <Button disabled={!hasAnsweredCurrent} onClick={nextQuestion}>
-            {currentIndex === questions.length - 1 ? "Завершить" : "Далее"}
+            {currentIndex === questions.length - 1
+              ? tUi("navigation.finish")
+              : tUi("navigation.next")}
           </Button>
         </Group>
       )}

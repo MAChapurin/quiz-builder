@@ -5,17 +5,15 @@ import { useEffect, useState } from "react";
 import { emitter } from "@/shared/lib";
 import { QuestionEntity } from "@/entities/question/domain";
 import { PracticeQuizView } from "./practice-quiz-view";
+import { useTranslations } from "next-intl";
 
 type Props = {
   questions: QuestionEntity[];
-  title?: string;
 };
 
-export function PracticeQuizModal({
-  questions,
-  title = "Пробное прохождение квиза",
-}: Props) {
+export function PracticeQuizModal({ questions }: Props) {
   const [isOpen, setOpened] = useState(false);
+  const t = useTranslations("features.practiceQuiz.ui.modal");
 
   useEffect(() => {
     return emitter.subscribe("quiz-practice-click", () => {
@@ -27,7 +25,7 @@ export function PracticeQuizModal({
     <Modal
       opened={isOpen}
       onClose={() => setOpened(false)}
-      title={title}
+      title={t("title")}
       size="lg"
     >
       <PracticeQuizView questions={questions} quizId="" />

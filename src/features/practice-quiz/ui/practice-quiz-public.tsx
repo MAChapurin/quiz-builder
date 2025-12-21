@@ -1,10 +1,12 @@
 "use client";
+
 import { Button } from "@mantine/core";
 import { QuestionEntity } from "@/entities/question/domain";
 import { PracticeQuizView } from "./practice-quiz-view";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
-type PracticePublicQuizProps = {
+type Props = {
   questions: QuestionEntity[];
   quizId: string;
   inviteTokenId: string;
@@ -14,26 +16,18 @@ export function PracticePublicQuiz({
   questions,
   quizId,
   inviteTokenId,
-}: PracticePublicQuizProps) {
-  const [isStarted, setIsStated] = useState(false);
-  return (
-    <div>
-      {!isStarted ? (
-        <Button
-          onClick={() => {
-            setIsStated(true);
-          }}
-        >
-          Начать
-        </Button>
-      ) : (
-        <PracticeQuizView
-          questions={questions}
-          quizId={quizId}
-          mode="public"
-          inviteTokenId={inviteTokenId}
-        />
-      )}
-    </div>
+}: Props) {
+  const [started, setStarted] = useState(false);
+  const t = useTranslations("features.practiceQuiz.ui.public");
+
+  return !started ? (
+    <Button onClick={() => setStarted(true)}>{t("start")}</Button>
+  ) : (
+    <PracticeQuizView
+      questions={questions}
+      quizId={quizId}
+      mode="public"
+      inviteTokenId={inviteTokenId}
+    />
   );
 }

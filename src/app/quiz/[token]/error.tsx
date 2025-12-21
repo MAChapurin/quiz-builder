@@ -1,6 +1,7 @@
 "use client";
 
 import { Center, Stack, Text, Button } from "@mantine/core";
+import { IconRefresh } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 
 export default function Error({ reset }: { error: Error; reset: () => void }) {
@@ -12,7 +13,9 @@ export default function Error({ reset }: { error: Error; reset: () => void }) {
           {t("title")}
         </Text>
         <Text c="dimmed">{t("description")}</Text>
-        <Button onClick={() => reset()}>{t("resetButton")}</Button>
+        <Button leftSection={<IconRefresh size={16} />} onClick={() => reset()}>
+          {t("resetButton")}
+        </Button>
       </Stack>
     </Center>
   );
