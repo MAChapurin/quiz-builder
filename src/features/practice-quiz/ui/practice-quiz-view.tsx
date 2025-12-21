@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   Stack,
   Text,
@@ -23,7 +25,6 @@ import {
 import { QuestionEntity } from "@/entities/question/domain";
 import { useDisclosure } from "@mantine/hooks";
 import { useActionState } from "@/shared/hooks";
-import { useTranslations } from "next-intl";
 
 import { usePracticeQuiz } from "../model/use-practice-quiz";
 import { submitQuizResultsAction } from "../actions/submit-quiz-results";

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+
 import {
   Button,
   Modal,
@@ -20,10 +22,10 @@ import {
 } from "@tabler/icons-react";
 
 import { QuestionEntity } from "@/entities/question/domain";
-import { demoQuestions } from "../mock";
 import { emitter } from "@/shared/lib";
+
+import { demoQuestions } from "../mock";
 import { PracticeQuizModal } from "./practice-quiz-modal";
-import { useTranslations } from "next-intl";
 
 const categories: {
   key: keyof typeof demoQuestions;

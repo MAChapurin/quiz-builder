@@ -1,11 +1,11 @@
 "use client";
 
-import { Modal } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Modal } from "@mantine/core";
 import { emitter } from "@/shared/lib";
 import { QuestionEntity } from "@/entities/question/domain";
 import { PracticeQuizView } from "./practice-quiz-view";
-import { useTranslations } from "next-intl";
 
 type Props = {
   questions: QuestionEntity[];

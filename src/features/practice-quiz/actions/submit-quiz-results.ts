@@ -2,10 +2,10 @@
 
 import { calculateScoreCorrectly } from "@/entities/attempt/domain";
 import { questionService } from "@/entities/question/server";
+import { attemptService } from "@/entities/attempt/server";
 
 import { submitQuizResultsSchema } from "./submit-quiz-results.schema";
 import { SubmitQuizResultsFormState } from "./submit-quiz-results.types";
-import { attemptService } from "@/entities/attempt/server";
 
 export async function submitQuizResultsAction(
   _: SubmitQuizResultsFormState,

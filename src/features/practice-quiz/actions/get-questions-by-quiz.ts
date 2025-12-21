@@ -1,8 +1,8 @@
 "use server";
 
+import { getTranslations } from "next-intl/server";
 import { questionService } from "@/entities/question/server";
 import { QuestionEntity, OptionEntity } from "@/entities/question/domain";
-import { getTranslations } from "next-intl/server";
 
 export type FetchQuizQuestionsFormState = {
   questions?: (QuestionEntity & { options: OptionEntity[] })[];

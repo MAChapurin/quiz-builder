@@ -1,10 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@mantine/core";
 import { QuestionEntity } from "@/entities/question/domain";
 import { PracticeQuizView } from "./practice-quiz-view";
-import { useState } from "react";
-import { useTranslations } from "next-intl";
 
 type Props = {
   questions: QuestionEntity[];
