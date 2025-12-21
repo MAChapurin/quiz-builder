@@ -1,17 +1,11 @@
-import { Layout } from "@/shared/ui";
+import { ReactNode } from "react";
 import { Footer, HeaderQuizInvite } from "@/widgets";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Квизы",
-  description:
-    "Приложение для составления квизов, отправки их людям и просмотра результатов",
-};
+import { Layout } from "@/shared/ui";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <Layout headerSlot={<HeaderQuizInvite />} footerSlot={<Footer />}>

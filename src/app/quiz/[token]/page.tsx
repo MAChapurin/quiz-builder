@@ -1,4 +1,6 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 import { Badge, Card, Center, Divider, Flex, Text, Title } from "@mantine/core";
 
@@ -7,6 +9,14 @@ import { quizService } from "@/entities/quiz/server";
 import { questionService } from "@/entities/question/server";
 import { PracticePublicQuiz } from "@/features";
 import { matchEither, pluralize } from "@/shared/lib";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("app.quizPublic.meta");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function QuizPlayPage({
   params,
@@ -23,9 +33,10 @@ export default async function QuizPlayPage({
 
   const { quizId, inviteTokenId } = inviteEither.value;
 
-  const [quizEither, questionsEither] = await Promise.all([
+  const [quizEither, questionsEither, tQ] = await Promise.all([
     quizService.getQuiz(quizId),
     questionService.getQuestionsByQuiz(quizId),
+    getTranslations("app.quizPublic.page.questions"),
   ]);
 
   const quiz = matchEither(quizEither, {
@@ -49,7 +60,7 @@ export default async function QuizPlayPage({
           <Title order={2}>{quiz.title}</Title>
           <Badge size="lg" variant="light" ml="auto">
             {questions.length}{" "}
-            {pluralize(questions.length, ["вопрос", "вопроса", "вопросов"])}
+            {pluralize(questions.length, [tQ("one"), tQ("few"), tQ("many")])}
           </Badge>
         </Flex>
 

@@ -450,6 +450,30 @@
         "homeButton": "Go to home"
       }
     },
+    "quizPublic": {
+      "meta": {
+        "title": "Public quiz taking",
+        "description": "Page for public quiz taking, received via a private link"
+      },
+      "page": {
+        "title": "Quiz details",
+        "questions": {
+          "one": "question",
+          "few": "questions",
+          "many": "questions"
+        }
+      },
+      "notFound": {
+        "title": "Quiz not found",
+        "description": "The link is invalid or the quiz is no longer available.",
+        "goHomeButton": "Go back to home"
+      },
+      "error": {
+        "title": "Error loading quiz",
+        "description": "An error occurred while loading the quiz. Please try again later.",
+        "resetButton": "Reset"
+      }
+    },
     "quizDetail": {
       "meta": {
         "title": "Quiz details",
