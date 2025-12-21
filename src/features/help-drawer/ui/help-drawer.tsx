@@ -4,7 +4,6 @@ import { Drawer, Tooltip, ActionIcon, ScrollArea } from "@mantine/core";
 import { IconHelpCircle } from "@tabler/icons-react";
 import { ReactNode, useState } from "react";
 import { useTranslations } from "next-intl";
-import { on } from "events";
 
 export function HelpDrawer({ content }: { content: ReactNode }) {
   const t = useTranslations("features.helpDrawer");
