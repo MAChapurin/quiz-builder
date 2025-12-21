@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Modal, Stack, TextInput, Button, ActionIcon } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { IconCopy } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
+
+import { QuizEntity } from "@/entities/quiz/domain";
 import { useActionState } from "@/shared/lib/react";
 import { emitter } from "@/shared/lib";
-import { QuizEntity } from "@/entities/quiz/domain";
-import { notifications } from "@mantine/notifications";
+
 import {
   createInviteTokenAction,
   CreateInviteTokenFormState,
@@ -17,6 +20,9 @@ type GenerateInviteModalProps = {
 };
 
 export function GenerateInviteModal({ quizzes }: GenerateInviteModalProps) {
+  const tUi = useTranslations("features.invite.ui.create");
+  const tActions = useTranslations("features.invite.actions.create");
+
   const [opened, setOpened] = useState(false);
   const [quiz, setQuiz] = useState<QuizEntity | null>(null);
   const [label, setLabel] = useState("");
@@ -26,15 +32,8 @@ export function GenerateInviteModal({ quizzes }: GenerateInviteModalProps) {
     createInviteTokenAction,
     {} as CreateInviteTokenFormState,
     undefined,
-    { success: "Ссылка создана!" },
+    { success: tActions("toasts.success") },
   );
-
-  useEffect(() => {
-    if (opened) {
-      setLabel("");
-      setGeneratedLink("");
-    }
-  }, [opened]);
 
   useEffect(() => {
     return emitter.subscribe("invite-token-click", ({ id }) => {
@@ -43,23 +42,23 @@ export function GenerateInviteModal({ quizzes }: GenerateInviteModalProps) {
 
       setQuiz(found);
       setOpened(true);
+      setLabel("");
+      setGeneratedLink("");
     });
   }, [quizzes]);
 
   useEffect(() => {
     if (formState.token) {
-      const link = `${window.location.origin}/quiz/${formState.token}`;
-      setGeneratedLink(link);
+      setGeneratedLink(`${window.location.origin}/quiz/${formState.token}`);
     }
   }, [formState.token]);
 
-  const onCopy = () => {
-    navigator.clipboard.writeText(generatedLink).then(() => {
-      notifications.show({
-        title: "Готово",
-        message: "Скопировано",
-        color: "green",
-      });
+  const onCopy = async () => {
+    await navigator.clipboard.writeText(generatedLink);
+    notifications.show({
+      title: tActions("toasts.copyTitle"),
+      message: tActions("toasts.copyMessage"),
+      color: "green",
     });
   };
 
@@ -70,7 +69,7 @@ export function GenerateInviteModal({ quizzes }: GenerateInviteModalProps) {
       centered
       opened={opened}
       onClose={() => setOpened(false)}
-      title={`Персональная ссылка для "${quiz.title}"`}
+      title={tUi("modal.title", { title: quiz.title })}
     >
       <form action={action}>
         <Stack>
@@ -78,24 +77,28 @@ export function GenerateInviteModal({ quizzes }: GenerateInviteModalProps) {
             <>
               <TextInput
                 required
-                label="Для кого эта ссылка?"
-                placeholder="Например: Для Ивана"
+                name="label"
+                label={tUi("fields.label.label")}
+                placeholder={tUi("fields.label.placeholder")}
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
-                name="label"
               />
 
               <input type="hidden" name="quizId" value={quiz.id} />
 
               <Button type="submit" loading={isPending} disabled={!label}>
-                Создать ссылку
+                {tUi("buttons.submit")}
               </Button>
             </>
           ) : (
             <TextInput
-              label={label ? `Ссылка для ${label}` : "Персональная ссылка"}
-              value={generatedLink}
               readOnly
+              value={generatedLink}
+              label={
+                label
+                  ? tUi("fields.result.labelWithName", { label })
+                  : tUi("fields.result.label")
+              }
               rightSection={
                 <ActionIcon variant="default" onClick={onCopy}>
                   <IconCopy size={16} />

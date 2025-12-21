@@ -244,6 +244,43 @@
         "title": "Mobile version",
         "text": "On small screens, some actions may be moved into a menu to save space. Icons remain the same, and hints are available via tooltips."
       }
+    },
+    "invite": {
+      "actions": {
+        "create": {
+          "errors": {
+            "missingQuizId": "Quiz ID is missing",
+            "missingLabel": "Label is required",
+            "createFailed": "Failed to generate invite link",
+            "generic": "Error while creating invite link"
+          },
+          "toasts": {
+            "success": "Invite link created!",
+            "copyTitle": "Done",
+            "copyMessage": "Link copied"
+          }
+        }
+      },
+      "ui": {
+        "create": {
+          "modal": {
+            "title": "Personal link for \"{title}\""
+          },
+          "fields": {
+            "label": {
+              "label": "Who is this link for?",
+              "placeholder": "For example: John"
+            },
+            "result": {
+              "labelWithName": "Link for {label}",
+              "label": "Personal invite link"
+            }
+          },
+          "buttons": {
+            "submit": "Create link"
+          }
+        }
+      }
     }
   },
 
