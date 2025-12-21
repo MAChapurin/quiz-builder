@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Modal, Text, Group, Button, Box } from "@mantine/core";
-import { useActionState } from "@/shared/lib/react";
+
+import { QuestionEntity } from "@/entities/question/domain";
+import { useActionState } from "@/shared/hooks";
 import { emitter } from "@/shared/lib";
+
 import {
   deleteQuestionAction,
   DeleteQuestionFormState,
 } from "../actions/delete-question";
-import { useRouter } from "next/navigation";
-import { QuestionEntity } from "@/entities/question/domain";
 
 export function DeleteQuestionModal({
   questions,

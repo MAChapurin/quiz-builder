@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect, startTransition } from "react";
+import { useRouter } from "next/navigation";
+
 import { Modal, Stack, TextInput, Button, Textarea } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { useActionState } from "@/shared/lib/react";
+
+import { useActionState } from "@/shared/hooks";
+
 import { createQuizAction, CreateQuizFormState } from "../actions/create-quiz";
-import { useRouter } from "next/navigation";
 
 export function CreateQuizButton() {
   const [opened, setOpened] = useState(false);

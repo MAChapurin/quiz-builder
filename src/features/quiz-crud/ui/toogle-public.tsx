@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect, startTransition } from "react";
+import { useRouter } from "next/navigation";
+
 import { Switch, Button } from "@mantine/core";
 import { IconCheck, IconX, IconWorld, IconEyeOff } from "@tabler/icons-react";
-import { useActionState } from "@/shared/lib/react";
-import { useRouter } from "next/navigation";
+
+import { useActionState } from "@/shared/hooks";
+
 import { togglePublishQuizAction } from "../actions/public-quiz";
 
 interface SwitchPublicQuizProps {

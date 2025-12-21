@@ -3,14 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { useActionState } from "@/shared/lib/react";
+
+import { useActionState } from "@/shared/hooks";
+import { routes } from "@/shared/config";
 
 import { AuthFormLayout } from "../ui/auth-form-layout";
 import { AuthFields } from "../ui/sign-in-fields";
 import { SubmitButton } from "../ui/submit-button";
 import { BottomLink } from "../ui/link";
 import { ErrorMessage } from "../ui/error-message";
-import { routes } from "@/shared/config";
+
 import { signInAction, SignInFormState } from "../actions/sing-in";
 
 export function SignInForm() {

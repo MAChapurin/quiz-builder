@@ -1,15 +1,13 @@
 {
   "shared": {
     "ui": {
-      "ok": "",
-      "cancel": "",
-      "save": "",
-      "delete": ""
+      "toast": {
+        "successTitle": "Done",
+        "errorTitle": "Error"
+      }
     },
     "common": {
-      "loading": "",
-      "error": "",
-      "empty": ""
+      "unexpectedError": "Something went wrong"
     }
   },
 

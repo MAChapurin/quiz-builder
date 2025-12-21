@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Modal, Button, Text, Group } from "@mantine/core";
-import { useActionState } from "@/shared/lib/react";
-import { deleteQuizAction, DeleteQuizFormState } from "../actions/delete-quiz";
-import { emitter } from "@/shared/lib";
-import { QuizEntity } from "@/entities/quiz/domain";
 import { useRouter } from "next/navigation";
+
+import { Modal, Button, Text, Group } from "@mantine/core";
+
+import { QuizEntity } from "@/entities/quiz/domain";
+import { useActionState } from "@/shared/hooks";
+import { emitter } from "@/shared/lib";
+
+import { deleteQuizAction, DeleteQuizFormState } from "../actions/delete-quiz";
 
 export function DeleteQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
   const [opened, setOpened] = useState(false);

@@ -15,12 +15,14 @@ import {
 import { useRouter } from "next/navigation";
 import { IconPlus } from "@tabler/icons-react";
 
-import { emitter, useActionState } from "@/shared/lib";
+import { QuestionEntity, QuestionType } from "@/entities/question/domain";
+import { useActionState } from "@/shared/hooks";
+import { emitter } from "@/shared/lib";
+
 import {
   editQuestionAction,
   EditQuestionFormState,
 } from "../actions/edit-question";
-import { QuestionEntity, QuestionType } from "@/entities/question/domain";
 import { useEditQuestion } from "../model/use-edit-question";
 
 export function EditQuestionModal({

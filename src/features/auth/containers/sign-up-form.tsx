@@ -1,17 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { useTranslations } from "next-intl";
+
+import { useActionState } from "@/shared/hooks";
+import { routes } from "@/shared/config";
+
 import { AuthFormLayout } from "../ui/auth-form-layout";
 import { AuthFieldsRegister } from "../ui/sign-up-fields";
 import { SubmitButton } from "../ui/submit-button";
 import { BottomLink } from "../ui/link";
-
-import { useActionState } from "@/shared/lib/react";
-import { signUpAction, SignUpFormState } from "../actions/sign-up";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { routes } from "@/shared/config";
 import { ErrorMessage } from "../ui/error-message";
-import { useTranslations } from "next-intl";
+import { signUpAction, SignUpFormState } from "../actions/sign-up";
 
 export function SignUpForm() {
   const router = useRouter();

@@ -2,6 +2,7 @@
 
 import { useActionState as useReactActionState } from "react";
 import { notifications } from "@mantine/notifications";
+import { useTranslations } from "next-intl";
 
 type ToastMessages = {
   success?: string;
@@ -52,6 +53,9 @@ export function useActionState<
   permalink?: string,
   toastMessages?: ToastMessages,
 ): [Awaited<State>, (payload?: Payload) => void, boolean] {
+  const tUi = useTranslations("shared.ui.toast");
+  const tCommon = useTranslations("shared.common");
+
   const wrappedAction = async (
     prevState: State,
     payload?: Payload,
@@ -70,7 +74,7 @@ export function useActionState<
 
       if (!hasErrors && toastMessages?.success) {
         notifications.show({
-          title: "Готово",
+          title: tUi("successTitle"),
           message: toastMessages.success,
           color: "green",
         });
@@ -78,7 +82,7 @@ export function useActionState<
 
       if (hasErrors && toastMessages?.error) {
         notifications.show({
-          title: "Ошибка",
+          title: tUi("errorTitle"),
           message: toastMessages.error,
           color: "red",
         });
@@ -89,8 +93,8 @@ export function useActionState<
       if (isNextRedirectError(error)) throw error;
 
       notifications.show({
-        title: "Ошибка",
-        message: "Что-то пошло не так",
+        title: tUi("errorTitle"),
+        message: tCommon("unexpectedError"),
         color: "red",
       });
 

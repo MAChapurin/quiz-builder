@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Modal, Stack, TextInput, Textarea, Button } from "@mantine/core";
-import { useActionState } from "@/shared/lib/react";
-import { editQuizAction, EditQuizFormState } from "../actions/edit-quiz";
-import { emitter } from "@/shared/lib";
-import { QuizEntity } from "@/entities/quiz/domain";
 import { useRouter } from "next/navigation";
+
+import { Modal, Stack, TextInput, Textarea, Button } from "@mantine/core";
+
+import { QuizEntity } from "@/entities/quiz/domain";
+import { useActionState } from "@/shared/hooks";
+import { emitter } from "@/shared/lib";
+
+import { editQuizAction, EditQuizFormState } from "../actions/edit-quiz";
 
 export function EditQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
   const [opened, setOpened] = useState(false);

@@ -19,10 +19,12 @@ import {
   IconRefresh,
   IconX,
 } from "@tabler/icons-react";
+
 import { QuestionEntity } from "@/entities/question/domain";
 import { useDisclosure } from "@mantine/hooks";
+import { useActionState } from "@/shared/hooks";
+
 import { usePracticeQuiz } from "../model/use-practice-quiz";
-import { useActionState } from "@/shared/lib/react";
 import { submitQuizResultsAction } from "../actions/submit-quiz-results";
 import { SubmitQuizResultsFormState } from "../actions/submit-quiz-results.types";
 

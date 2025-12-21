@@ -7,7 +7,7 @@ import { IconCopy } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 
 import { QuizEntity } from "@/entities/quiz/domain";
-import { useActionState } from "@/shared/lib/react";
+import { useActionState } from "@/shared/hooks";
 import { emitter } from "@/shared/lib";
 
 import {
