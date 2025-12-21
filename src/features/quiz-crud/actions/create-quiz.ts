@@ -6,6 +6,7 @@ import { CreateQuizDTO } from "@/entities/quiz/dto";
 import { QuizEntity } from "@/entities/quiz/domain";
 import { matchEither } from "@/shared/lib/either";
 import { z } from "zod";
+import { getTranslations } from "next-intl/server";
 
 export type CreateQuizFormState = {
   formData?: FormData;
@@ -16,16 +17,18 @@ export type CreateQuizFormState = {
   };
 };
 
-const createQuizSchema = z.object({
-  title: z.string().min(3, "Название должно быть не менее 3 символов"),
-  description: z.string().min(3, "Описание должно быть не менее 3 символов"),
-});
-
 export const createQuizAction = async (
   _state: CreateQuizFormState,
   formData: FormData,
 ): Promise<CreateQuizFormState & { success?: boolean; quiz?: QuizEntity }> => {
+  const t = await getTranslations("features.quiz-crud.actions.create");
+
   const data = Object.fromEntries(formData.entries());
+
+  const createQuizSchema = z.object({
+    title: z.string().min(3, t("errors.shortTitle")),
+    description: z.string().min(3, t("errors.shortDescription")),
+  });
 
   const parsed = createQuizSchema.safeParse(data);
 
@@ -45,7 +48,7 @@ export const createQuizAction = async (
   if (!session) {
     return {
       formData,
-      errors: { _errors: "Пользователь не авторизован" },
+      errors: { _errors: t("errors.unauthorized") },
     };
   }
 
@@ -67,7 +70,7 @@ export const createQuizAction = async (
     if (!quiz) {
       return {
         formData,
-        errors: { _errors: "Не удалось создать квиз" },
+        errors: { _errors: t("errors.createFailed") },
       };
     }
 
@@ -81,7 +84,7 @@ export const createQuizAction = async (
     console.error(error);
     return {
       formData,
-      errors: { _errors: "Не удалось создать квиз" },
+      errors: { _errors: t("errors.createFailed") },
     };
   }
 };

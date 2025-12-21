@@ -316,6 +316,103 @@
           }
         }
       }
+    },
+    "quiz-crud": {
+      "actions": {
+        "create": {
+          "errors": {
+            "shortTitle": "Title must be at least 3 characters long",
+            "shortDescription": "Description must be at least 3 characters long",
+            "unauthorized": "User is not authorized",
+            "createFailed": "Failed to create quiz"
+          }
+        },
+        "delete": {
+          "errors": {
+            "noId": "Quiz ID was not provided",
+            "notFound": "Quiz not found",
+            "deleteFailed": "Failed to delete quiz"
+          }
+        },
+        "edit": {
+          "errors": {
+            "shortTitle": "Title must be at least 3 characters long",
+            "shortDescription": "Description must be at least 3 characters long",
+            "unauthorized": "User is not authorized",
+            "notFound": "Quiz not found",
+            "updateFailed": "Failed to save changes"
+          }
+        },
+        "togglePublish": {
+          "errors": {
+            "invalidData": "Invalid publish data",
+            "unauthorized": "User is not authorized",
+            "notFound": "Quiz not found",
+            "noQuestions": "Quiz must contain at least one question to be published",
+            "updateFailed": "Failed to update quiz"
+          }
+        }
+      },
+      "ui": {
+        "create": {
+          "button": "Create quiz",
+          "title": "Create new quiz",
+          "fields": {
+            "title": {
+              "label": "Quiz title",
+              "placeholder": "Enter quiz title"
+            },
+            "description": {
+              "label": "Description",
+              "placeholder": "Enter quiz description"
+            }
+          },
+          "actions": {
+            "submit": "Create"
+          },
+          "toasts": {
+            "success": "Quiz successfully created!"
+          }
+        },
+        "delete": {
+          "title": "Delete quiz",
+          "description": "Are you sure you want to delete the quiz",
+          "actions": {
+            "cancel": "Cancel",
+            "confirm": "Delete"
+          },
+          "toasts": {
+            "success": "Quiz successfully deleted",
+            "error": "Failed to delete quiz"
+          }
+        },
+        "edit": {
+          "title": "Edit quiz",
+          "fields": {
+            "title": {
+              "label": "Quiz title"
+            },
+            "description": {
+              "label": "Description"
+            }
+          },
+          "actions": {
+            "submit": "Save"
+          },
+          "toasts": {
+            "success": "Quiz successfully updated!",
+            "error": "Error updating quiz"
+          }
+        },
+        "togglePublish": {
+          "show": "Publish",
+          "hide": "Unpublish",
+          "toasts": {
+            "success": "Publish status updated",
+            "error": "Error changing quiz publication status"
+          }
+        }
+      }
     }
   },
 

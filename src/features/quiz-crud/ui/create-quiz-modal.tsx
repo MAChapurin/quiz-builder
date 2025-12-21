@@ -2,18 +2,19 @@
 
 import { useState, useEffect, startTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { Modal, Stack, TextInput, Button, Textarea } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 
 import { useActionState } from "@/shared/hooks";
-
 import { createQuizAction, CreateQuizFormState } from "../actions/create-quiz";
 
 export function CreateQuizButton() {
-  const [opened, setOpened] = useState(false);
+  const t = useTranslations("features.quiz-crud.ui.create");
   const router = useRouter();
 
+  const [opened, setOpened] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -21,7 +22,9 @@ export function CreateQuizButton() {
     createQuizAction,
     {} as CreateQuizFormState,
     undefined,
-    { success: "Квиз успешно создан!" },
+    {
+      success: t("toasts.success"),
+    },
   );
 
   useEffect(() => {
@@ -43,21 +46,21 @@ export function CreateQuizButton() {
         rightSection={<IconPlus />}
         onClick={() => setOpened(true)}
       >
-        Создать квиз
+        {t("button")}
       </Button>
 
       <Modal
         centered
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Создать новый квиз"
+        title={t("title")}
       >
         <form action={action}>
           <Stack>
             <TextInput
-              label="Название квиза"
+              label={t("fields.title.label")}
+              placeholder={t("fields.title.placeholder")}
               name="title"
-              placeholder="Введите название"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               error={formState.errors?.title}
@@ -66,9 +69,9 @@ export function CreateQuizButton() {
 
             <Textarea
               rows={4}
-              label="Описание"
+              label={t("fields.description.label")}
+              placeholder={t("fields.description.placeholder")}
               name="description"
-              placeholder="Введите описание"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               error={formState.errors?.description}
@@ -76,7 +79,7 @@ export function CreateQuizButton() {
             />
 
             <Button variant="default" type="submit" loading={isPending}>
-              Создать
+              {t("actions.submit")}
             </Button>
           </Stack>
         </form>

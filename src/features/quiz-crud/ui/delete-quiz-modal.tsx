@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { Modal, Button, Text, Group } from "@mantine/core";
 
@@ -12,6 +13,8 @@ import { emitter } from "@/shared/lib";
 import { deleteQuizAction, DeleteQuizFormState } from "../actions/delete-quiz";
 
 export function DeleteQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
+  const t = useTranslations("features.quiz-crud.ui.delete");
+
   const [opened, setOpened] = useState(false);
   const [quiz, setQuiz] = useState<QuizEntity | null>(null);
 
@@ -20,6 +23,11 @@ export function DeleteQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
   const [formState, action, isPending] = useActionState(
     deleteQuizAction,
     {} as DeleteQuizFormState,
+    undefined,
+    {
+      success: t("toasts.success"),
+      error: t("toasts.error"),
+    },
   );
 
   useEffect(() => {
@@ -47,10 +55,10 @@ export function DeleteQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
       centered
       opened={opened}
       onClose={() => setOpened(false)}
-      title="Удалить квиз"
+      title={t("title")}
     >
       <Text mb="md">
-        Вы действительно хотите удалить квиз <b>&quot;{quiz.title}&quot;</b>?
+        {t("description")} <b>&quot;{quiz.title}&quot;</b>?
       </Text>
 
       <form action={action}>
@@ -64,10 +72,10 @@ export function DeleteQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
 
         <Group justify="flex-end">
           <Button variant="default" onClick={() => setOpened(false)}>
-            Отмена
+            {t("actions.cancel")}
           </Button>
           <Button color="red" type="submit" loading={isPending}>
-            Удалить
+            {t("actions.confirm")}
           </Button>
         </Group>
       </form>

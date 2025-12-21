@@ -2,6 +2,7 @@
 
 import { quizService } from "@/entities/quiz/server";
 import { matchEither } from "@/shared/lib/either";
+import { getTranslations } from "next-intl/server";
 
 export type DeleteQuizFormState = {
   error?: string;
@@ -12,10 +13,12 @@ export async function deleteQuizAction(
   _state: DeleteQuizFormState,
   formData: FormData,
 ): Promise<DeleteQuizFormState> {
+  const t = await getTranslations("features.quiz-crud.actions.delete");
+
   const id = formData.get("id") as string | null;
 
   if (!id) {
-    return { error: "Не передан id квиза" };
+    return { error: t("errors.noId") };
   }
 
   const result = await quizService.deleteQuiz(id);
@@ -23,11 +26,11 @@ export async function deleteQuizAction(
   const error = matchEither(result, {
     left: (e) => {
       const map = {
-        "quiz-delete-failed": "Не удалось удалить квиз",
-        "quiz-not-found": "Квиз не найден",
+        "quiz-delete-failed": t("errors.deleteFailed"),
+        "quiz-not-found": t("errors.notFound"),
       } as const;
 
-      return map[e] ?? "Неизвестная ошибка";
+      return map[e] ?? t("errors.deleteFailed");
     },
     right: () => null,
   });

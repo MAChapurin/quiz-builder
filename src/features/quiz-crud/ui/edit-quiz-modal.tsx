@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { Modal, Stack, TextInput, Textarea, Button } from "@mantine/core";
 
@@ -12,6 +13,8 @@ import { emitter } from "@/shared/lib";
 import { editQuizAction, EditQuizFormState } from "../actions/edit-quiz";
 
 export function EditQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
+  const t = useTranslations("features.quiz-crud.ui.edit");
+
   const [opened, setOpened] = useState(false);
   const [quiz, setQuiz] = useState<QuizEntity | null>(null);
 
@@ -20,12 +23,18 @@ export function EditQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
   const [formState, action, isPending] = useActionState(
     editQuizAction,
     {} as EditQuizFormState,
+    undefined,
+    {
+      success: t("toasts.success"),
+      error: t("toasts.error"),
+    },
   );
 
   useEffect(() => {
     return emitter.subscribe("quiz-edit-click", ({ id }) => {
       const found = quizzes.find((q) => q.id === id);
       if (!found) return;
+
       setQuiz(found);
       setOpened(true);
     });
@@ -50,28 +59,31 @@ export function EditQuizModal({ quizzes }: { quizzes: QuizEntity[] }) {
         setOpened(false);
         setQuiz(null);
       }}
-      title="Редактирование квиза"
+      title={t("title")}
     >
       <form action={action}>
         <input type="hidden" name="id" value={quiz.id} />
+
         <Stack>
           <TextInput
-            label="Название квиза"
+            label={t("fields.title.label")}
             name="title"
             required
             defaultValue={quiz.title}
             error={formState.errors?.title}
           />
+
           <Textarea
             rows={4}
-            label="Описание"
+            label={t("fields.description.label")}
             name="description"
             required
             defaultValue={quiz.description}
             error={formState.errors?.description}
           />
+
           <Button type="submit" loading={isPending}>
-            Сохранить
+            {t("actions.submit")}
           </Button>
         </Stack>
       </form>

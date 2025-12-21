@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { sessionService } from "@/entities/user/server";
 import { quizService } from "@/entities/quiz/server";
+import { getTranslations } from "next-intl/server";
 
 export type TogglePublishFormState = {
   formData?: FormData;
@@ -10,22 +11,25 @@ export type TogglePublishFormState = {
   success?: boolean;
 };
 
-const toggleSchema = z.object({
-  quizId: z.string().min(1),
-  isPublished: z.enum(["true", "false"]),
-});
-
 export const togglePublishQuizAction = async (
   _state: TogglePublishFormState,
   formData: FormData,
 ): Promise<TogglePublishFormState> => {
+  const t = await getTranslations("features.quiz-crud.actions.togglePublish");
+
   const raw = Object.fromEntries(formData.entries());
+
+  const toggleSchema = z.object({
+    quizId: z.string().min(1),
+    isPublished: z.enum(["true", "false"]),
+  });
+
   const parsed = toggleSchema.safeParse(raw);
 
   if (!parsed.success) {
     return {
       formData,
-      errors: { _errors: "Некорректные данные для публикации" },
+      errors: { _errors: t("errors.invalidData") },
     };
   }
 
@@ -36,7 +40,7 @@ export const togglePublishQuizAction = async (
   if (!session) {
     return {
       formData,
-      errors: { _errors: "Пользователь не авторизован" },
+      errors: { _errors: t("errors.unauthorized") },
     };
   }
 
@@ -44,9 +48,9 @@ export const togglePublishQuizAction = async (
 
   if (result.type === "left") {
     const messages = {
-      "quiz-not-found": "Квиз не найден",
-      "quiz-has-no-questions": "Нельзя опубликовать квиз без вопросов",
-      "quiz-update-failed": "Не удалось обновить квиз",
+      "quiz-not-found": t("errors.notFound"),
+      "quiz-has-no-questions": t("errors.noQuestions"),
+      "quiz-update-failed": t("errors.updateFailed"),
     } as const;
 
     return {

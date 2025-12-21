@@ -9,6 +9,7 @@ import { IconCheck, IconX, IconWorld, IconEyeOff } from "@tabler/icons-react";
 import { useActionState } from "@/shared/hooks";
 
 import { togglePublishQuizAction } from "../actions/public-quiz";
+import { useTranslations } from "next-intl";
 
 interface SwitchPublicQuizProps {
   quizId: string;
@@ -23,6 +24,7 @@ export function SwitchPublicQuiz({
   disabled,
   variant = "switch",
 }: SwitchPublicQuizProps) {
+  const t = useTranslations("features.quiz-crud.ui.togglePublish");
   const [checked, setChecked] = useState(initialValue);
   const router = useRouter();
 
@@ -30,7 +32,7 @@ export function SwitchPublicQuiz({
     togglePublishQuizAction,
     {},
     undefined,
-    { success: "Статус публикации обновлен" },
+    { success: t("toasts.success"), error: t("toasts.error") },
   );
 
   useEffect(() => {
@@ -83,7 +85,7 @@ export function SwitchPublicQuiz({
       onClick={() => submit(!checked)}
       leftSection={checked ? <IconEyeOff size={16} /> : <IconWorld size={16} />}
     >
-      {checked ? "Снять с публикации" : "Опубликовать"}
+      {checked ? t("hide") : t("show")}
     </Button>
   );
 }
