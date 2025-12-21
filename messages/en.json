@@ -297,6 +297,23 @@
         "homeButton": "Go to home"
       }
     },
+    "quizDetail": {
+      "meta": {
+        "title": "Quiz details",
+        "description": "View and edit the quiz"
+      },
+      "page": {
+        "title": "Quiz details"
+      },
+      "loading": {
+        "loader": "Loading…"
+      },
+      "notFound": {
+        "title": "Quiz not found",
+        "description": "Looks like this quiz doesn't exist or has been deleted",
+        "goBackButton": "Go back to list"
+      }
+    },
     "quizzes": {
       "meta": {
         "title": "Your quizzes",

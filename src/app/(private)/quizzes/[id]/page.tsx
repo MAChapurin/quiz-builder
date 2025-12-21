@@ -3,6 +3,16 @@ import { questionService } from "@/entities/question/server";
 import { quizService } from "@/entities/quiz/server";
 import { QuizDetail } from "@/widgets";
 import { matchEither } from "@/shared/lib";
+import { getTranslations } from "next-intl/server";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("app.quizDetail.meta");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function QuizPage({
   params,

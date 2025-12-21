@@ -2,8 +2,10 @@ import Link from "next/link";
 import { Card, Title, Text, Button, Center, Stack } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { routes } from "@/shared/config";
+import { useTranslations } from "next-intl";
 
 export default function NotFoundQuiz() {
+  const t = useTranslations("app.quizDetail.notFound");
   return (
     <Center mih="70vh" px="md">
       <Card radius="lg" p="xl" shadow="md" maw={420} w="100%">
@@ -11,11 +13,11 @@ export default function NotFoundQuiz() {
           <IconAlertCircle size={48} color="var(--mantine-color-red-6)" />
 
           <Title order={3} ta="center">
-            Квиз не найден
+            {t("title")}
           </Title>
 
           <Text c="dimmed" ta="center">
-            Похоже, такого квиза не существует или он был удалён
+            {t("description")}
           </Text>
 
           <Button
@@ -24,7 +26,7 @@ export default function NotFoundQuiz() {
             variant="light"
             mt="sm"
           >
-            Вернуться к списку
+            {t("goBackButton")}
           </Button>
         </Stack>
       </Card>
