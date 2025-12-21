@@ -33,6 +33,9 @@
   },
 
   "features": {
+    "attemptFilter": {
+      "resetFilterButton": "Reset filters"
+    },
     "auth": {
       "actions": {
         "login": {

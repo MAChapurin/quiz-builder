@@ -7,6 +7,7 @@ import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { setCookie, removeCookie, emitter } from "@/shared/lib";
 import { COOKIE_KEYS, QUERY_KEYS } from "@/shared/config";
+import { useTranslations } from "next-intl";
 
 export function AttemptsQuizFilterChips({
   titles,
@@ -15,6 +16,7 @@ export function AttemptsQuizFilterChips({
   titles: QuizTitleEntity[];
   initialValue?: string[];
 }) {
+  const t = useTranslations("features.attemptFilter");
   const router = useRouter();
   const [activeIds, setActiveIds] = useState<string[]>(initialValue ?? []);
   const [isPending, startTransition] = useTransition();
@@ -59,7 +61,6 @@ export function AttemptsQuizFilterChips({
           ))}
         </Group>
       </Chip.Group>
-
       <Button
         variant="default"
         size="xs"
@@ -67,7 +68,7 @@ export function AttemptsQuizFilterChips({
         leftSection={isPending ? <Loader size="xs" /> : <IconX size={16} />}
         disabled={isPending || activeIds.length === 0}
       >
-        Сбросить фильтры
+        {t("resetFilterButton")}
       </Button>
     </Flex>
   );
