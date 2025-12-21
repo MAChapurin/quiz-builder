@@ -29,7 +29,7 @@ export default async function RootLayout({
         <Title ta="center" my={40}>
           {t("title")}
         </Title>
-        {children}
+        <div className="max-w-105 w-full">{children}</div>
         <Button
           leftSection={<IconHome />}
           component={Link}

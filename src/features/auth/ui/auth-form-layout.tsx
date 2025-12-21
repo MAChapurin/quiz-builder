@@ -21,12 +21,7 @@ export function AuthFormLayout({
   action: (formData: FormData) => void;
 }) {
   return (
-    <Paper
-      radius="md"
-      p="xl"
-      withBorder
-      style={{ width: "100%", maxWidth: 420 }}
-    >
+    <Paper radius="md" p="xl" withBorder>
       <Stack gap="sm" align="center">
         <Title order={2} ta="center">
           {title}
