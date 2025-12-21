@@ -296,6 +296,23 @@
         "title": "Welcome to QuizBuilder!",
         "homeButton": "Go to home"
       }
+    },
+    "quizzes": {
+      "meta": {
+        "title": "Your quizzes",
+        "description": "List of your quizzes"
+      },
+      "title": "My quizzes",
+      "empty": "You don't have any quizzes yet. Create the first one!"
+    },
+    "notFound": {
+      "meta": {
+        "title": "Page not found",
+        "description": "The requested page does not exist"
+      },
+      "title": "Nothing found",
+      "description": "The page you are trying to open does not exist. Perhaps you entered the address incorrectly, or the page was moved to another URL.",
+      "homeButton": "Return to home"
     }
   }
 }

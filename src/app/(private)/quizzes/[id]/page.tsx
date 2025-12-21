@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { questionService } from "@/entities/question/server";
 import { quizService } from "@/entities/quiz/server";
 import { QuizDetail } from "@/widgets";
-import { matchEither } from "@/shared/lib/either";
+import { matchEither } from "@/shared/lib";
 
 export default async function QuizPage({
   params,

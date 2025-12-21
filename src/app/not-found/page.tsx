@@ -5,6 +5,17 @@ import { Button, Container, Group, Text, Title } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { ComponentPropsWithoutRef } from "react";
+import { getTranslations } from "next-intl/server";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("app.notFound.meta");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 function Illustration(props: ComponentPropsWithoutRef<"svg">) {
   return (
@@ -17,18 +28,17 @@ function Illustration(props: ComponentPropsWithoutRef<"svg">) {
   );
 }
 
-export default function NothingFoundPage() {
+export default async function NothingFoundPage() {
+  const t = await getTranslations("app.notFound");
   return (
     <Layout headerSlot={<HeaderAuth />} footerSlot={<Footer />}>
       <Container size={"lg"}>
         <div className="relative">
           <Illustration className="absolute inset-0 top-1/2 -translate-y-1/2 opacity-15" />
           <div className="relative h-screen flex items-center justify-center flex-col gap-8">
-            <Title>Ничего не найдено</Title>
+            <Title>{t("title")}</Title>
             <Text className="max-w-3xl" size="lg" ta="center">
-              Страница, которую вы пытаетесь открыть, не существует. Возможно,
-              вы неправильно ввели адрес, или страница была перенесена на другой
-              URL.
+              {t("description")}
             </Text>
             <Group justify="center">
               <Button
@@ -37,7 +47,7 @@ export default function NothingFoundPage() {
                 href={routes.HOME}
                 size="md"
               >
-                На главную
+                {t("homeButton")}
               </Button>
             </Group>
           </div>

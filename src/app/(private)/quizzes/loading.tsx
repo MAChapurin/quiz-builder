@@ -11,10 +11,11 @@ import {
   Loader,
   Center,
 } from "@mantine/core";
+import { COOKIE_KEYS } from "@/shared/config";
 
 export default async function Loading() {
   const cookieStore = await cookies();
-  const view = cookieStore.get("quizView")?.value ?? "cards";
+  const view = cookieStore.get(COOKIE_KEYS.QUIZ_LIST_VIEW)?.value ?? "cards";
 
   return (
     <Container size="lg" opacity={1} className="pointer-events-none">

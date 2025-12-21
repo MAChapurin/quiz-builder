@@ -1,11 +1,11 @@
-import { Container, Group, Flex, Button, ActionIcon } from "@mantine/core";
-import { ColorSchemesSwitcher } from "@/features";
-import { Logo } from "@/shared/ui";
 import Link from "next/link";
-import { routes } from "@/shared/config";
+import { Container, Group, Flex, Button, ActionIcon } from "@mantine/core";
 import { IconLogin, IconUserPlus } from "@tabler/icons-react";
-import { LanguageSwitcher } from "@/features/language-swither";
 import { useTranslations } from "next-intl";
+
+import { ColorSchemesSwitcher, LanguageSwitcher } from "@/features";
+import { Logo } from "@/shared/ui";
+import { routes } from "@/shared/config";
 
 export function HeaderAuth() {
   const t = useTranslations("widgets.header");
