@@ -731,6 +731,22 @@
       "title": "Nothing found",
       "description": "The page you are trying to open does not exist. Perhaps you entered the address incorrectly, or the page was moved to another URL.",
       "homeButton": "Return to home"
+    },
+    "results": {
+      "meta": {
+        "title": "Quiz results",
+        "description": "Results of your quiz attempts"
+      },
+      "page": {
+        "title": "Quiz attempts",
+        "subtitleNoAttempts": "No attempts yet",
+        "subtitleFilteredOut": "No results for selected filters",
+        "textNoResults": "Selected filters did not return any results. Try removing them or selecting other quizzes.",
+        "textNoAttempts": "When someone takes your quizzes, their results will appear here."
+      },
+      "loading": {
+        "loader": "Loading quiz attempts…"
+      }
     }
   }
 }

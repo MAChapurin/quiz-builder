@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import {
   ColorSchemeScript,
   mantineHtmlProps,
@@ -14,12 +13,6 @@ import { CookiesBanner } from "@/widgets";
 import { getServerCookies } from "@/shared/lib";
 import { COOKIE_KEYS } from "@/shared/config";
 import { getMessages, getLocale } from "next-intl/server";
-
-export const metadata: Metadata = {
-  title: "Конструктор тестов",
-  description:
-    "Приложение для составления квизов, отправки их людям и просмотра результатов",
-};
 
 export default async function RootLayout({
   children,

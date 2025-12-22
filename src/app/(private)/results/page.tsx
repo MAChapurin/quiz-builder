@@ -20,10 +20,14 @@ import {
 } from "@/features/attempt-filter";
 import { IconFilterOff, IconListSearch } from "@tabler/icons-react";
 import { quizService } from "@/entities/quiz/server";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Результаты квизов",
-  description: "Результаты прохождений ваших квизов",
+export const generateMetadata = async (): Promise<Metadata> => {
+  const t = await getTranslations("app.results.meta");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
 };
 
 type Props = { searchParams: Promise<{ quiz?: string }> };
@@ -39,9 +43,10 @@ export default async function ResultsPage({ searchParams }: Props) {
     cookies[COOKIE_KEYS.ATTEMPT]?.split(",").filter(Boolean) ??
     [];
 
-  const [attemptsEither, titlesEither] = await Promise.all([
+  const [attemptsEither, titlesEither, t] = await Promise.all([
     attemptService.getAttemptsForAuthor(session.id, initialFilterIds),
     quizService.getQuizTitlesByUser(session.id),
+    getTranslations("app.results.page"),
   ]);
 
   const attempts = matchEither(attemptsEither, {
@@ -61,7 +66,7 @@ export default async function ResultsPage({ searchParams }: Props) {
   return (
     <Container size="lg">
       <div className="flex justify-between items-center my-4">
-        <Title className="text-xl font-bold">Результаты прохождений</Title>
+        <Title className="text-xl font-bold">{t("title")}</Title>
       </div>
 
       {showFilters && (
@@ -83,13 +88,11 @@ export default async function ResultsPage({ searchParams }: Props) {
             </ThemeIcon>
 
             <Title order={3}>
-              {filteredOut ? "Ничего не найдено" : "Пока нет результатов"}
+              {filteredOut ? t("subtitleFilteredOut") : t("subtitleNoAttempts")}
             </Title>
 
             <Text c="dimmed">
-              {filteredOut
-                ? "Выбранные фильтры не дали результатов. Попробуйте снять их или выбрать другие квизы."
-                : "Когда кто-нибудь пройдет ваши квизы, результаты появятся здесь."}
+              {filteredOut ? t("textNoResults") : t("textNoAttempts")}
             </Text>
 
             {filteredOut && <AttemptsQuizFilterResetButton />}
