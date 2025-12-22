@@ -1,7 +1,7 @@
 "use client";
 
 import { startTransition } from "react";
-import { SegmentedControl } from "@mantine/core";
+import { SegmentedControl, Text } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 
@@ -14,9 +14,7 @@ export function LanguageSwitcher() {
 
   const onChange = (value: string) => {
     if (value === locale) return;
-
     setCookie(COOKIE_KEYS.LOCALE, value, 365);
-
     startTransition(() => {
       router.refresh();
     });
@@ -30,11 +28,11 @@ export function LanguageSwitcher() {
       data={[
         {
           value: "ru",
-          label: <span>RU</span>,
+          label: <Text size="sm">RU</Text>,
         },
         {
           value: "en",
-          label: <span>EN</span>,
+          label: <Text size="sm">EN</Text>,
         },
       ]}
     />

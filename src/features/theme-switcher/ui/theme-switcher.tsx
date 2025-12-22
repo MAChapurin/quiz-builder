@@ -1,32 +1,55 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { SegmentedControl } from "@mantine/core";
 import { IconMoon, IconSun } from "@tabler/icons-react";
-import { ActionIcon, useMantineColorScheme } from "@mantine/core";
+import { useMantineColorScheme } from "@mantine/core";
+import { useEffect, useState, useRef } from "react";
+
+type Scheme = "light" | "dark";
+
+const ANIMATION_MS = 150;
 
 export function ColorSchemesSwitcher() {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const [mounted, setMounted] = useState(false);
+
+  const [value, setValue] = useState<Scheme>(
+    colorScheme === "dark" ? "dark" : "light",
+  );
+
+  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setMounted(true);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
-  const toggle = () =>
-    setColorScheme(colorScheme === "light" ? "dark" : "light");
-
-  const icon =
-    colorScheme === "light" ? <IconMoon size={20} /> : <IconSun size={20} />;
-  const placeholder = <div style={{ width: 20, height: 20 }} />;
+  const handleChange = (next: string) => {
+    const scheme = next as Scheme;
+    setValue(scheme);
+    timeoutRef.current = window.setTimeout(() => {
+      setColorScheme(scheme);
+    }, ANIMATION_MS);
+  };
 
   return (
-    <ActionIcon
-      variant="default"
-      size="lg"
-      onClick={mounted ? toggle : undefined}
-      aria-label="Toggle theme"
-    >
-      {mounted ? icon : placeholder}
-    </ActionIcon>
+    <SegmentedControl
+      withItemsBorders
+      value={value}
+      onChange={handleChange}
+      transitionDuration={ANIMATION_MS}
+      data={[
+        {
+          value: "light",
+          label: <IconSun size={20} />,
+        },
+        {
+          value: "dark",
+          label: <IconMoon size={20} />,
+        },
+      ]}
+    />
   );
 }
