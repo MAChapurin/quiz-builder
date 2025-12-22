@@ -6,6 +6,7 @@ import { notifications } from "@mantine/notifications";
 import { IconAlertTriangle } from "@tabler/icons-react";
 import { QuestionType } from "@/entities/question/domain";
 import { UpdateOptionDTO } from "@/entities/question/dto";
+import { useTranslations } from "next-intl";
 
 type EditOption = UpdateOptionDTO & {
   _key: string;
@@ -15,6 +16,8 @@ export function useEditQuestion() {
   const [text, setText] = useState("");
   const [type, setType] = useState<QuestionType>(QuestionType.SINGLE);
   const [options, setOptions] = useState<EditOption[]>([]);
+
+  const t = useTranslations("features.question-crud.ui.edit.toasts");
 
   const initFromQuestion = (q: {
     text: string;
@@ -42,8 +45,8 @@ export function useEditQuestion() {
       notifications.show({
         color: "yellow",
         icon: <IconAlertTriangle size={16} />,
-        title: "Тип вопроса изменён",
-        message: "Выбор правильных ответов был сброшен",
+        title: t("changeTitle"),
+        message: t("change"),
       });
     }
   };

@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { IconAlertTriangle } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 export type QuestionType = "SINGLE" | "MULTIPLE";
 
@@ -18,6 +19,8 @@ export function useCreateQuestion() {
   const [text, setText] = useState("");
   const [options, setOptions] = useState<OptionInput[]>([{ ...EMPTY_OPTION }]);
 
+  const t = useTranslations("features.question-crud.ui.edit.toasts");
+
   const optionInputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   const onTypeChange = (value: string) => {
@@ -31,9 +34,8 @@ export function useCreateQuestion() {
       notifications.show({
         color: "yellow",
         icon: <IconAlertTriangle size={16} />,
-        title: "Тип вопроса изменён",
-        message:
-          "Ранее выбранные правильные ответы были сброшены. Отметьте их заново.",
+        title: t("changeTitle"),
+        message: t("change"),
       });
     }
   };

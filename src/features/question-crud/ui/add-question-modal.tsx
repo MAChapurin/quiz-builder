@@ -24,12 +24,14 @@ import {
   CreateQuestionFormState,
 } from "../actions/create-question";
 import { useCreateQuestion } from "../model/use-create-question";
+import { useTranslations } from "next-intl";
 
 export function AddQuestionModal({
   scrollToRef,
 }: {
   scrollToRef?: React.RefObject<HTMLDivElement>;
 }) {
+  const t = useTranslations("features.question-crud.ui.create");
   const router = useRouter();
   const [opened, setOpened] = useState(false);
   const [quizId, setQuizId] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export function AddQuestionModal({
     createQuestionAction,
     {} as CreateQuestionFormState,
     undefined,
-    { success: "Вопрос успешно создан!" },
+    { success: t("toasts.success") },
   );
 
   useEffect(() => {
@@ -68,11 +70,7 @@ export function AddQuestionModal({
   if (!quizId) return null;
 
   return (
-    <Modal
-      opened={opened}
-      onClose={() => setOpened(false)}
-      title="Добавить новый вопрос"
-    >
+    <Modal opened={opened} onClose={() => setOpened(false)} title={t("title")}>
       <form action={action}>
         <input type="hidden" name="quizId" value={quizId} />
         <input
@@ -83,7 +81,8 @@ export function AddQuestionModal({
 
         <Stack>
           <Textarea
-            label="Текст вопроса"
+            label={t("fields.text.label")}
+            placeholder={t("fields.text.placeholder")}
             name="text"
             required
             value={form.text}
@@ -95,14 +94,18 @@ export function AddQuestionModal({
           <Radio.Group
             value={form.type}
             onChange={form.onTypeChange}
-            label="Тип вопроса"
+            label={t("fields.type.label")}
             name="type"
           >
             <Group mt="xs">
-              <Radio value="SINGLE" label="Один вариант" disabled={isPending} />
+              <Radio
+                value="SINGLE"
+                label={t("fields.type.options.single")}
+                disabled={isPending}
+              />
               <Radio
                 value="MULTIPLE"
-                label="Несколько вариантов"
+                label={t("fields.type.options.multiple")}
                 disabled={isPending}
               />
             </Group>
@@ -147,12 +150,12 @@ export function AddQuestionModal({
               onClick={form.onAddOption}
               disabled={isPending}
             >
-              Добавить вариант
+              {t("fields.options.label")}
             </Button>
           </Stack>
 
           <Button type="submit" loading={isPending} disabled={!form.canSubmit}>
-            Создать вопрос
+            {t("actions.submit")}
           </Button>
         </Stack>
       </form>

@@ -44,8 +44,6 @@ export function QuizDetail({ quiz, questions }: QuizDetailProps) {
   const t = useTranslations("widgets.quizDetail");
   const lastQuestionRef = useRef<HTMLDivElement>(null);
 
-  console.log({ quiz, questions });
-
   return (
     <Container size="lg" py="lg">
       <Card withBorder p="lg" mb="md">

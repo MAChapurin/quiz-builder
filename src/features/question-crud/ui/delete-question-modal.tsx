@@ -13,12 +13,14 @@ import {
   deleteQuestionAction,
   DeleteQuestionFormState,
 } from "../actions/delete-question";
+import { useTranslations } from "next-intl";
 
 export function DeleteQuestionModal({
   questions,
 }: {
   questions: QuestionEntity[];
 }) {
+  const t = useTranslations("features.question-crud.ui.delete");
   const [opened, setOpened] = useState(false);
   const [questionId, setQuestionId] = useState<string | null>(null);
   const [questionText, setQuestionText] = useState("");
@@ -30,8 +32,8 @@ export function DeleteQuestionModal({
     {} as DeleteQuestionFormState,
     undefined,
     {
-      success: "Вопрос успешно удалён",
-      error: "Не удалось удалить вопрос",
+      success: t("toasts.success"),
+      error: t("toasts.error"),
     },
   );
 
@@ -69,13 +71,13 @@ export function DeleteQuestionModal({
         setQuestionId(null);
         setQuestionText("");
       }}
-      title="Удалить вопрос"
+      title={t("title")}
     >
       <Box pos="relative">
         <form action={action}>
           <input type="hidden" name="id" value={questionId} />
 
-          <Text>Вы уверены, что хотите удалить этот вопрос?</Text>
+          <Text>{t("description")}</Text>
 
           <Text mt="sm" fw={500} c="red">
             “{shortText}”
@@ -93,7 +95,7 @@ export function DeleteQuestionModal({
               onClick={() => setOpened(false)}
               disabled={isPending}
             >
-              Отмена
+              {t("actions.cancel")}
             </Button>
             <Button
               color="red"
@@ -101,7 +103,7 @@ export function DeleteQuestionModal({
               loading={isPending}
               disabled={isPending}
             >
-              Удалить
+              {t("actions.confirm")}
             </Button>
           </Group>
         </form>

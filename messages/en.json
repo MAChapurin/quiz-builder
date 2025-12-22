@@ -413,6 +413,96 @@
           }
         }
       }
+    },
+    "question-crud": {
+      "actions": {
+        "create": {
+          "errors": {
+            "shortText": "Question text must be at least 3 characters long",
+            "noOptions": "There must be at least one option",
+            "unauthorized": "User is not authorized",
+            "createFailed": "Failed to create question"
+          }
+        },
+        "edit": {
+          "errors": {
+            "shortText": "Question text must be at least 3 characters long",
+            "noOptions": "There must be at least one option",
+            "unauthorized": "User is not authorized",
+            "notFound": "Question not found",
+            "updateFailed": "Failed to update question"
+          }
+        },
+        "delete": {
+          "errors": {
+            "noId": "Question ID was not provided",
+            "notFound": "Question not found",
+            "deleteFailed": "Failed to delete question"
+          }
+        }
+      },
+      "ui": {
+        "create": {
+          "title": "Add new question",
+          "fields": {
+            "text": {
+              "label": "Question text",
+              "placeholder": "Enter question text"
+            },
+            "type": {
+              "label": "Question type",
+              "options": {
+                "single": "One option",
+                "multiple": "Multiple options"
+              }
+            },
+            "options": { "label": "Add option" }
+          },
+          "actions": {
+            "submit": "Create question"
+          },
+          "toasts": {
+            "success": "Question successfully created!"
+          }
+        },
+        "edit": {
+          "title": "Edit Question",
+          "fields": {
+            "text": { "label": "Question text" },
+            "type": {
+              "label": "Question type",
+              "single": "Single choice",
+              "multiple": "Multiple choice"
+            },
+            "options": { "label": "Answer options" },
+            "option": {
+              "correct": "Correct"
+            }
+          },
+          "actions": {
+            "addOption": "Add question",
+            "submit": "Save"
+          },
+          "toasts": {
+            "success": "Question updated successfully!",
+            "error": "Failed to submit changes",
+            "changeTitle": "Question type changed",
+            "change": "Previously selected correct answers have been reset. Please mark them again."
+          }
+        },
+        "delete": {
+          "title": "Delete question",
+          "description": "Are you sure you want to delete this question?",
+          "actions": {
+            "cancel": "Cancel",
+            "confirm": "Delete"
+          },
+          "toasts": {
+            "success": "Question successfully deleted",
+            "error": "Failed to delete question"
+          }
+        }
+      }
     }
   },
 

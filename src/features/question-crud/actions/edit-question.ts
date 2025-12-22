@@ -4,6 +4,7 @@ import { z } from "zod";
 import { questionService } from "@/entities/question/server";
 import { QuestionType } from "@/entities/question/domain";
 import { matchEither } from "@/shared/lib/either";
+import { getTranslations } from "next-intl/server";
 
 export type EditQuestionFormState = {
   formData?: FormData;
@@ -15,28 +16,29 @@ export type EditQuestionFormState = {
   };
 };
 
-const editQuestionSchema = z.object({
-  id: z.string().min(1),
-  text: z.string().min(3, "Текст вопроса должен быть не менее 3 символов"),
-  type: z.nativeEnum(QuestionType),
-  options: z
-    .array(
-      z.object({
-        id: z.string().optional(),
-        text: z.string().min(1, "Текст варианта обязателен"),
-        isCorrect: z.boolean(),
-      }),
-    )
-    .min(1, "Должен быть хотя бы один вариант"),
-});
-
 export const editQuestionAction = async (
   _state: EditQuestionFormState,
   formData: FormData,
 ): Promise<EditQuestionFormState & { success?: boolean }> => {
-  const data = Object.fromEntries(formData.entries());
+  const t = await getTranslations("features.question-crud.actions.edit");
 
+  const data = Object.fromEntries(formData.entries());
   const options = data.options ? JSON.parse(data.options as string) : [];
+
+  const editQuestionSchema = z.object({
+    id: z.string().min(1),
+    text: z.string().min(3, t("errors.shortText")),
+    type: z.nativeEnum(QuestionType),
+    options: z
+      .array(
+        z.object({
+          id: z.string().optional(),
+          text: z.string().min(1, t("errors.emptyOption")),
+          isCorrect: z.boolean(),
+        }),
+      )
+      .min(1, t("errors.noOptions")),
+  });
 
   const parsed = editQuestionSchema.safeParse({ ...data, options });
 
@@ -65,7 +67,7 @@ export const editQuestionAction = async (
   });
 
   if (!question) {
-    return { formData, errors: { _errors: "Не удалось обновить вопрос" } };
+    return { formData, errors: { _errors: t("errors.updateFailed") } };
   }
 
   return { formData, errors: undefined, success: true };

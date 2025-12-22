@@ -1,6 +1,7 @@
 "use server";
 
 import { questionService } from "@/entities/question/server";
+import { getTranslations } from "next-intl/server";
 
 export type DeleteQuestionFormState = {
   errors?: {
@@ -13,11 +14,13 @@ export const deleteQuestionAction = async (
   _state: DeleteQuestionFormState,
   formData: FormData,
 ): Promise<DeleteQuestionFormState> => {
+  const t = await getTranslations("features.question-crud.actions.delete");
+
   const id = formData.get("id")?.toString();
 
   if (!id) {
     return {
-      errors: { _errors: "ID вопроса не передан" },
+      errors: { _errors: t("errors.noId") },
     };
   }
 
@@ -25,8 +28,8 @@ export const deleteQuestionAction = async (
 
   if (result.type === "left") {
     const map = {
-      "question-not-found": "Вопрос не найден",
-      "question-delete-failed": "Не удалось удалить вопрос",
+      "question-not-found": t("errors.notFound"),
+      "question-delete-failed": t("errors.deleteFailed"),
     } as const;
 
     return {

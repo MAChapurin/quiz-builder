@@ -24,12 +24,14 @@ import {
   EditQuestionFormState,
 } from "../actions/edit-question";
 import { useEditQuestion } from "../model/use-edit-question";
+import { useTranslations } from "next-intl";
 
 export function EditQuestionModal({
   questions,
 }: {
   questions: QuestionEntity[];
 }) {
+  const t = useTranslations("features.question-crud.ui.edit");
   const router = useRouter();
   const [opened, setOpened] = useState(false);
   const [questionId, setQuestionId] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export function EditQuestionModal({
     editQuestionAction,
     {} as EditQuestionFormState,
     undefined,
-    { success: "Вопрос успешно изменен!" },
+    { success: t("toasts.success"), error: t("toasts.error") },
   );
 
   useEffect(() => {
@@ -66,11 +68,7 @@ export function EditQuestionModal({
   if (!questionId) return null;
 
   return (
-    <Modal
-      opened={opened}
-      onClose={() => setOpened(false)}
-      title="Редактирование вопроса"
-    >
+    <Modal opened={opened} onClose={() => setOpened(false)} title={t("title")}>
       <form action={action}>
         <input type="hidden" name="id" value={questionId} />
         <input
@@ -81,7 +79,7 @@ export function EditQuestionModal({
 
         <Stack>
           <Textarea
-            label="Текст вопроса"
+            label={t("fields.text.label")}
             name="text"
             value={form.text}
             onChange={(e) => form.setText(e.target.value)}
@@ -92,13 +90,16 @@ export function EditQuestionModal({
             value={form.type}
             onChange={form.onTypeChange}
             name="type"
-            label="Тип вопроса"
+            label={t("fields.type.label")}
           >
             <Group mt="xs">
-              <Radio value={QuestionType.SINGLE} label="Один вариант" />
+              <Radio
+                value={QuestionType.SINGLE}
+                label={t("fields.type.single")}
+              />
               <Radio
                 value={QuestionType.MULTIPLE}
-                label="Несколько вариантов"
+                label={t("fields.type.multiple")}
               />
             </Group>
           </Radio.Group>
@@ -116,7 +117,7 @@ export function EditQuestionModal({
                   <Radio
                     checked={opt.isCorrect}
                     onChange={() => form.setCorrectSingle(opt._key)}
-                    label="Верный"
+                    label={t("fields.option.correct")}
                   />
                 ) : (
                   <Checkbox
@@ -127,7 +128,7 @@ export function EditQuestionModal({
                         e.currentTarget.checked,
                       )
                     }
-                    label="Верный"
+                    label={t("fields.option.correct")}
                   />
                 )}
 
@@ -141,12 +142,12 @@ export function EditQuestionModal({
               type="button"
               onClick={form.onAddOption}
             >
-              Добавить вариант
+              {t("actions.addOption")}
             </Button>
           </Stack>
 
           <Button type="submit" disabled={!form.canSubmit} loading={isPending}>
-            Сохранить
+            {t("actions.submit")}
           </Button>
         </Stack>
       </form>
