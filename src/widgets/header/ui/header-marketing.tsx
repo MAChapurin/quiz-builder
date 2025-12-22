@@ -82,17 +82,22 @@ export function HeaderMarketing() {
         <Group className="hidden lg:flex">
           <LanguageSwitcher />
           <ColorSchemesSwitcher />
-
-          <Button component={Link} href={routes.LOGIN} variant="outline">
+          <Button
+            miw={81}
+            component={Link}
+            href={routes.LOGIN}
+            variant="outline"
+          >
             {t("actions.login")}
           </Button>
 
-          <Button component={Link} href={routes.REGISTER}>
+          <Button miw={130} component={Link} href={routes.REGISTER}>
             {t("actions.register")}
           </Button>
         </Group>
 
         <Group className="lg:hidden ml-auto" mr="md">
+          <LanguageSwitcher />
           <ColorSchemesSwitcher />
         </Group>
 

@@ -17,6 +17,7 @@ export function HeaderAuth() {
           <LanguageSwitcher />
           <ColorSchemesSwitcher />
           <Button
+            miw={81}
             component={Link}
             href={routes.LOGIN}
             variant="outline"
@@ -25,6 +26,7 @@ export function HeaderAuth() {
             {t("actions.login")}
           </Button>
           <Button
+            miw={130}
             component={Link}
             href={routes.REGISTER}
             className="hidden xs:block"
