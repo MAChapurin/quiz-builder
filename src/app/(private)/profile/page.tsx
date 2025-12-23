@@ -3,6 +3,7 @@ import { attemptService } from "@/entities/attempt/server";
 import { quizService } from "@/entities/quiz/server";
 import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
 import { LogOutButton } from "@/features";
+
 import {
   matchEither,
   formatDate,
@@ -31,10 +32,13 @@ import { useLocale, useTranslations } from "next-intl";
 
 export default async function ProfilePage() {
   const t = await getTranslations("app.profile.page");
-  const { session } = await sessionService.verifySession();
-  const user = await getCurrentUser();
   const cookies = await getServerCookies();
   const locale = cookies[COOKIE_KEYS.LOCALE] || "ru";
+
+  const [{ session }, user] = await Promise.all([
+    sessionService.verifySession(),
+    getCurrentUser(),
+  ]);
 
   if (!user) {
     return (
@@ -59,19 +63,37 @@ export default async function ProfilePage() {
     right: (a) => a,
   });
 
-  const stats = {
-    totalQuizzes: quizzes.length,
-    published: quizzes.filter((q) => q.isPublished).length,
-    drafts: quizzes.filter((q) => !q.isPublished).length,
-    totalQuestions: quizzes.reduce((acc, q) => acc + q.questions.length, 0),
-    totalAttempts: attempts.length,
-    averageScore: calculateAverageScore(attempts),
-  };
+  const quizStats = quizzes.reduce(
+    (acc, q) => {
+      acc.totalQuizzes++;
+      q.isPublished ? acc.published++ : acc.drafts++;
+      acc.totalQuestions += q.questions.length;
 
-  const lastQuizDate = quizzes.reduce<Date | null>((latest, quiz) => {
-    const quizDate = new Date(quiz.createdAt);
-    return !latest || quizDate > latest ? quizDate : latest;
-  }, null);
+      const createdAt = new Date(q.createdAt);
+      acc.lastQuizDate =
+        !acc.lastQuizDate || createdAt > acc.lastQuizDate
+          ? createdAt
+          : acc.lastQuizDate;
+
+      return acc;
+    },
+    {
+      totalQuizzes: 0,
+      published: 0,
+      drafts: 0,
+      totalQuestions: 0,
+      lastQuizDate: null as Date | null,
+    },
+  );
+
+  let averageScore = 0;
+  if (attempts.length) {
+    let sum = 0;
+    for (const a of attempts) {
+      sum += a.score / a.total;
+    }
+    averageScore = Math.round((sum / attempts.length) * 100);
+  }
 
   return (
     <Container size="lg" py="xl">
@@ -94,49 +116,38 @@ export default async function ProfilePage() {
 
         <SimpleGrid cols={{ base: 2, xs: 3, lg: 6 }} spacing="md">
           <StatCard
-            value={stats.totalQuizzes}
-            label={pluralize(stats.totalQuizzes, [
+            value={quizStats.totalQuizzes}
+            label={pluralize(quizStats.totalQuizzes, [
               t("quizList.badges.questions.one"),
               t("quizList.badges.questions.few"),
               t("quizList.badges.questions.many"),
             ])}
           />
           <StatCard
-            value={stats.published}
-            label={pluralize(stats.published, [
-              t("quizList.publication.published"),
-              t("quizList.publication.published"),
-              t("quizList.publication.published"),
-            ])}
+            value={quizStats.published}
+            label={t("quizList.publication.published")}
           />
           <StatCard
-            value={stats.drafts}
-            label={pluralize(stats.drafts, [
-              t("quizList.publication.unpublished"),
-              t("quizList.publication.unpublished"),
-              t("quizList.publication.unpublished"),
-            ])}
+            value={quizStats.drafts}
+            label={t("quizList.publication.unpublished")}
           />
           <StatCard
-            value={stats.totalQuestions}
-            label={pluralize(stats.totalQuestions, [
+            value={quizStats.totalQuestions}
+            label={pluralize(quizStats.totalQuestions, [
               t("quizList.badges.questions.one"),
               t("quizList.badges.questions.few"),
               t("quizList.badges.questions.many"),
             ])}
           />
           <StatCard
-            value={stats.totalAttempts}
-            label={pluralize(stats.totalAttempts, [
+            value={attempts.length}
+            label={pluralize(attempts.length, [
               t("quizList.badges.attempts.one"),
               t("quizList.badges.attempts.few"),
               t("quizList.badges.attempts.many"),
             ])}
           />
-          <StatCard
-            value={stats.averageScore}
-            label={t("stats.averageScore")}
-          />
+          <StatCard value={averageScore} label={t("stats.averageScore")} />
         </SimpleGrid>
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
@@ -174,9 +185,7 @@ export default async function ProfilePage() {
                 <Text size="sm" c="dimmed">
                   {t("activity.registrationDate")}
                 </Text>
-                <Text size="sm">
-                  {formatDate(new Date(user.createdAt), locale)}
-                </Text>
+                <Text size="sm">{formatDate(user.createdAt, locale)}</Text>
               </Group>
 
               <Group justify="space-between">
@@ -184,7 +193,9 @@ export default async function ProfilePage() {
                   {t("activity.lastQuiz")}
                 </Text>
                 <Text size="sm">
-                  {lastQuizDate ? formatDate(lastQuizDate, locale) : "—"}
+                  {quizStats.lastQuizDate
+                    ? formatDate(quizStats.lastQuizDate, locale)
+                    : "—"}
                 </Text>
               </Group>
 
@@ -206,14 +217,6 @@ export default async function ProfilePage() {
   );
 }
 
-function calculateAverageScore(
-  attempts: Array<{ score: number; total: number }>,
-) {
-  if (!attempts.length) return 0;
-  const sum = attempts.reduce((acc, a) => acc + a.score / a.total, 0);
-  return Math.round((sum / attempts.length) * 100);
-}
-
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
     <Card withBorder style={{ textAlign: "center", padding: "md" }}>
@@ -230,6 +233,7 @@ function StatCard({ label, value }: { label: string; value: number }) {
 function QuizRow({ quiz }: { quiz: QuizWithQuestionsExtended }) {
   const t = useTranslations("app.profile.page");
   const locale = useLocale();
+
   return (
     <Stack gap={4}>
       <Group justify="space-between">
