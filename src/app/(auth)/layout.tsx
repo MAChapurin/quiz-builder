@@ -9,7 +9,6 @@ import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("app.auth.layout.meta");
-
   return {
     title: t("title"),
     description: t("description"),
