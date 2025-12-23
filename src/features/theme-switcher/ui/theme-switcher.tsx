@@ -3,7 +3,9 @@
 import { SegmentedControl } from "@mantine/core";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useMantineColorScheme } from "@mantine/core";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { setCookie } from "@/shared/lib";
+import { COOKIE_KEYS } from "@/shared/config";
 
 type Scheme = "light" | "dark";
 
@@ -29,6 +31,7 @@ export function ColorSchemesSwitcher() {
   const handleChange = (next: string) => {
     const scheme = next as Scheme;
     setValue(scheme);
+    setCookie(COOKIE_KEYS.THEME, scheme, 365);
     timeoutRef.current = window.setTimeout(() => {
       setColorScheme(scheme);
     }, ANIMATION_MS);
@@ -36,19 +39,20 @@ export function ColorSchemesSwitcher() {
 
   return (
     <SegmentedControl
-      withItemsBorders
       value={value}
       onChange={handleChange}
       transitionDuration={ANIMATION_MS}
+      p={0}
+      size="md"
+      className="border-[var(--mantine-color-default-border)] border-1"
+      styles={{
+        label: {
+          background: "bg-[var(--mantine-color-default)]",
+        },
+      }}
       data={[
-        {
-          value: "light",
-          label: <IconSun size={20} />,
-        },
-        {
-          value: "dark",
-          label: <IconMoon size={20} />,
-        },
+        { value: "light", label: <IconSun size={24} /> },
+        { value: "dark", label: <IconMoon size={24} /> },
       ]}
     />
   );

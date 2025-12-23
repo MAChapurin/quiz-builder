@@ -56,11 +56,18 @@ export function QuizList({
         <SegmentedControl
           value={view}
           onChange={(v) => setView(v as QuizListViewType)}
+          p={0}
+          size="md"
+          className="border-[var(--mantine-color-default-border)] border-1"
+          styles={{
+            label: {
+              background: "bg-[var(--mantine-color-default)]",
+            },
+          }}
           data={[
             { label: <IconArticle />, value: "table" },
             { label: <IconBorderAll />, value: "cards" },
           ]}
-          size="sm"
         />
         <HelpDrawer content={<QuizHelpContent />} />
       </Flex>

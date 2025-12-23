@@ -22,17 +22,24 @@ export function LanguageSwitcher() {
 
   return (
     <SegmentedControl
-      withItemsBorders
+      styles={{
+        label: {
+          background: "bg-[var(--mantine-color-default)]",
+        },
+      }}
+      p={0}
+      size="md"
+      className="border-[var(--mantine-color-default-border)] border-1"
       value={locale}
       onChange={onChange}
       data={[
         {
           value: "ru",
-          label: <Text size="sm">RU</Text>,
+          label: <Text size="md">RU</Text>,
         },
         {
           value: "en",
-          label: <Text size="sm">EN</Text>,
+          label: <Text size="md">EN</Text>,
         },
       ]}
     />

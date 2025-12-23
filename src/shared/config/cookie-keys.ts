@@ -4,4 +4,5 @@ export const COOKIE_KEYS = {
   OPTIONAL: "quiz_allow_optional",
   QUIZ_LIST_VIEW: "quiz_list_view",
   LOCALE: "locale",
+  THEME: "theme",
 } as const;

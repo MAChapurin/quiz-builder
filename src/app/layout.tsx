@@ -25,14 +25,15 @@ export default async function RootLayout({
     getServerCookies(),
   ]);
   const bannerSeen = cookies[COOKIE_KEYS.BANNER] === "true";
+  const colorScheme = cookies[COOKIE_KEYS.THEME] === "dark" ? "dark" : "light";
 
   return (
     <html lang={locale} {...mantineHtmlProps}>
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme={colorScheme} />
       </head>
       <body className="antialiased">
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} defaultColorScheme={colorScheme}>
           <NextIntlClientProvider messages={messages} locale={locale}>
             <Notifications />
             {children}
