@@ -37,6 +37,8 @@ export default async function QuizzesPage() {
     right: (q) => q,
   });
 
+  console.log(quizzes);
+
   return (
     <>
       <Container size="lg">

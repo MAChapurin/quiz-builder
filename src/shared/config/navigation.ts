@@ -21,4 +21,5 @@ export const routes = {
   RESULTS: "/results",
   NOT_FOUND: "/not-found",
   PUBLIC_QUIZ: "/public-quiz",
+  PROFILE: "/profile",
 } as const;

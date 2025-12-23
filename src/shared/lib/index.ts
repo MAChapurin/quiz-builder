@@ -6,3 +6,4 @@ export * from "./emitter";
 export * from "./pluralize";
 export * from "./client-cookies";
 export * from "./server-cookies";
+export * from "./password";
