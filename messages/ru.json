@@ -730,6 +730,61 @@
       "description": "Страница, которую вы пытаетесь открыть, не существует. Возможно, вы неправильно ввели адрес, или страница была перенесена на другой URL.",
       "homeButton": "Вернуться на главную"
     },
+    "profile": {
+      "page": {
+        "stats": {
+          "totalQuizzes": "Всего квизов",
+          "published": "Опубликовано",
+          "drafts": "Черновики",
+          "totalQuestions": "Всего вопросов",
+          "totalAttempts": "Попытки",
+          "averageScore": "Средний балл"
+        },
+        "quizList": {
+          "title": "Мои квизы",
+          "all": "Все",
+          "noQuizzes": "У вас пока нет квизов",
+          "table": {
+            "title": "Название",
+            "createdAt": "Дата создания",
+            "questionsCount": "Количество вопросов",
+            "attempts": "Прохождения",
+            "publication": "Публикация",
+            "actions": "Действия"
+          },
+          "badges": {
+            "questions": {
+              "one": "вопрос",
+              "few": "вопроса",
+              "many": "вопросов"
+            },
+            "attempts": {
+              "one": "прохождение",
+              "few": "прохождения",
+              "many": "прохождений"
+            }
+          },
+          "publication": {
+            "published": "Опубликован",
+            "unpublished": "Не опубликован"
+          },
+          "actions": {
+            "practice": "Пройти",
+            "share": "Поделиться",
+            "edit": "Редактировать",
+            "delete": "Удалить",
+            "open": "Открыть"
+          }
+        },
+        "activity": {
+          "title": "Активность",
+          "registrationDate": "Дата регистрации",
+          "lastQuiz": "Последний квиз",
+          "resultsButton": "Перейти к результатам"
+        },
+        "userNotFound": "Пользователь не найден"
+      }
+    },
     "results": {
       "meta": {
         "title": "Результаты квизов",

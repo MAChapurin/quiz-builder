@@ -732,6 +732,61 @@
       "description": "The page you are trying to open does not exist. Perhaps you entered the address incorrectly, or the page was moved to another URL.",
       "homeButton": "Return to home"
     },
+    "profile": {
+      "page": {
+        "stats": {
+          "totalQuizzes": "Total quizzes",
+          "published": "Published",
+          "drafts": "Drafts",
+          "totalQuestions": "Total questions",
+          "totalAttempts": "Attempts",
+          "averageScore": "Average score"
+        },
+        "quizList": {
+          "title": "My quizzes",
+          "all": "All",
+          "noQuizzes": "You have no quizzes yet",
+          "table": {
+            "title": "Title",
+            "createdAt": "Created at",
+            "questionsCount": "Questions count",
+            "attempts": "Attempts",
+            "publication": "Publication",
+            "actions": "Actions"
+          },
+          "badges": {
+            "questions": {
+              "one": "question",
+              "few": "questions",
+              "many": "questions"
+            },
+            "attempts": {
+              "one": "attempt",
+              "few": "attempts",
+              "many": "attempts"
+            }
+          },
+          "publication": {
+            "published": "Published",
+            "unpublished": "Unpublished"
+          },
+          "actions": {
+            "practice": "Practice",
+            "share": "Share",
+            "edit": "Edit",
+            "delete": "Delete",
+            "open": "Open"
+          }
+        },
+        "activity": {
+          "title": "Activity",
+          "registrationDate": "Registration date",
+          "lastQuiz": "Last quiz",
+          "resultsButton": "Go to results"
+        },
+        "userNotFound": "User not found"
+      }
+    },
     "results": {
       "meta": {
         "title": "Quiz results",

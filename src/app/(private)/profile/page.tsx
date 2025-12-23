@@ -1,7 +1,10 @@
 import { getCurrentUser, sessionService } from "@/entities/user/server";
-import { quizService } from "@/entities/quiz/server";
 import { attemptService } from "@/entities/attempt/server";
-import { matchEither, formatDateRu } from "@/shared/lib";
+import { quizService } from "@/entities/quiz/server";
+import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
+import { LogOutButton } from "@/features";
+import { matchEither, formatDateRu, pluralize } from "@/shared/lib";
+import { routes } from "@/shared/config";
 
 import {
   Container,
@@ -18,18 +21,18 @@ import {
 } from "@mantine/core";
 
 import Link from "next/link";
-import { routes } from "@/shared/config";
-import { LogOutButton } from "@/features";
-import { QuestionEntity } from "@/entities/question/domain";
+import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 export default async function ProfilePage() {
+  const t = await getTranslations("app.profile.page");
   const { session } = await sessionService.verifySession();
   const user = await getCurrentUser();
 
   if (!user) {
     return (
       <Container size="sm" py="xl">
-        <Text c="red">Пользователь не найден</Text>
+        <Text c="red">{t("userNotFound")}</Text>
       </Container>
     );
   }
@@ -83,26 +86,64 @@ export default async function ProfilePage() {
         </Group>
 
         <SimpleGrid cols={{ base: 2, xs: 3, lg: 6 }} spacing="md">
-          <StatCard label="Квизов" value={stats.totalQuizzes} />
-          <StatCard label="Опубликовано" value={stats.published} />
-          <StatCard label="Черновики" value={stats.drafts} />
-          <StatCard label="Вопросов" value={stats.totalQuestions} />
-          <StatCard label="Попыток" value={stats.totalAttempts} />
-          <StatCard label="Средний балл" value={stats.averageScore} />
+          <StatCard
+            value={stats.totalQuizzes}
+            label={pluralize(stats.totalQuizzes, [
+              t("quizList.badges.questions.one"),
+              t("quizList.badges.questions.few"),
+              t("quizList.badges.questions.many"),
+            ])}
+          />
+          <StatCard
+            value={stats.published}
+            label={pluralize(stats.published, [
+              t("quizList.publication.published"),
+              t("quizList.publication.published"),
+              t("quizList.publication.published"),
+            ])}
+          />
+          <StatCard
+            value={stats.drafts}
+            label={pluralize(stats.drafts, [
+              t("quizList.publication.unpublished"),
+              t("quizList.publication.unpublished"),
+              t("quizList.publication.unpublished"),
+            ])}
+          />
+          <StatCard
+            value={stats.totalQuestions}
+            label={pluralize(stats.totalQuestions, [
+              t("quizList.badges.questions.one"),
+              t("quizList.badges.questions.few"),
+              t("quizList.badges.questions.many"),
+            ])}
+          />
+          <StatCard
+            value={stats.totalAttempts}
+            label={pluralize(stats.totalAttempts, [
+              t("quizList.badges.attempts.one"),
+              t("quizList.badges.attempts.few"),
+              t("quizList.badges.attempts.many"),
+            ])}
+          />
+          <StatCard
+            value={stats.averageScore}
+            label={t("stats.averageScore")}
+          />
         </SimpleGrid>
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
           <Card withBorder>
             <Stack gap="sm">
               <Group justify="space-between">
-                <Title order={5}>Мои квизы</Title>
+                <Title order={5}>{t("quizList.title")}</Title>
                 <Button
                   component={Link}
                   href={routes.QUIZZES}
                   variant="subtle"
                   size="xs"
                 >
-                  Все
+                  {t("quizList.all")}
                 </Button>
               </Group>
 
@@ -112,7 +153,7 @@ export default async function ProfilePage() {
                   .map((quiz) => <QuizRow key={quiz.id} quiz={quiz} />)
               ) : (
                 <Text size="sm" c="dimmed">
-                  У вас пока нет квизов
+                  {t("quizList.noQuizzes")}
                 </Text>
               )}
             </Stack>
@@ -120,18 +161,18 @@ export default async function ProfilePage() {
 
           <Card withBorder>
             <Stack gap="sm">
-              <Title order={5}>Активность</Title>
+              <Title order={5}>{t("activity.title")}</Title>
 
               <Group justify="space-between">
                 <Text size="sm" c="dimmed">
-                  Дата регистрации
+                  {t("activity.registrationDate")}
                 </Text>
                 <Text size="sm">{formatDateRu(new Date(user.createdAt))}</Text>
               </Group>
 
               <Group justify="space-between">
                 <Text size="sm" c="dimmed">
-                  Последний квиз
+                  {t("activity.lastQuiz")}
                 </Text>
                 <Text size="sm">
                   {lastQuizDate ? formatDateRu(lastQuizDate) : "—"}
@@ -146,7 +187,7 @@ export default async function ProfilePage() {
                 variant="light"
                 fullWidth
               >
-                Перейти к результатам
+                {t("activity.resultsButton")}
               </Button>
             </Stack>
           </Card>
@@ -169,7 +210,7 @@ function StatCard({ label, value }: { label: string; value: number }) {
     <Card withBorder style={{ textAlign: "center", padding: "md" }}>
       <Stack gap={2} align="center">
         <Title order={4}>{value}</Title>
-        <Text size="xs" c="dimmed">
+        <Text size="xs" c="dimmed" className="uppercase">
           {label}
         </Text>
       </Stack>
@@ -177,17 +218,8 @@ function StatCard({ label, value }: { label: string; value: number }) {
   );
 }
 
-function QuizRow({
-  quiz,
-}: {
-  quiz: {
-    id: string;
-    title: string;
-    isPublished: boolean;
-    questions: QuestionEntity[];
-    createdAt: Date;
-  };
-}) {
+function QuizRow({ quiz }: { quiz: QuizWithQuestionsExtended }) {
+  const t = useTranslations("app.profile.page");
   return (
     <Stack gap={4}>
       <Group justify="space-between">
@@ -199,11 +231,19 @@ function QuizRow({
           color={quiz.isPublished ? "green" : "gray"}
           variant="light"
         >
-          {quiz.isPublished ? "Опубликован" : "Черновик"}
+          {quiz.isPublished
+            ? t("quizList.publication.published")
+            : t("quizList.publication.unpublished")}
         </Badge>
       </Group>
       <Text size="xs" c="dimmed">
-        {quiz.questions.length} вопросов · {formatDateRu(quiz.createdAt)}
+        {quiz.questions.length}{" "}
+        {pluralize(quiz.questions.length, [
+          t("quizList.badges.questions.one"),
+          t("quizList.badges.questions.few"),
+          t("quizList.badges.questions.many"),
+        ])}{" "}
+        · {formatDateRu(quiz.createdAt)}
       </Text>
     </Stack>
   );
