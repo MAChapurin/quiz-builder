@@ -6,7 +6,7 @@ import { Container, Group, Flex, Anchor, Burger, Button } from "@mantine/core";
 
 import { headerLinks, LINKS_ID, routes } from "@/shared/config";
 import { ColorSchemesSwitcher } from "@/features";
-import { MobileMenu } from "./mobile-menu";
+import { MobileMenu } from "./mobile-menu-marketing";
 import { Logo } from "@/shared/ui";
 import { LanguageSwitcher } from "@/features/language-swither";
 import { useTranslations } from "next-intl";
@@ -56,7 +56,7 @@ export function HeaderMarketing() {
 
   return (
     <Container size="lg" py={10}>
-      <Flex h="100%" align="center" justify="space-between">
+      <Flex h="100%" align="center" justify="space-between" wrap="nowrap">
         <Logo />
 
         <Group gap="xl" className="hidden lg:flex">

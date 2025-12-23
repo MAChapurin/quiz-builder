@@ -1,6 +1,7 @@
 import { createTheme } from "@mantine/core";
+import type { MantineThemeOverride } from "@mantine/core";
 
-const theme = createTheme({
+const theme: MantineThemeOverride = createTheme({
   breakpoints: {
     xs: "36em",
     sm: "48em",
@@ -21,6 +22,18 @@ const theme = createTheme({
       "#003a8c",
       "#002766",
     ],
+  },
+  components: {
+    Container: {
+      styles: {
+        root: {
+          paddingInline: 8,
+          "@media (minWidth: 36em)": {
+            paddingInline: 16,
+          },
+        },
+      },
+    },
   },
 });
 

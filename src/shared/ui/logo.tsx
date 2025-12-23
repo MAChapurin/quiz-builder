@@ -4,7 +4,13 @@ import { Button, Group, Title } from "@mantine/core";
 
 export const Logo = ({ href = routes.HOME }: { href?: string }) => {
   return (
-    <Button component={Link} href={href} variant="transparent" px={0}>
+    <Button
+      component={Link}
+      href={href}
+      variant="transparent"
+      px={0}
+      className="max-[319px]:hidden"
+    >
       <Group>
         <Title className="hidden xs:block" order={4}>
           QuizBuilder
