@@ -59,7 +59,7 @@ export function HeaderPrivate({ name }: { name: string }) {
         overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
       >
         <Flex direction="column" justify="space-between" className="h-full">
-          <Stack gap="md">
+          <Stack gap={0}>
             <NavLinks pathname={pathname} onClick={close} />
             <Divider my="md" opacity={0.6} />
             <LogOutButton withLabel size="md" />

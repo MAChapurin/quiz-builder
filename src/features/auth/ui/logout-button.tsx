@@ -38,7 +38,6 @@ export function LogOutButton({
         <Button
           size={size}
           variant={variant}
-          leftSection={<IconLogout size={16} />}
           onClick={() => setModalOpened(true)}
         >
           {t("button.label")}
