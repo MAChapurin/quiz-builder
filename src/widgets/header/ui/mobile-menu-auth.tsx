@@ -1,6 +1,6 @@
 "use client";
 
-import { Drawer, Stack, Button, NavLink, Burger, Group } from "@mantine/core";
+import { Drawer, Stack, Button, NavLink, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useTranslations } from "next-intl";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Container, Group, Flex, Button, ActionIcon } from "@mantine/core";
+import { Container, Group, Flex, Button } from "@mantine/core";
 import { useTranslations } from "next-intl";
 
 import { ColorSchemesSwitcher, LanguageSwitcher } from "@/features";
