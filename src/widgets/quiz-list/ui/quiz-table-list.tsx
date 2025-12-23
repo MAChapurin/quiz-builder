@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Table, Flex, ActionIcon, Menu } from "@mantine/core";
 import {
@@ -14,7 +14,7 @@ import {
 
 import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
 import { SwitchPublicQuiz } from "@/features";
-import { emitter, formatDateRu } from "@/shared/lib";
+import { emitter, formatDate } from "@/shared/lib";
 
 export function QuizTableList({
   quizzes,
@@ -22,7 +22,7 @@ export function QuizTableList({
   quizzes: QuizWithQuestionsExtended[];
 }) {
   const t = useTranslations("widgets.quizList");
-
+  const locale = useLocale();
   return (
     <Table striped highlightOnHover>
       <Table.Thead>
@@ -48,7 +48,7 @@ export function QuizTableList({
             <Table.Td>{quiz.title}</Table.Td>
 
             <Table.Td className="text-center hidden sm:table-cell">
-              {formatDateRu(quiz.createdAt)}
+              {formatDate(quiz.createdAt, locale)}
             </Table.Td>
 
             <Table.Td className="text-center hidden sm:table-cell">

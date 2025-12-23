@@ -3,8 +3,13 @@ import { attemptService } from "@/entities/attempt/server";
 import { quizService } from "@/entities/quiz/server";
 import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
 import { LogOutButton } from "@/features";
-import { matchEither, formatDateRu, pluralize } from "@/shared/lib";
-import { routes } from "@/shared/config";
+import {
+  matchEither,
+  formatDate,
+  pluralize,
+  getServerCookies,
+} from "@/shared/lib";
+import { COOKIE_KEYS, routes } from "@/shared/config";
 
 import {
   Container,
@@ -22,12 +27,14 @@ import {
 
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default async function ProfilePage() {
   const t = await getTranslations("app.profile.page");
   const { session } = await sessionService.verifySession();
   const user = await getCurrentUser();
+  const cookies = await getServerCookies();
+  const locale = cookies[COOKIE_KEYS.LOCALE] || "ru";
 
   if (!user) {
     return (
@@ -167,7 +174,9 @@ export default async function ProfilePage() {
                 <Text size="sm" c="dimmed">
                   {t("activity.registrationDate")}
                 </Text>
-                <Text size="sm">{formatDateRu(new Date(user.createdAt))}</Text>
+                <Text size="sm">
+                  {formatDate(new Date(user.createdAt), locale)}
+                </Text>
               </Group>
 
               <Group justify="space-between">
@@ -175,7 +184,7 @@ export default async function ProfilePage() {
                   {t("activity.lastQuiz")}
                 </Text>
                 <Text size="sm">
-                  {lastQuizDate ? formatDateRu(lastQuizDate) : "—"}
+                  {lastQuizDate ? formatDate(lastQuizDate, locale) : "—"}
                 </Text>
               </Group>
 
@@ -220,6 +229,7 @@ function StatCard({ label, value }: { label: string; value: number }) {
 
 function QuizRow({ quiz }: { quiz: QuizWithQuestionsExtended }) {
   const t = useTranslations("app.profile.page");
+  const locale = useLocale();
   return (
     <Stack gap={4}>
       <Group justify="space-between">
@@ -243,7 +253,7 @@ function QuizRow({ quiz }: { quiz: QuizWithQuestionsExtended }) {
           t("quizList.badges.questions.few"),
           t("quizList.badges.questions.many"),
         ])}{" "}
-        · {formatDateRu(quiz.createdAt)}
+        · {formatDate(quiz.createdAt, locale)}
       </Text>
     </Stack>
   );

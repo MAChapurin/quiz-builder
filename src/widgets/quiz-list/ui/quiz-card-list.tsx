@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Flex,
@@ -22,7 +22,7 @@ import {
 
 import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
 import { SwitchPublicQuiz } from "@/features";
-import { emitter, formatDateRu, pluralize } from "@/shared/lib";
+import { emitter, formatDate, pluralize } from "@/shared/lib";
 
 export function QuizCardsList({
   quizzes,
@@ -30,6 +30,7 @@ export function QuizCardsList({
   quizzes: QuizWithQuestionsExtended[];
 }) {
   const t = useTranslations("widgets.quizList");
+  const locale = useLocale();
 
   return (
     <SimpleGrid
@@ -45,7 +46,7 @@ export function QuizCardsList({
             </Text>
 
             <Text opacity={0.5} fz="xs" className="shrink-0">
-              {formatDateRu(quiz.createdAt)}
+              {formatDate(quiz.createdAt, locale)}
             </Text>
           </Flex>
 

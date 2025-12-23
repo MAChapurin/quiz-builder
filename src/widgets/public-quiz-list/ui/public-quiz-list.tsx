@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { Card, Stack, Text, Badge, Flex, Divider } from "@mantine/core";
 import { QuizWithQuestions } from "@/entities/quiz/domain";
-import { formatDateRu, pluralize } from "@/shared/lib";
+import { formatDate, pluralize } from "@/shared/lib";
+import { useLocale } from "next-intl";
 
 interface PublicQuizListProps {
   quizzes: QuizWithQuestions[];
 }
 
 export function PublicQuizList({ quizzes }: PublicQuizListProps) {
+  const locale = useLocale();
   if (quizzes.length === 0) {
     return <Text color="dimmed">Пока нет опубликованных квизов.</Text>;
   }
@@ -32,7 +34,7 @@ export function PublicQuizList({ quizzes }: PublicQuizListProps) {
                 {quiz.title}
               </Text>
               <Text size="xs" color="gray">
-                {formatDateRu(quiz.createdAt.toISOString().slice(0, 10))}
+                {formatDate(quiz.createdAt.toISOString().slice(0, 10), locale)}
               </Text>
             </Flex>
 

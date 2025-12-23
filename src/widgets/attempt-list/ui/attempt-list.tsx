@@ -1,10 +1,12 @@
 "use client";
 
 import { Table, Badge } from "@mantine/core";
-import { formatDateRu } from "@/shared/lib";
+import { formatDate } from "@/shared/lib";
 import { QuizAttemptEntity } from "@/entities/attempt/domain";
+import { useLocale } from "next-intl";
 
 export function AttemptList({ attempts }: { attempts: QuizAttemptEntity[] }) {
+  const locale = useLocale();
   return (
     <Table striped highlightOnHover>
       <Table.Thead>
@@ -24,7 +26,9 @@ export function AttemptList({ attempts }: { attempts: QuizAttemptEntity[] }) {
             <Table.Td>{attempt.quizTitle}</Table.Td>
             <Table.Td className="text-center hidden sm:table-cell">
               {attempt.createdAt
-                ? formatDateRu(new Date(attempt.createdAt), { withTime: true })
+                ? formatDate(new Date(attempt.createdAt), locale, {
+                    withTime: true,
+                  })
                 : "-"}
             </Table.Td>
             <Table.Td className="text-center">
