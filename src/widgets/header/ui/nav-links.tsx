@@ -1,5 +1,5 @@
 import { routes } from "@/shared/config";
-import { Stack, NavLink } from "@mantine/core";
+import { NavLink } from "@mantine/core";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ export function NavLinks({ pathname, onClick }: NavLinksProps) {
   ];
 
   return (
-    <Stack gap="md">
+    <>
       {links.map((link) => (
         <NavLink
           key={link.href}
@@ -27,7 +27,10 @@ export function NavLinks({ pathname, onClick }: NavLinksProps) {
           active={pathname === link.href}
           onClick={onClick}
           px="md"
-          py="sm"
+          py={{
+            base: "sm",
+            md: 6,
+          }}
           styles={{
             root: {
               transition: "background-color 150ms ease, color 150ms ease",
@@ -35,6 +38,6 @@ export function NavLinks({ pathname, onClick }: NavLinksProps) {
           }}
         />
       ))}
-    </Stack>
+    </>
   );
 }

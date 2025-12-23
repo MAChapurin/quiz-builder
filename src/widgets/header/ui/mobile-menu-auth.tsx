@@ -1,6 +1,6 @@
 "use client";
 
-import { Drawer, Stack, Button, NavLink, Burger } from "@mantine/core";
+import { Drawer, Stack, Button, Burger, Divider } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -28,32 +28,25 @@ export function AuthMobileMenu() {
         padding="md"
         className="lg:hidden"
         overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        styles={{
-          body: {
-            height: "calc(100vh - 5rem)",
-            display: "flex",
-            flexDirection: "column",
-            paddingBottom: "max(env(safe-area-inset-bottom), 1rem)",
-          },
-        }}
       >
-        <Stack gap={4}>
-          <NavLink
+        <Stack gap="sm">
+          <Divider />
+          <Button
+            size="md"
             component={Link}
             href={routes.HOME}
-            label={t("navigation.home")}
-            px="md"
-            py="sm"
+            variant="default"
+            fullWidth
             onClick={close}
-          />
-        </Stack>
-
-        <Stack gap="sm" mt="auto">
+          >
+            {t("navigation.home")}
+          </Button>
+          <Divider />
           <Button
             size="md"
             component={Link}
             href={routes.LOGIN}
-            variant="subtle"
+            variant="outline"
             fullWidth
             onClick={close}
           >

@@ -1,10 +1,7 @@
-import { routes } from "@/shared/config";
 import { Layout } from "@/shared/ui";
 import { HeaderAuth } from "@/widgets";
-import { Button, Container, Title } from "@mantine/core";
-import { IconHome } from "@tabler/icons-react";
+import { Container, Title } from "@mantine/core";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,14 +26,6 @@ export default async function RootLayout({
           {t("title")}
         </Title>
         <div className="max-w-105 w-full">{children}</div>
-        <Button
-          leftSection={<IconHome />}
-          component={Link}
-          href={routes.HOME}
-          my={40}
-        >
-          {t("homeButton")}
-        </Button>
       </Container>
     </Layout>
   );

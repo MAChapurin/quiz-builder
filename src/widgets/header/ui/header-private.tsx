@@ -22,8 +22,10 @@ import {
 import { Logo } from "@/shared/ui";
 import { routes } from "@/shared/config";
 import { NavLinks } from "./nav-links";
+import { useTranslations } from "next-intl";
 
 export function HeaderPrivate({ name }: { name: string }) {
+  const t = useTranslations("widgets.header");
   const pathname = usePathname();
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -32,9 +34,9 @@ export function HeaderPrivate({ name }: { name: string }) {
       <Container size="lg" py={10}>
         <Flex align="center" justify="space-between" wrap="nowrap">
           <Logo href={routes.QUIZZES} />
-          <Group visibleFrom="md">
+          <Flex visibleFrom="md" gap={"lg"}>
             <NavLinks pathname={pathname} />
-          </Group>
+          </Flex>
           <Group>
             <LanguageSwitcher />
             <ColorSchemesSwitcher />
@@ -48,29 +50,21 @@ export function HeaderPrivate({ name }: { name: string }) {
       </Container>
 
       <Drawer
+        title={t("mobile.title")}
         opened={opened}
         onClose={close}
         hiddenFrom="md"
         position="right"
         size="xs"
         overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-        styles={{
-          body: {
-            height: "calc(100dvh - 5rem)",
-            display: "flex",
-            flexDirection: "column",
-            paddingBottom: "env(safe-area-inset-bottom)",
-          },
-        }}
       >
         <Flex direction="column" justify="space-between" className="h-full">
           <Stack gap="md">
             <NavLinks pathname={pathname} onClick={close} />
+            <Divider my="md" opacity={0.6} />
+            <LogOutButton withLabel size="md" />
           </Stack>
-          <Divider my="md" opacity={0.6} />
-          <Center>
-            <LogOutButton withLabel size="xs" />
-          </Center>
+          <Center></Center>
         </Flex>
       </Drawer>
     </>

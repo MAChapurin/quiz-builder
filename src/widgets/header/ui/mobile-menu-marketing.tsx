@@ -38,14 +38,6 @@ export function MobileMenu({
       padding="md"
       className="lg:hidden"
       overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-      styles={{
-        body: {
-          height: "calc(100vh - 5rem)",
-          display: "flex",
-          flexDirection: "column",
-          paddingBottom: "max(env(safe-area-inset-bottom), 1rem)",
-        },
-      }}
     >
       <Stack gap={4}>
         {headerLinks.map((link) => {
@@ -81,7 +73,7 @@ export function MobileMenu({
           size="md"
           component={Link}
           href={routes.LOGIN}
-          variant="subtle"
+          variant="outline"
           fullWidth
           onClick={onClose}
         >
