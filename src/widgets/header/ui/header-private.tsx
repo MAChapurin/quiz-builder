@@ -33,7 +33,7 @@ export function HeaderPrivate({ name }: { name: string }) {
     <>
       <Container size="lg" py={10}>
         <Flex align="center" justify="space-between" wrap="nowrap">
-          <Logo href={routes.QUIZZES} />
+          <Logo href={routes.PROFILE} />
           <Flex visibleFrom="md" gap={"lg"}>
             <NavLinks pathname={pathname} />
           </Flex>

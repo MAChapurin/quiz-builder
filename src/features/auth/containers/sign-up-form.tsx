@@ -33,7 +33,7 @@ export function SignUpForm() {
 
   useEffect(() => {
     if (formState.success && !isPending) {
-      router.push(routes.QUIZZES);
+      router.push(routes.PROFILE);
     }
   }, [formState.success, isPending, router]);
 

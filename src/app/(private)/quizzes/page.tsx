@@ -37,26 +37,22 @@ export default async function QuizzesPage() {
     right: (q) => q,
   });
 
-  console.log(quizzes);
-
   return (
-    <>
-      <Container size="lg">
-        <div className="flex justify-between items-center my-4">
-          <Title className="text-xl font-bold">{t("title")}</Title>
-          <CreateQuizButton />
-        </div>
+    <Container size="lg">
+      <div className="flex justify-between items-center my-4">
+        <Title className="text-xl font-bold">{t("title")}</Title>
+        <CreateQuizButton />
+      </div>
 
-        {quizzes.length === 0 ? (
-          <Stack>
-            <Center className="h-[50dvh]">
-              <Text>{t("empty")}</Text>
-            </Center>
-          </Stack>
-        ) : (
-          <QuizList quizzes={quizzes} initialView={view as QuizListViewType} />
-        )}
-      </Container>
-    </>
+      {quizzes.length === 0 ? (
+        <Stack>
+          <Center className="h-[50dvh]">
+            <Text>{t("empty")}</Text>
+          </Center>
+        </Stack>
+      ) : (
+        <QuizList quizzes={quizzes} initialView={view as QuizListViewType} />
+      )}
+    </Container>
   );
 }
