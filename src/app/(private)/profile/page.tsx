@@ -1,9 +1,8 @@
 import { getCurrentUser, sessionService } from "@/entities/user/server";
 import { attemptService } from "@/entities/attempt/server";
 import { quizService } from "@/entities/quiz/server";
-import { QuizWithQuestionsExtended } from "@/entities/quiz/domain";
+import { AttemptHeatmap, QuizListMini } from "@/widgets";
 import { LogOutButton } from "@/features";
-
 import {
   matchEither,
   formatDate,
@@ -22,14 +21,11 @@ import {
   Card,
   SimpleGrid,
   Divider,
-  Badge,
   Button,
 } from "@mantine/core";
 
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { useLocale, useTranslations } from "next-intl";
-import { AttemptHeatmap } from "@/widgets";
 
 export default async function ProfilePage() {
   const t = await getTranslations("app.profile.page");
@@ -160,32 +156,7 @@ export default async function ProfilePage() {
         </SimpleGrid>
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
-          <Card withBorder>
-            <Stack gap="sm">
-              <Group justify="space-between">
-                <Title order={5}>{t("quizList.title")}</Title>
-                <Button
-                  component={Link}
-                  href={routes.QUIZZES}
-                  variant="subtle"
-                  size="xs"
-                >
-                  {t("quizList.all")}
-                </Button>
-              </Group>
-
-              {quizzes.length ? (
-                quizzes
-                  .slice(0, 5)
-                  .map((quiz) => <QuizRow key={quiz.id} quiz={quiz} />)
-              ) : (
-                <Text size="sm" c="dimmed">
-                  {t("quizList.noQuizzes")}
-                </Text>
-              )}
-            </Stack>
-          </Card>
-
+          <QuizListMini quizzes={quizzes} />
           <Card withBorder>
             <Stack gap="sm">
               <Title order={5}>{t("activity.title")}</Title>
@@ -236,38 +207,5 @@ function StatCard({ label, value }: { label: string; value: number }) {
         </Text>
       </Stack>
     </Card>
-  );
-}
-
-function QuizRow({ quiz }: { quiz: QuizWithQuestionsExtended }) {
-  const t = useTranslations("app.profile.page");
-  const locale = useLocale();
-
-  return (
-    <Stack gap={4}>
-      <Group justify="space-between">
-        <Text size="sm" fw={500}>
-          {quiz.title}
-        </Text>
-        <Badge
-          size="sm"
-          color={quiz.isPublished ? "green" : "gray"}
-          variant="light"
-        >
-          {quiz.isPublished
-            ? t("quizList.publication.published")
-            : t("quizList.publication.unpublished")}
-        </Badge>
-      </Group>
-      <Text size="xs" c="dimmed">
-        {quiz.questions.length}{" "}
-        {pluralize(quiz.questions.length, [
-          t("quizList.badges.questions.one"),
-          t("quizList.badges.questions.few"),
-          t("quizList.badges.questions.many"),
-        ])}{" "}
-        · {formatDate(quiz.createdAt, locale)}
-      </Text>
-    </Stack>
   );
 }
