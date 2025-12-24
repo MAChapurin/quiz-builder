@@ -127,9 +127,9 @@ export default async function ProfilePage() {
           <StatCard
             value={quizStats.totalQuizzes}
             label={pluralize(quizStats.totalQuizzes, [
-              t("quizList.badges.questions.one"),
-              t("quizList.badges.questions.few"),
-              t("quizList.badges.questions.many"),
+              t("quizList.badges.quizzes.one"),
+              t("quizList.badges.quizzes.few"),
+              t("quizList.badges.quizzes.many"),
             ])}
           />
           <StatCard

@@ -785,6 +785,11 @@
             "actions": "Actions"
           },
           "badges": {
+            "quizzes": {
+              "one": "quiz",
+              "few": "quizzes",
+              "many": "quizzes"
+            },
             "questions": {
               "one": "question",
               "few": "questions",
