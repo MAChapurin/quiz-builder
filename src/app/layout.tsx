@@ -6,6 +6,7 @@ import {
 import { Notifications } from "@mantine/notifications";
 import theme from "./theme";
 import "./globals.css";
+import "@mantine/charts/styles.css";
 import "@mantine/notifications/styles.css";
 import { NextIntlClientProvider } from "next-intl";
 

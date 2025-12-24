@@ -505,6 +505,36 @@
   },
 
   "widgets": {
+    "attemptHeatmap": {
+      "weekdays": {
+        "sun": "Вс",
+        "mon": "Пн",
+        "tue": "Вт",
+        "wed": "Ср",
+        "thu": "Чт",
+        "fri": "Пт",
+        "sat": "Сб"
+      },
+      "months": {
+        "jan": "Янв",
+        "feb": "Фев",
+        "mar": "Мар",
+        "apr": "Апр",
+        "may": "Май",
+        "jun": "Июн",
+        "jul": "Июл",
+        "aug": "Авг",
+        "sep": "Сен",
+        "oct": "Окт",
+        "nov": "Ноя",
+        "dec": "Дек"
+      },
+      "attempt": {
+        "one": "попытка",
+        "few": "попытки",
+        "many": "попыток"
+      }
+    },
     "footer": {
       "copyright": ""
     },

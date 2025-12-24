@@ -29,6 +29,7 @@ import {
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { useLocale, useTranslations } from "next-intl";
+import { AttemptHeatmap } from "@/widgets";
 
 export default async function ProfilePage() {
   const t = await getTranslations("app.profile.page");
@@ -66,7 +67,13 @@ export default async function ProfilePage() {
   const quizStats = quizzes.reduce(
     (acc, q) => {
       acc.totalQuizzes++;
-      q.isPublished ? acc.published++ : acc.drafts++;
+
+      if (q.isPublished) {
+        acc.published++;
+      } else {
+        acc.drafts++;
+      }
+
       acc.totalQuestions += q.questions.length;
 
       const createdAt = new Date(q.createdAt);
@@ -113,6 +120,8 @@ export default async function ProfilePage() {
 
           <LogOutButton withLabel />
         </Group>
+
+        <AttemptHeatmap data={attempts} />
 
         <SimpleGrid cols={{ base: 2, xs: 3, lg: 6 }} spacing="md">
           <StatCard
